@@ -11,7 +11,7 @@ require __DIR__ . '/../layouts/header.php';
                 <span class="badge bg-danger rounded-pill px-3 py-1 small fw-bold">ADMIN CONSOLE</span>
                 <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-speedometer2 me-2 text-danger"></i>Hệ Thống Quản Trị 12B5 Store</h3>
             </div>
-            <span class="text-muted small">Trung tâm điều hành kinh doanh & giám sát hiệu năng kiến trúc Hybrid PHP + Rust Microservice</span>
+            <span class="text-muted small">Trung tâm quản lý bán hàng, theo dõi đơn hàng, tồn kho và phân tích doanh thu cửa hàng</span>
         </div>
         <div class="d-flex flex-wrap gap-2">
             <a href="/admin/products/create" class="btn btn-rose btn-sm">
@@ -26,27 +26,28 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
 
-    <!-- Rust Engine Microservice Health & Metrics Banner -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%); backdrop-filter: blur(16px);">
-        <div class="card-body p-4 text-white">
+    <!-- Business Operation Highlights Banner -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" style="background: linear-gradient(135deg, #ffffff 0%, #fff1f2 60%, #f1f5f9 100%); border: 1px solid rgba(251, 113, 133, 0.25) !important;">
+        <div class="card-body p-4">
             <div class="row align-items-center g-3">
                 <div class="col-md-8">
                     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                        <span class="badge <?= $isRustOnline ? 'bg-success' : 'bg-warning text-dark' ?> rounded-pill px-3 py-1 text-uppercase fw-bold">
-                            <i class="bi bi-cpu-fill me-1"></i> <?= $isRustOnline ? 'RUST ENGINE ONLINE' : 'PHP CORE FALLBACK' ?>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold small">
+                            <i class="bi bi-graph-up-arrow me-1"></i> TỔNG QUAN VẬN HÀNH
                         </span>
-                        <span class="badge bg-white bg-opacity-10 text-light border border-white border-opacity-25 rounded-pill px-3 py-1">Microservice: Port 5000</span>
-                        <span class="badge bg-danger rounded-pill px-3 py-1">Độ trễ: <?= $metrics['latency_ms'] ?? 0.8 ?>ms</span>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 small fw-semibold">
+                            <i class="bi bi-clock-history me-1"></i> Giờ Mở Cửa (08:00 - 22:00)
+                        </span>
                     </div>
-                    <h5 class="fw-bold mb-1 text-white">Kiến Trúc Hybrid Microservice High-Performance</h5>
-                    <p class="text-white-50 small mb-0">
-                        Rust Engine đảm nhận các tác vụ nặng: Thuật toán tìm kiếm chuỗi mờ Fuzzy TF-IDF, Gợi ý sản phẩm Cosine Similarity, Phân tích dữ liệu Pareto ABC và Dự báo doanh thu bằng Hồi quy tuyến tính (Linear Regression).
+                    <h5 class="fw-bold mb-1 text-dark">Báo Cáo Tình Hình Kinh Doanh & Điều Hành Kho Hàng</h5>
+                    <p class="text-muted small mb-0">
+                        Dữ liệu được cập nhật theo thời gian thực: Tự động tổng hợp doanh thu bán lẻ, phân loại danh mục sản phẩm chủ lực và kiểm soát lượng hàng tồn kho.
                     </p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <div class="p-3 bg-white bg-opacity-10 rounded-4 d-inline-block text-start border border-white border-opacity-10">
-                        <div class="text-white-50 small">Trạng thái kết nối REST API:</div>
-                        <div class="fw-bold text-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> Microservice Active (200 OK)</div>
+                    <div class="p-3 bg-white rounded-4 d-inline-block text-start border shadow-xs">
+                        <div class="text-muted small">Tình trạng kho hàng:</div>
+                        <div class="fw-bold text-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> Đảm bảo cung ứng (Sẵn sàng)</div>
                     </div>
                 </div>
             </div>
@@ -118,11 +119,11 @@ require __DIR__ . '/../layouts/header.php';
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-pie-chart-fill me-2 text-danger"></i>Phân Tích Tồn Kho Pareto 80/20</h5>
-                    <span class="badge bg-danger rounded-pill px-3 py-1 small">Rust Analytics</span>
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-pie-chart-fill me-2 text-danger"></i>Phân Loại Danh Mục Hàng Hoá ABC (80/20)</h5>
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 small fw-bold">Tối Ưu Tồn Kho</span>
                 </div>
                 <p class="text-muted small">
-                    Thuật toán phân loại nhóm hàng tồn kho theo nguyên lý Pareto: <strong>Nhóm A</strong> (70% giá trị - Flagship), <strong>Nhóm B</strong> (20% giá trị - Tầm trung), <strong>Nhóm C</strong> (10% - Phụ kiện).
+                    Phân loại nhóm hàng tồn kho theo tỷ trọng đóng góp doanh thu: <strong>Nhóm A</strong> (70% giá trị - Flagship), <strong>Nhóm B</strong> (20% giá trị - Tầm trung), <strong>Nhóm C</strong> (10% - Phụ kiện).
                 </p>
 
                 <div class="row g-3 text-center my-3">

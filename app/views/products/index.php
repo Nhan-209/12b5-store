@@ -108,11 +108,6 @@ require __DIR__ . '/../layouts/header.php';
                         </h4>
                         <div class="small text-muted d-flex flex-wrap align-items-center gap-2">
                             <span>Tìm thấy <strong><?= count($products) ?></strong> sản phẩm</span>
-                            <?php if ($engineInfo): ?>
-                                <span class="badge <?= $engineInfo['engine'] === 'rust' ? 'bg-warning text-dark' : 'bg-secondary' ?> rounded-pill">
-                                    <i class="bi bi-cpu-fill"></i> <?= $engineInfo['engine'] === 'rust' ? '⚡ Rust Fuzzy Search' : 'PHP Core Search' ?> (<?= $engineInfo['latency_ms'] ?>ms)
-                                </span>
-                            <?php endif; ?>
                         </div>
                     </div>
 

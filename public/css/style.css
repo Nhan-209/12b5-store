@@ -1344,18 +1344,29 @@ a:hover {
    ========================================================================== */
 footer,
 .footer-tech {
-    background: rgba(15, 23, 42, 0.96);
+    background: rgba(15, 23, 42, 0.98);
     backdrop-filter: var(--backdrop-blur-lg);
     -webkit-backdrop-filter: var(--backdrop-blur-lg);
-    color: #94a3b8;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     padding: 4rem 0 2rem 0;
     margin-top: auto;
 }
 
+.footer-tech p,
+.footer-tech li,
+.footer-tech .text-muted {
+    color: #e2e8f0 !important;
+}
+
+.footer-tech strong,
+.footer-tech h6 {
+    color: #ffffff !important;
+}
+
 footer a,
 .footer-tech a {
-    color: #cbd5e1;
+    color: #e2e8f0;
     text-decoration: none;
     transition: all 0.2s ease;
 }
