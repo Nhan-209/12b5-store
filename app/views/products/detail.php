@@ -27,8 +27,11 @@ require __DIR__ . '/../layouts/header.php';
                     </span>
                 </div>
 
-                <div class="py-5 text-center my-auto">
-                    <i class="bi bi-device-hdd display-1 text-primary opacity-80"></i>
+                <div class="py-4 text-center my-auto">
+                    <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-fluid rounded-4 shadow-sm" style="max-height: 320px; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="device-fallback-icon mx-auto" style="display: none; width: 120px; height: 120px; font-size: 3.5rem;">
+                        <i class="bi <?= htmlspecialchars($product['device_icon']) ?>"></i>
+                    </div>
                 </div>
 
                 <div class="p-3 bg-light rounded-4 border w-100 text-muted small mt-4">
@@ -229,8 +232,11 @@ require __DIR__ . '/../layouts/header.php';
                 <?php foreach ($relatedProducts as $relProd): ?>
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="tech-card">
-                            <div class="card-img-wrap py-4">
-                                <i class="bi bi-device-hdd display-5 text-primary opacity-75"></i>
+                            <div class="card-img-wrap py-3">
+                                <img src="<?= htmlspecialchars($relProd['image_url'] ?? 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500') ?>" alt="<?= htmlspecialchars($relProd['name']) ?>" class="product-thumb-img" style="max-height: 120px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="device-fallback-icon" style="display: none; width: 60px; height: 60px; font-size: 1.8rem;">
+                                    <i class="bi <?= htmlspecialchars($relProd['device_icon'] ?? 'bi-laptop') ?>"></i>
+                                </div>
                             </div>
                             <div class="p-3 d-flex flex-column flex-grow-1">
                                 <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">

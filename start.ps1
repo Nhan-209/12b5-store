@@ -2,7 +2,7 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "   ELECTROSTORE - KHỞI ĐỘNG HỆ THỐNG TRÌNH DIỄN ĐỒ ÁN" -ForegroundColor Yellow
+Write-Host "   12B5 STORE - KHỞI ĐỘNG HỆ THỐNG TRÌNH DIỄN ĐỒ ÁN" -ForegroundColor Yellow
 Write-Host "   Kiến trúc Hybrid: PHP E-Commerce + Rust Engine" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""

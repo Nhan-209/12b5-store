@@ -28,6 +28,8 @@ class Cart {
                     'slug' => $product['slug'],
                     'sku' => $product['sku'],
                     'thumbnail' => $product['thumbnail'],
+                    'image_url' => $product['image_url'] ?? '',
+                    'device_icon' => $product['device_icon'] ?? 'bi-laptop',
                     'price' => (float)$product['price'],
                     'formatted_price' => $product['formatted_price'],
                     'stock' => (int)$product['stock'],

@@ -156,8 +156,9 @@ require __DIR__ . '/../layouts/header.php';
                                         <span class="badge-discount">-<?= $product['discount_percent'] ?>%</span>
                                     <?php endif; ?>
                                     <span class="badge-installment">Trả góp 0%</span>
-                                    <div class="p-3 text-center">
-                                        <i class="bi bi-device-hdd display-4 text-primary opacity-80"></i>
+                                    <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-thumb-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="device-fallback-icon" style="display: none;">
+                                        <i class="bi <?= htmlspecialchars($product['device_icon']) ?>"></i>
                                     </div>
                                 </div>
 

@@ -5,18 +5,21 @@ require __DIR__ . '/../layouts/header.php';
 $specs = $isEdit ? ($product['specs_array'] ?? []) : [];
 ?>
 
-<div class="container px-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+<div class="container-fluid px-lg-5 px-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-3">
         <div>
-            <h3 class="fw-bold mb-1"><?= $isEdit ? 'Chỉnh Sửa Thiết Bị' : 'Thêm Thiết Bị Mới' ?></h3>
-            <span class="text-muted small">Cập nhật thông tin và cấu hình kỹ thuật sản phẩm</span>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-danger rounded-pill px-3 py-1 small fw-bold">ADMIN EDITOR</span>
+                <h3 class="fw-bold mb-0 text-dark"><?= $isEdit ? 'Chỉnh Sửa Thiết Bị #' . $product['id'] : 'Thêm Thiết Bị Điện Tử Mới' ?></h3>
+            </div>
+            <span class="text-muted small">Cập nhật thông tin chi tiết, giá bán và thông số phần cứng thiết bị</span>
         </div>
-        <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Quay lại
+        <a href="/admin/products" class="btn btn-soft-slate btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách
         </a>
     </div>
 
-    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-5">
+    <div class="card card-glass border-0 shadow-card rounded-4 p-4 p-md-5 mb-5">
         <form action="<?= $isEdit ? '/admin/products/edit/' . $product['id'] : '/admin/products/create' ?>" method="POST">
             <div class="row g-3 mb-4">
                 <div class="col-md-8">
@@ -119,10 +122,10 @@ $specs = $isEdit ? ($product['specs_array'] ?? []) : [];
                 <?php endif; ?>
             </div>
 
-            <button type="submit" class="btn btn-primary px-4 fw-bold">
-                <i class="bi bi-save me-1"></i> Lưu Sản Phẩm
+            <button type="submit" class="btn btn-rose px-4 py-2 fw-bold shadow-sm">
+                <i class="bi bi-floppy me-1"></i> Lưu Thiết Bị
             </button>
-            <a href="/admin/products" class="btn btn-outline-secondary ms-2">Hủy bỏ</a>
+            <a href="/admin/products" class="btn btn-soft-slate px-4 py-2 ms-2">Hủy bỏ</a>
         </form>
     </div>
 </div>

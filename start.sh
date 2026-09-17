@@ -2,7 +2,7 @@
 # ElectroStore Turnkey Startup Script for Linux / macOS
 
 echo "========================================================="
-echo "   ELECTROSTORE - KHỞI ĐỘNG HỆ THỐNG TRÌNH DIỄN ĐỒ ÁN"
+echo "   12B5 STORE - KHỞI ĐỘNG HỆ THỐNG TRÌNH DIỄN ĐỒ ÁN"
 echo "   Kiến trúc Hybrid: PHP E-Commerce + Rust Engine"
 echo "========================================================="
 echo ""

@@ -67,8 +67,9 @@ require __DIR__ . '/../layouts/header.php';
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center gap-3">
-                                                <div class="bg-light p-2 rounded-3 text-center border" style="width: 54px; height: 54px;">
-                                                    <i class="bi bi-device-hdd fs-3 text-primary opacity-80"></i>
+                                                <div class="bg-light p-1 rounded-3 text-center border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 56px; height: 56px;">
+                                                    <img src="<?= htmlspecialchars($item['image_url'] ?? 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150') ?>" class="rounded-2" style="width: 48px; height: 48px; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                                    <i class="bi <?= htmlspecialchars($item['device_icon'] ?? 'bi-laptop') ?> fs-4 text-primary" style="display: none;"></i>
                                                 </div>
                                                 <div>
                                                     <a href="/product/<?= urlencode($item['slug']) ?>" class="text-dark text-decoration-none fw-bold small line-clamp-1" title="<?= htmlspecialchars($item['name']) ?>">

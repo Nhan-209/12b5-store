@@ -91,7 +91,7 @@ class CheckoutController {
             $template = 'compact2';
             $amount = (int)$order['final_amount'];
             $description = urlencode($order['order_code']);
-            $qrUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName=CONG%20TY%20ELECTRO%20STORE";
+            $qrUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName=CONG%20TY%20CONG%20NGHE%2012B5%20STORE";
         }
 
         require __DIR__ . '/../views/checkout/success.php';

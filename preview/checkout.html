@@ -70,7 +70,8 @@
         <a href="detail.html" class="preview-pill "><i class="bi bi-laptop"></i> 3. Chi Tiết Cấu Hình</a>
         <a href="cart.html" class="preview-pill "><i class="bi bi-cart3"></i> 4. Giỏ Hàng (2)</a>
         <a href="checkout.html" class="preview-pill active"><i class="bi bi-qr-code"></i> 5. VietQR Checkout</a>
-        <a href="admin.html" class="preview-pill "><i class="bi bi-speedometer2"></i> 6. Admin KPIs & Pareto</a>
+        <a href="success.html" class="preview-pill "><i class="bi bi-check-circle"></i> 6. Đặt Hàng Thành Công</a>
+        <a href="admin.html" class="preview-pill "><i class="bi bi-speedometer2"></i> 7. Admin KPIs & Pareto</a>
     </div>
 </div>
 
@@ -258,7 +259,7 @@
                 <p class="text-muted small mb-3">Mở app Mobile Banking bất kỳ để quét mã chuyển khoản:</p>
 
                 <div class="vietqr-image-container">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH20260917ELECTRO6304" alt="VietQR" class="img-fluid">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH2026091712B56304" alt="VietQR" class="img-fluid">
                 </div>
 
                 <div class="bank-detail-box">
@@ -269,13 +270,13 @@
                     <div class="bank-copy-row">
                         <span class="text-muted">Số tài khoản:</span>
                         <div>
-                            <strong class="font-monospace text-primary">0388.999.888</strong>
-                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép số tài khoản!');">Sao chép</button>
+                            <strong class="font-monospace text-primary">0901234567</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
                         </div>
                     </div>
                     <div class="bank-copy-row">
                         <span class="text-muted">Chủ tài khoản:</span>
-                        <strong class="text-dark">CONG TY TNHH THIET BI DIEN TU 12B5</strong>
+                        <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
                     </div>
                     <div class="bank-copy-row">
                         <span class="text-muted">Số tiền thanh toán:</span>
@@ -285,13 +286,13 @@
                         <span class="text-muted">Nội dung chuyển khoản:</span>
                         <div>
                             <strong class="font-monospace text-dark">DH982743</strong>
-                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép cú pháp!');">Sao chép</button>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('DH982743'); alert('Đã sao chép cú pháp!');">Sao chép</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="d-grid gap-2 mt-4">
-                    <button class="btn btn-rose btn-lg fw-bold"><i class="bi bi-check2-circle me-2"></i> Xác Nhận Đã Chuyển Khoản</button>
+                    <a href="success.html" class="btn btn-rose btn-lg fw-bold text-white shadow-sm"><i class="bi bi-check2-circle me-2"></i> Xác Nhận Đã Chuyển Khoản & Hoàn Tất Đơn</a>
                     <a href="cart.html" class="btn btn-soft-slate btn-sm">Quay lại giỏ hàng</a>
                 </div>
             </div>
@@ -366,6 +367,106 @@
     </div>
 </footer>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="previewToast" class="toast align-items-center text-white bg-dark border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                <span id="toastMessage">Đã thêm thiết bị vào giỏ hàng thành công!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let cartCount = 2;
+    const toastEl = document.getElementById('previewToast');
+    const toastMsg = document.getElementById('toastMessage');
+    const toast = toastEl ? new bootstrap.Toast(toastEl, { delay: 2500 }) : null;
+
+    // 1. Interactive Add-To-Cart & Buy Now feedback
+    document.querySelectorAll('.btn-ajax-add-cart, button.btn-rose').forEach(function(btn) {
+        if (btn.innerText.includes('Thêm') || btn.innerText.includes('Mua Ngay') || btn.classList.contains('btn-ajax-add-cart')) {
+            btn.addEventListener('click', function(e) {
+                if (btn.tagName === 'BUTTON' && !btn.closest('form')) {
+                    e.preventDefault();
+                    cartCount++;
+                    document.querySelectorAll('.cart-pill-badge').forEach(function(badge) {
+                        badge.textContent = cartCount;
+                    });
+                    const card = btn.closest('.product-card, .card');
+                    const title = card ? card.querySelector('.product-title, h1, h5')?.innerText?.trim() : 'Thiết bị công nghệ';
+                    if (toastMsg) {
+                        toastMsg.innerHTML = '<strong>' + (title || 'Thiết bị') + '</strong> đã được thêm vào giỏ!';
+                    }
+                    if (toast) toast.show();
+                }
+            });
+        }
+    });
+
+    // 2. Interactive Live Search Simulation (Rust Microservice Levenshtein)
+    const searchInputs = document.querySelectorAll('.search-box-group input');
+    searchInputs.forEach(function(input) {
+        const wrapper = input.closest('.search-box-group');
+        if (!wrapper) return;
+        wrapper.style.position = 'relative';
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown-menu shadow-lg border-0 rounded-4 p-2 w-100 mt-1';
+        dropdown.style.display = 'none';
+        dropdown.style.maxHeight = '320px';
+        dropdown.style.overflowY = 'auto';
+        dropdown.style.zIndex = '1050';
+        wrapper.appendChild(dropdown);
+
+        const techItems = [
+            { name: 'MacBook Pro 14 M3 Pro (18GB/512GB)', price: '49.990.000 ₫', brand: 'Apple', icon: 'bi-laptop', link: 'detail.html' },
+            { name: 'iPhone 16 Pro Max 256GB Desert Titanium', price: '34.990.000 ₫', brand: 'Apple', icon: 'bi-phone', link: 'products.html' },
+            { name: 'Samsung Galaxy S24 Ultra 512GB AI', price: '31.990.000 ₫', brand: 'Samsung', icon: 'bi-phone', link: 'products.html' },
+            { name: 'Tai Nghe Sony WH-1000XM5 Hi-Res ANC', price: '7.490.000 ₫', brand: 'Sony', icon: 'bi-headphones', link: 'products.html' },
+            { name: 'iPad Pro M4 11 inch Ultra Retina XDR', price: '28.990.000 ₫', brand: 'Apple', icon: 'bi-tablet', link: 'products.html' },
+            { name: 'Apple Watch Ultra 2 GPS + Cellular', price: '21.490.000 ₫', brand: 'Apple', icon: 'bi-smartwatch', link: 'products.html' }
+        ];
+
+        input.addEventListener('input', function() {
+            const query = input.value.trim().toLowerCase();
+            if (query.length < 2) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            const filtered = techItems.filter(item => item.name.toLowerCase().includes(query) || item.brand.toLowerCase().includes(query));
+            if (filtered.length === 0) {
+                dropdown.innerHTML = '<div class="p-3 text-muted text-center small"><i class="bi bi-search me-1"></i> Không tìm thấy thiết bị phù hợp</div>';
+            } else {
+                let html = '<div class="d-flex justify-content-between align-items-center px-3 py-1 border-bottom mb-2 small"><span class="text-muted fw-bold">Gợi ý tìm kiếm</span><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill"><i class="bi bi-cpu-fill me-1"></i> Rust Engine: 0.8ms</span></div>';
+                filtered.forEach(item => {
+                    html += `<a href="${item.link}" class="dropdown-item d-flex align-items-center justify-content-between p-2 rounded-3 mb-1">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi ${item.icon} text-danger fs-5"></i>
+                            <div>
+                                <div class="fw-semibold text-dark small">${item.name}</div>
+                                <span class="badge bg-light text-muted small">${item.brand}</span>
+                            </div>
+                        </div>
+                        <span class="fw-bold text-danger small">${item.price}</span>
+                    </a>`;
+                });
+                dropdown.innerHTML = html;
+            }
+            dropdown.style.display = 'block';
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!wrapper.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

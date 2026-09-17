@@ -72,6 +72,26 @@
     --backdrop-blur-lg: blur(24px);
     --glass-background: rgba(255, 255, 255, 0.82);
     --glass-border: 1px solid rgba(255, 255, 255, 0.75);
+
+    /* Bootstrap 5 Framework Integration Overrides */
+    --bs-primary: #f43f5e;
+    --bs-primary-rgb: 244, 63, 94;
+    --bs-danger: #f43f5e;
+    --bs-danger-rgb: 244, 63, 94;
+    --bs-success: #10b981;
+    --bs-success-rgb: 16, 185, 129;
+    --bs-warning: #f59e0b;
+    --bs-warning-rgb: 245, 158, 11;
+    --bs-info: #0284c7;
+    --bs-info-rgb: 2, 132, 199;
+    --bs-body-font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    --bs-border-radius: 16px;
+    --bs-border-radius-sm: 10px;
+    --bs-border-radius-lg: 20px;
+    --bs-border-radius-xl: 28px;
+    --bs-border-radius-2xl: 32px;
+    --bs-border-radius-pill: 9999px;
+    --bs-focus-ring-color: rgba(244, 63, 94, 0.22);
 }
 
 /* ==========================================================================
@@ -114,6 +134,177 @@ a {
 
 a:hover {
     color: var(--accent-rose);
+}
+
+/* ==========================================================================
+   Global Glassmorphic Components & Bootstrap UI Overrides
+   ========================================================================== */
+.card,
+.card-glass {
+    background: var(--bg-surface-frosted);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all 0.25s ease;
+}
+
+.card:hover,
+.card-glass:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header,
+.card-footer {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: var(--border-subtle);
+}
+
+.form-control,
+.form-select {
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    padding: 0.65rem 1rem;
+    font-size: 0.925rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent-rose);
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12);
+    background-color: #ffffff;
+    color: var(--text-primary);
+}
+
+.form-control-sm,
+.form-select-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+.form-check-input:checked {
+    background-color: var(--accent-rose);
+    border-color: var(--accent-rose);
+}
+
+.form-check-input:focus {
+    border-color: var(--accent-rose);
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(244, 63, 94, 0.03);
+    color: var(--text-primary);
+}
+
+.table-light, thead.table-light th {
+    background: rgba(241, 245, 249, 0.75) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.badge.bg-primary {
+    background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%) !important;
+    color: #ffffff !important;
+}
+
+.badge.bg-success {
+    background: var(--tech-emerald-subtle) !important;
+    color: var(--tech-emerald) !important;
+    border: 1px solid var(--tech-emerald-border) !important;
+    font-weight: 700;
+}
+
+.badge.bg-warning {
+    background: var(--tech-amber-subtle) !important;
+    color: #b45309 !important;
+    border: 1px solid var(--tech-amber-border) !important;
+    font-weight: 700;
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+    color: #ffffff !important;
+}
+
+.badge.bg-secondary {
+    background: var(--bg-canvas-alt) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    font-weight: 600;
+}
+
+.badge.bg-info {
+    background: var(--tech-sky-subtle) !important;
+    color: var(--tech-sky) !important;
+    border: 1px solid var(--tech-sky-border) !important;
+    font-weight: 700;
+}
+
+.text-primary {
+    color: var(--accent-rose) !important;
+}
+
+.text-danger {
+    color: var(--accent-rose) !important;
+}
+
+.border-primary {
+    border-color: var(--accent-rose-border) !important;
+}
+
+.breadcrumb-item a {
+    color: var(--text-muted);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--accent-rose);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.alert {
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+}
+
+.alert-success {
+    background: rgba(236, 253, 245, 0.9);
+    border-color: var(--tech-emerald-border);
+    color: #065f46;
+}
+
+.alert-danger {
+    background: rgba(255, 241, 242, 0.9);
+    border-color: var(--accent-rose-border);
+    color: #9f1239;
+}
+
+.alert-info {
+    background: rgba(240, 249, 255, 0.9);
+    border-color: var(--tech-sky-border);
+    color: #075985;
+}
+
+.alert-warning {
+    background: rgba(255, 251, 235, 0.9);
+    border-color: var(--tech-amber-border);
+    color: #92400e;
 }
 
 /* ==========================================================================
@@ -654,6 +845,29 @@ a:hover {
 .tech-card:hover .card-img-wrap img,
 .product-card-glass:hover .card-img-wrap img {
     transform: scale(1.06);
+}
+
+.card-img-wrap .device-fallback-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #fff1f2 0%, #f1f5f9 100%);
+    border: 1px solid var(--accent-rose-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-rose);
+    font-size: 2.5rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-soft);
+}
+
+.tech-card:hover .device-fallback-icon,
+.product-card-glass:hover .device-fallback-icon {
+    background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+    color: #ffffff;
+    box-shadow: var(--shadow-rose-glow);
+    transform: scale(1.1) rotate(-3deg);
 }
 
 .badge-discount {

@@ -74,7 +74,8 @@ header_template = """<!DOCTYPE html>
         <a href="detail.html" class="preview-pill {nav_detail}"><i class="bi bi-laptop"></i> 3. Chi Tiết Cấu Hình</a>
         <a href="cart.html" class="preview-pill {nav_cart}"><i class="bi bi-cart3"></i> 4. Giỏ Hàng (2)</a>
         <a href="checkout.html" class="preview-pill {nav_checkout}"><i class="bi bi-qr-code"></i> 5. VietQR Checkout</a>
-        <a href="admin.html" class="preview-pill {nav_admin}"><i class="bi bi-speedometer2"></i> 6. Admin KPIs & Pareto</a>
+        <a href="success.html" class="preview-pill {nav_success}"><i class="bi bi-check-circle"></i> 6. Đặt Hàng Thành Công</a>
+        <a href="admin.html" class="preview-pill {nav_admin}"><i class="bi bi-speedometer2"></i> 7. Admin KPIs & Pareto</a>
     </div>
 </div>
 
@@ -239,7 +240,107 @@ footer_template = """
     </div>
 </footer>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="previewToast" class="toast align-items-center text-white bg-dark border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                <span id="toastMessage">Đã thêm thiết bị vào giỏ hàng thành công!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let cartCount = 2;
+    const toastEl = document.getElementById('previewToast');
+    const toastMsg = document.getElementById('toastMessage');
+    const toast = toastEl ? new bootstrap.Toast(toastEl, { delay: 2500 }) : null;
+
+    // 1. Interactive Add-To-Cart & Buy Now feedback
+    document.querySelectorAll('.btn-ajax-add-cart, button.btn-rose').forEach(function(btn) {
+        if (btn.innerText.includes('Thêm') || btn.innerText.includes('Mua Ngay') || btn.classList.contains('btn-ajax-add-cart')) {
+            btn.addEventListener('click', function(e) {
+                if (btn.tagName === 'BUTTON' && !btn.closest('form')) {
+                    e.preventDefault();
+                    cartCount++;
+                    document.querySelectorAll('.cart-pill-badge').forEach(function(badge) {
+                        badge.textContent = cartCount;
+                    });
+                    const card = btn.closest('.product-card, .card');
+                    const title = card ? card.querySelector('.product-title, h1, h5')?.innerText?.trim() : 'Thiết bị công nghệ';
+                    if (toastMsg) {
+                        toastMsg.innerHTML = '<strong>' + (title || 'Thiết bị') + '</strong> đã được thêm vào giỏ!';
+                    }
+                    if (toast) toast.show();
+                }
+            });
+        }
+    });
+
+    // 2. Interactive Live Search Simulation (Rust Microservice Levenshtein)
+    const searchInputs = document.querySelectorAll('.search-box-group input');
+    searchInputs.forEach(function(input) {
+        const wrapper = input.closest('.search-box-group');
+        if (!wrapper) return;
+        wrapper.style.position = 'relative';
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown-menu shadow-lg border-0 rounded-4 p-2 w-100 mt-1';
+        dropdown.style.display = 'none';
+        dropdown.style.maxHeight = '320px';
+        dropdown.style.overflowY = 'auto';
+        dropdown.style.zIndex = '1050';
+        wrapper.appendChild(dropdown);
+
+        const techItems = [
+            { name: 'MacBook Pro 14 M3 Pro (18GB/512GB)', price: '49.990.000 ₫', brand: 'Apple', icon: 'bi-laptop', link: 'detail.html' },
+            { name: 'iPhone 16 Pro Max 256GB Desert Titanium', price: '34.990.000 ₫', brand: 'Apple', icon: 'bi-phone', link: 'products.html' },
+            { name: 'Samsung Galaxy S24 Ultra 512GB AI', price: '31.990.000 ₫', brand: 'Samsung', icon: 'bi-phone', link: 'products.html' },
+            { name: 'Tai Nghe Sony WH-1000XM5 Hi-Res ANC', price: '7.490.000 ₫', brand: 'Sony', icon: 'bi-headphones', link: 'products.html' },
+            { name: 'iPad Pro M4 11 inch Ultra Retina XDR', price: '28.990.000 ₫', brand: 'Apple', icon: 'bi-tablet', link: 'products.html' },
+            { name: 'Apple Watch Ultra 2 GPS + Cellular', price: '21.490.000 ₫', brand: 'Apple', icon: 'bi-smartwatch', link: 'products.html' }
+        ];
+
+        input.addEventListener('input', function() {
+            const query = input.value.trim().toLowerCase();
+            if (query.length < 2) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            const filtered = techItems.filter(item => item.name.toLowerCase().includes(query) || item.brand.toLowerCase().includes(query));
+            if (filtered.length === 0) {
+                dropdown.innerHTML = '<div class="p-3 text-muted text-center small"><i class="bi bi-search me-1"></i> Không tìm thấy thiết bị phù hợp</div>';
+            } else {
+                let html = '<div class="d-flex justify-content-between align-items-center px-3 py-1 border-bottom mb-2 small"><span class="text-muted fw-bold">Gợi ý tìm kiếm</span><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill"><i class="bi bi-cpu-fill me-1"></i> Rust Engine: 0.8ms</span></div>';
+                filtered.forEach(item => {
+                    html += `<a href="${item.link}" class="dropdown-item d-flex align-items-center justify-content-between p-2 rounded-3 mb-1">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi ${item.icon} text-danger fs-5"></i>
+                            <div>
+                                <div class="fw-semibold text-dark small">${item.name}</div>
+                                <span class="badge bg-light text-muted small">${item.brand}</span>
+                            </div>
+                        </div>
+                        <span class="fw-bold text-danger small">${item.price}</span>
+                    </a>`;
+                });
+                dropdown.innerHTML = html;
+            }
+            dropdown.style.display = 'block';
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!wrapper.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
 """
@@ -1251,11 +1352,11 @@ cart_body = """
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
                 <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-ticket-perforated-fill me-2 text-danger"></i>Mã Ưu Đãi / Khuyến Mãi</h6>
                 <div class="input-group mb-2">
-                    <input type="text" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" value="ELECTRO500">
+                    <input type="text" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" value="12B5TECH500">
                     <button class="btn btn-rose btn-sm rounded-end-pill px-3">Áp Dụng</button>
                 </div>
                 <div class="alert alert-success d-flex justify-content-between align-items-center mb-0 p-2 rounded-3 small">
-                    <span><i class="bi bi-check-circle-fill me-1"></i> Đã giảm <strong>500.000 ₫</strong> (ELECTRO500)</span>
+                    <span><i class="bi bi-check-circle-fill me-1"></i> Đã giảm <strong>500.000 ₫</strong> (12B5TECH500)</span>
                     <button class="btn btn-link btn-sm text-danger p-0"><i class="bi bi-x-circle-fill"></i></button>
                 </div>
             </div>
@@ -1384,7 +1485,7 @@ checkout_body = """
                 <p class="text-muted small mb-3">Mở app Mobile Banking bất kỳ để quét mã chuyển khoản:</p>
 
                 <div class="vietqr-image-container">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH20260917ELECTRO6304" alt="VietQR" class="img-fluid">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH2026091712B56304" alt="VietQR" class="img-fluid">
                 </div>
 
                 <div class="bank-detail-box">
@@ -1395,13 +1496,13 @@ checkout_body = """
                     <div class="bank-copy-row">
                         <span class="text-muted">Số tài khoản:</span>
                         <div>
-                            <strong class="font-monospace text-primary">0388.999.888</strong>
-                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép số tài khoản!');">Sao chép</button>
+                            <strong class="font-monospace text-primary">0901234567</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
                         </div>
                     </div>
                     <div class="bank-copy-row">
                         <span class="text-muted">Chủ tài khoản:</span>
-                        <strong class="text-dark">CONG TY TNHH THIET BI DIEN TU 12B5</strong>
+                        <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
                     </div>
                     <div class="bank-copy-row">
                         <span class="text-muted">Số tiền thanh toán:</span>
@@ -1411,13 +1512,13 @@ checkout_body = """
                         <span class="text-muted">Nội dung chuyển khoản:</span>
                         <div>
                             <strong class="font-monospace text-dark">DH982743</strong>
-                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép cú pháp!');">Sao chép</button>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('DH982743'); alert('Đã sao chép cú pháp!');">Sao chép</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="d-grid gap-2 mt-4">
-                    <button class="btn btn-rose btn-lg fw-bold"><i class="bi bi-check2-circle me-2"></i> Xác Nhận Đã Chuyển Khoản</button>
+                    <a href="success.html" class="btn btn-rose btn-lg fw-bold text-white shadow-sm"><i class="bi bi-check2-circle me-2"></i> Xác Nhận Đã Chuyển Khoản & Hoàn Tất Đơn</a>
                     <a href="cart.html" class="btn btn-soft-slate btn-sm">Quay lại giỏ hàng</a>
                 </div>
             </div>
@@ -1620,16 +1721,184 @@ admin_body = """
 </div>
 """
 
+# ==============================================================================
+# 7. GENERATE SUCCESS (success.html)
+# ==============================================================================
+success_body = """
+<div class="container">
+    <!-- 3-Step Checkout Progress Stepper -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white" style="border: 1px solid var(--border-color) !important;">
+        <div class="row text-center g-2 small">
+            <div class="col-4">
+                <div class="p-2 rounded-3 bg-light text-muted">
+                    <i class="bi bi-cart-check-fill text-success me-1"></i> 1. Giỏ Hàng
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-2 rounded-3 bg-light text-muted">
+                    <i class="bi bi-geo-alt-fill text-success me-1"></i> 2. Thông Tin & Thanh Toán
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-2 rounded-3 fw-bold text-danger" style="background: var(--accent-rose-subtle); border: 1px solid var(--accent-rose-border);">
+                    <i class="bi bi-check-circle-fill me-1"></i> 3. Hoàn Tất Đơn Hàng
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <!-- Success Notification Card -->
+            <div class="card border-0 shadow-card rounded-4 p-4 p-md-5 text-center bg-white mb-4" style="background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,241,242,0.65) 100%); border: 1px solid var(--accent-rose-border) !important;">
+                <div class="mb-3">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 76px; height: 76px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; box-shadow: 0 8px 22px rgba(16, 185, 129, 0.35);">
+                        <i class="bi bi-check2 display-4"></i>
+                    </div>
+                </div>
+                <span class="badge bg-success rounded-pill px-3 py-1 small mb-2">ĐÃ XÁC NHẬN HỆ THỐNG THÀNH CÔNG</span>
+                <h3 class="fw-bold text-dark mb-2">Cảm Ơn Bạn Đã Mua Sắm Tại 12B5 Store!</h3>
+                <p class="text-muted">Đơn hàng thiết bị điện tử của bạn đã được tiếp nhận và đang trong quá trình đóng gói niêm phong.</p>
+                <div class="d-inline-block px-4 py-2 rounded-pill fw-bold fs-4 text-danger font-monospace mb-3" style="background: var(--accent-rose-subtle); border: 1.5px dashed var(--accent-rose-border);">
+                    ORD-2026-12B5TECH
+                </div>
+                <p class="small text-muted mb-0">Hóa đơn điện tử VAT và thông tin bảo hành kích hoạt tự động theo IMEI/Serial đã gửi tới email <strong>haidang.tech@example.com</strong>.</p>
+            </div>
+
+            <!-- VietQR Payment Box -->
+            <div class="vietqr-card mb-4 text-center">
+                <div class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold small mb-2">
+                    <i class="bi bi-patch-check-fill"></i> VietQR Napas 247 Chuẩn Quốc Gia
+                </div>
+                <h5 class="fw-bold text-dark mb-1"><i class="bi bi-qr-code me-2 text-danger"></i>Mã QR Thanh Toán Tự Động</h5>
+                <p class="text-muted small mb-3">Mở ứng dụng Mobile Banking bất kỳ để quét mã thanh toán đối soát tự động:</p>
+
+                <div class="vietqr-image-container mb-3">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH2026091712B56304" alt="VietQR" class="img-fluid rounded-3 shadow-xs">
+                </div>
+
+                <div class="bank-detail-box mb-3" style="max-width: 480px; margin: 0 auto;">
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Ngân hàng thụ hưởng:</span>
+                        <strong class="text-dark">MBBank (Ngân Hàng Quân Đội)</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Số tài khoản:</span>
+                        <div>
+                            <strong class="font-monospace text-primary">0901234567</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
+                        </div>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Chủ tài khoản:</span>
+                        <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Số tiền thanh toán:</span>
+                        <strong class="text-danger fw-bold fs-6">56.980.000 ₫</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Nội dung chuyển khoản:</span>
+                        <div>
+                            <strong class="font-monospace text-primary">ORD-2026-12B5TECH</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('ORD-2026-12B5TECH'); alert('Đã sao chép cú pháp đơn hàng!');">Sao chép</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="small text-muted"><i class="bi bi-clock-history me-1 text-primary"></i> Giao dịch chuyển khoản được hệ thống tự động đối soát và kích hoạt bảo hành điện tử.</div>
+            </div>
+
+            <!-- Order Details Card -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
+                <h5 class="fw-bold mb-3 border-bottom pb-2 text-dark"><i class="bi bi-receipt me-2 text-danger"></i>Chi Tiết Đơn Hàng</h5>
+
+                <div class="row g-3 mb-4 small">
+                    <div class="col-md-6">
+                        <div class="text-muted">Người nhận thiết bị:</div>
+                        <div class="fw-bold text-dark">Nguyễn Hải Đăng (0912.345.678)</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-muted">Địa chỉ giao hàng:</div>
+                        <div class="fw-bold text-dark">125 Hai Bà Trưng, P. Bến Nghé, Quận 1, TP. Hồ Chí Minh</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-muted">Phương thức thanh toán:</div>
+                        <div class="fw-bold text-dark">Chuyển khoản VietQR Napas 247</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-muted">Trạng thái đơn hàng:</div>
+                        <div><span class="badge bg-warning text-dark text-uppercase">Chờ Xử Lý & Đối Soát</span></div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table small align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Thiết bị điện tử</th>
+                                <th>Đơn giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold text-dark">MacBook Pro 14 M3 Pro (18GB/512GB)</div>
+                                    <span class="text-muted small">Màu Bạc (Silver) &bull; Bảo hành chính hãng 24 tháng</span>
+                                </td>
+                                <td>49.990.000 ₫</td>
+                                <td class="text-center"><span class="badge bg-light text-muted border rounded-pill px-2 py-1">x1</span></td>
+                                <td class="text-end fw-bold text-danger">49.990.000 ₫</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold text-dark">Tai Nghe Sony WH-1000XM5 Hi-Res Wireless</div>
+                                    <span class="text-muted small">Màu Đen (Black) &bull; Chống ồn chủ động ANC</span>
+                                </td>
+                                <td>7.490.000 ₫</td>
+                                <td class="text-center"><span class="badge bg-light text-muted border rounded-pill px-2 py-1">x1</span></td>
+                                <td class="text-end fw-bold text-danger">7.490.000 ₫</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end text-muted">Tạm tính:</td>
+                                <td class="text-end fw-semibold">57.480.000 ₫</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end text-success">Voucher 12B5TECH500:</td>
+                                <td class="text-end fw-semibold text-success">-500.000 ₫</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold text-dark">Tổng thanh toán:</td>
+                                <td class="text-end fw-extrabold text-danger fs-5">56.980.000 ₫</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3">
+                <a href="index.html" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm"><i class="bi bi-house me-1"></i> Về Trang Chủ</a>
+                <a href="products.html" class="btn btn-soft-slate px-4 py-2"><i class="bi bi-grid me-1"></i> Tiếp Tục Mua Sắm</a>
+            </div>
+        </div>
+    </div>
+</div>
+"""
+
 pages = [
-    ("index.html", "Trang Chủ", home_body, "active", "", "", "", "", ""),
-    ("products.html", "Danh Mục Sản Phẩm", products_body, "", "active", "", "", "", ""),
-    ("detail.html", "Chi Tiết Sản Phẩm & Cấu Hình", detail_body, "", "", "active", "", "", ""),
-    ("cart.html", "Giỏ Hàng Công Nghệ", cart_body, "", "", "", "active", "", ""),
-    ("checkout.html", "Thanh Toán VietQR NAPAS", checkout_body, "", "", "", "", "active", ""),
-    ("admin.html", "Admin Dashboard & KPIs", admin_body, "", "", "", "", "", "active"),
+    ("index.html", "Trang Chủ", home_body, "active", "", "", "", "", "", ""),
+    ("products.html", "Danh Mục Sản Phẩm", products_body, "", "active", "", "", "", "", ""),
+    ("detail.html", "Chi Tiết Sản Phẩm & Cấu Hình", detail_body, "", "", "active", "", "", "", ""),
+    ("cart.html", "Giỏ Hàng Công Nghệ", cart_body, "", "", "", "active", "", "", ""),
+    ("checkout.html", "Thanh Toán VietQR NAPAS", checkout_body, "", "", "", "", "active", "", ""),
+    ("success.html", "Đặt Hàng Thành Công", success_body, "", "", "", "", "", "active", ""),
+    ("admin.html", "Admin Dashboard & KPIs", admin_body, "", "", "", "", "", "", "active"),
 ]
 
-for filename, title, body, n_home, n_prod, n_det, n_cart, n_check, n_adm in pages:
+for filename, title, body, n_home, n_prod, n_det, n_cart, n_check, n_succ, n_adm in pages:
     content = header_template.format(
         title=title,
         nav_home=n_home,
@@ -1637,6 +1906,7 @@ for filename, title, body, n_home, n_prod, n_det, n_cart, n_check, n_adm in page
         nav_detail=n_det,
         nav_cart=n_cart,
         nav_checkout=n_check,
+        nav_success=n_succ,
         nav_admin=n_adm,
         search_val="",
     ) + body + footer_template

@@ -47,7 +47,7 @@ require __DIR__ . '/../layouts/header.php';
                     </div>
 
                     <div class="py-3 text-center">
-                        <i class="bi bi-laptop display-1 text-primary opacity-85"></i>
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=700&auto=format&fit=crop&q=80" alt="MacBook M3 Pro" class="img-fluid rounded-4 shadow-sm" style="max-height: 180px; object-fit: cover;">
                     </div>
 
                     <h4 class="fw-bold text-dark mb-1">MacBook Pro 14" M3 Pro</h4>
@@ -178,8 +178,9 @@ require __DIR__ . '/../layouts/header.php';
                                 <span class="badge-discount">-<?= $product['discount_percent'] ?>%</span>
                             <?php endif; ?>
                             <span class="badge-installment">Trả góp 0%</span>
-                            <div class="p-3 text-center">
-                                <i class="bi bi-device-hdd display-4 text-primary opacity-80"></i>
+                            <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-thumb-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="device-fallback-icon" style="display: none;">
+                                <i class="bi <?= htmlspecialchars($product['device_icon']) ?>"></i>
                             </div>
                         </div>
 
@@ -255,8 +256,11 @@ require __DIR__ . '/../layouts/header.php';
                 <?php foreach ($recommendedProducts as $recProd): ?>
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="tech-card bg-white">
-                            <div class="card-img-wrap bg-light py-4">
-                                <i class="bi bi-device-hdd display-5 text-primary opacity-75"></i>
+                            <div class="card-img-wrap">
+                                <img src="<?= htmlspecialchars($recProd['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($recProd['name']) ?>" class="product-thumb-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="device-fallback-icon" style="display: none;">
+                                    <i class="bi <?= htmlspecialchars($recProd['device_icon'] ?? 'bi-cpu') ?>"></i>
+                                </div>
                             </div>
                             <div class="p-3 d-flex flex-column flex-grow-1">
                                 <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">
@@ -295,11 +299,12 @@ require __DIR__ . '/../layouts/header.php';
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="tech-card">
                             <div class="card-img-wrap">
-                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill position-absolute top-0 start-0 m-3 px-2 py-1 small fw-bold">
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill position-absolute top-0 start-0 m-3 px-2 py-1 small fw-bold" style="z-index: 2;">
                                     <i class="bi bi-stars"></i> MỚI VỀ
                                 </span>
-                                <div class="p-3 text-center">
-                                    <i class="bi bi-device-hdd display-4 text-primary opacity-80"></i>
+                                <img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-thumb-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="device-fallback-icon" style="display: none;">
+                                    <i class="bi <?= htmlspecialchars($product['device_icon'] ?? 'bi-cpu') ?>"></i>
                                 </div>
                             </div>
 
