@@ -2,12 +2,12 @@ use crate::models::{ImageBatchRequest, ImageBatchResponse, ProcessedImageInfo};
 
 pub fn process_images_batch(req: ImageBatchRequest) -> ImageBatchResponse {
     let mut processed = Vec::new();
-    let mut total_saved = 0;
+    let mut total_saved: usize = 0;
 
     for img in req.images {
         // Simulated image dimension & compression calculations
-        let simulated_orig_size = 1024 * 1024 * 2; // ~2MB raw
-        let simulated_comp_size = (1024.0 * 240.0 * 0.75) as usize; // WebP ~180KB
+        let simulated_orig_size: usize = 1024 * 1024 * 2; // ~2MB raw
+        let simulated_comp_size: usize = (1024.0 * 240.0 * 0.75) as usize; // WebP ~180KB
         let saved = simulated_orig_size.saturating_sub(simulated_comp_size);
         total_saved += saved;
 
