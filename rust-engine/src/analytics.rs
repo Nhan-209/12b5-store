@@ -80,17 +80,17 @@ pub fn calculate_analytics(req: AnalyticsRequest) -> AnalyticsResponse {
     let mut class_c_count = 0;
 
     for item in &mut items {
-        cumulative_value += item.sales_value;
-        let pct = if total_sales_value > 0.0 {
+        let prev_pct = if total_sales_value > 0.0 {
             (cumulative_value / total_sales_value) * 100.0
         } else {
             0.0
         };
+        cumulative_value += item.sales_value;
 
-        if pct <= 70.0 {
+        if prev_pct < 70.0 || class_a_count == 0 {
             item.category = "A".to_string();
             class_a_count += 1;
-        } else if pct <= 90.0 {
+        } else if prev_pct < 90.0 {
             item.category = "B".to_string();
             class_b_count += 1;
         } else {
