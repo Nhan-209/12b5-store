@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => {
                         if (data.results && data.results.length > 0) {
                             let html = `<div class="p-2 border-bottom text-muted small d-flex justify-content-between align-items-center">
-                                <span>Gợi ý (${data.results.length})</span>
-                                <span class="badge ${data.engine === 'rust' ? 'bg-warning text-dark' : 'bg-secondary'}">
-                                    ${data.engine === 'rust' ? '⚡ Rust Engine' : 'PHP'} ${data.latency_ms}ms
-                                </span>
+                                <span>Gợi ý sản phẩm (${data.results.length})</span>
+                                <span class="badge bg-light text-muted border rounded-pill px-2 py-0">Chính Hãng</span>
                             </div>`;
                             data.results.forEach(item => {
                                 html += `

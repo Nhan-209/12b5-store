@@ -17,15 +17,21 @@ require __DIR__ . '/../layouts/header.php';
                     <span class="gradient-text">Hiệu Năng Vượt Bậc.</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Trải nghiệm hệ sinh thái Smartphone, Laptop M3/RTX, Smartwatch và Âm thanh Hi-Res chính hãng 100%. Tối ưu hóa tính toán với <strong>Rust High-Performance Microservice</strong> mang lại phản hồi dưới 1 mili-giây.
+                    Trải nghiệm hệ sinh thái công nghệ đỉnh cao: Laptop cao cấp, Smartphone Flagship, Âm thanh Hi-Res và Phụ kiện chính hãng 100%. Miễn phí giao hàng hỏa tốc 2H, bảo hành chính hãng lên tới 24 tháng và ưu đãi trả góp 0% lãi suất.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="/products" class="btn btn-rose btn-lg px-4 shadow-sm">
                         <i class="bi bi-bag-check-fill me-2"></i> Khám Phá Bộ Sưu Tập
                     </a>
-                    <a href="/products?category=laptop-may-tinh" class="btn btn-soft-slate btn-lg px-4">
-                        <i class="bi bi-laptop me-2"></i> Xem Laptop M3 & RTX
-                    </a>
+                    <?php if (!empty($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
+                        <a href="/admin" class="btn btn-soft-slate btn-lg px-4">
+                            <i class="bi bi-speedometer2 me-2 text-danger"></i> Bảng Quản Trị Admin
+                        </a>
+                    <?php else: ?>
+                        <a href="/products?category=laptop-may-tinh" class="btn btn-soft-slate btn-lg px-4">
+                            <i class="bi bi-laptop me-2"></i> Xem Laptop M3 & RTX
+                        </a>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Trust Micro-Badges -->
@@ -232,22 +238,21 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </div>
 
-    <!-- Rust Engine Smart Recommendation Showcase (Frosted Glass Aesthetic) -->
+    <!-- Smart Recommendation Showcase (Frosted Glass Aesthetic) -->
     <?php if (!empty($recommendedProducts)): ?>
         <div class="card-rust-showcase mb-5 p-4 p-md-5">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-10 gap-3">
                 <div>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="badge-rust-power">
-                            <i class="bi bi-lightning-charge-fill"></i>
-                            <?= $engineInfo['engine'] === 'rust' ? 'RUST ENGINE RECOMMENDER' : 'PHP CORE RECOMMENDER' ?>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold small">
+                            <i class="bi bi-stars me-1"></i> GỢI Ý RIÊNG CHO BẠN
                         </span>
-                        <span class="badge-rust-speed">
-                            <i class="bi bi-speedometer2"></i> Latency: <?= $engineInfo['latency_ms'] ?>ms
+                        <span class="badge bg-light text-dark border rounded-pill px-3 py-1 small">
+                            <i class="bi bi-shield-check text-success me-1"></i> Chính Hãng 100%
                         </span>
                     </div>
-                    <h3 class="fw-bold text-dark mb-1">Gợi Ý Thông Minh & Phù Hợp Nhu Cầu</h3>
-                    <p class="text-muted small mb-0">Thuật toán Cosine Similarity xử lý song song phân tích đặc trưng phần cứng (CPU, RAM, màn hình, phân khúc giá) tức thì.</p>
+                    <h3 class="fw-bold text-dark mb-1">Gợi Ý Sản Phẩm Phù Hợp Nhu Cầu</h3>
+                    <p class="text-muted small mb-0">Tuyển chọn các thiết bị công nghệ đỉnh cao được yêu thích và tương thích nhất với sở thích của bạn.</p>
                 </div>
                 <a href="/products" class="btn btn-outline-rose btn-sm">Khám phá tất cả <i class="bi bi-arrow-right ms-1"></i></a>
             </div>

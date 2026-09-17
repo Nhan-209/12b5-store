@@ -11,7 +11,7 @@
                     <span class="fs-5 fw-bold text-white">12B5 Store</span>
                 </div>
                 <p class="small text-muted mb-3" style="line-height: 1.6;">
-                    Hệ thống bán lẻ thiết bị điện tử & công nghệ cao chính hãng hàng đầu. Tối ưu hóa hiệu năng vượt trội nhờ kiến trúc Hybrid kết hợp PHP Web Core MVC và Microservice tính toán chuyên sâu viết bằng Rust.
+                    Hệ thống bán lẻ thiết bị điện tử & công nghệ cao chính hãng hàng đầu. Cam kết 100% sản phẩm nguyên seal, bảo hành chính hãng toàn quốc và mang lại trải nghiệm mua sắm công nghệ an tâm tuyệt đối.
                 </p>
                 <div class="d-flex gap-2">
                     <a href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
@@ -34,32 +34,32 @@
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Thông Tin Đồ Án Tốt Nghiệp</h6>
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Hỗ Trợ Khách Hàng</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
-                    <li><span class="text-white-50">Đề tài:</span> Xây dựng Website TMĐT Thiết Bị Điện Tử</li>
-                    <li><span class="text-white-50">Kiến trúc:</span> Hybrid PHP 8.x + Rust Microservice</li>
-                    <li><span class="text-white-50">Cơ sở dữ liệu:</span> Dual DB (MySQL 8.0 + SQLite)</li>
-                    <li><span class="text-white-50">Thuật toán Rust:</span> Fuzzy Levenshtein, Cosine Sim, Pareto ABC</li>
-                    <li><span class="text-white-50">CI/CD Pipeline:</span> GitHub Actions Automated Testing</li>
+                    <li><a href="/products?category=laptop-may-tinh"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn mua hàng online</a></li>
+                    <li><a href="/products"><i class="bi bi-chevron-right text-rose small me-1"></i> Chính sách bảo hành VIP 24 tháng</a></li>
+                    <li><a href="/cart"><i class="bi bi-chevron-right text-rose small me-1"></i> Quy định đổi mới trong 30 ngày</a></li>
+                    <li><a href="/orders"><i class="bi bi-chevron-right text-rose small me-1"></i> Tra cứu trạng thái đơn hàng</a></li>
+                    <li><a href="/checkout"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn thanh toán VietQR & MoMo</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Chính Sách & Liên Hệ</h6>
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Hệ Thống Showroom</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2">
-                    <li><a href="#"><i class="bi bi-patch-check text-rose me-1"></i> Bảo hành 12-24 tháng toàn quốc</a></li>
-                    <li><a href="#"><i class="bi bi-arrow-repeat text-rose me-1"></i> 1 đổi 1 trong 30 ngày nếu lỗi NSX</a></li>
-                    <li><a href="#"><i class="bi bi-truck text-rose me-1"></i> Giao hỏa tốc 2 giờ nội thành</a></li>
-                    <li><a href="#"><i class="bi bi-qr-code text-rose me-1"></i> Thanh toán chuẩn VietQR tự động</a></li>
-                    <li class="pt-1 text-white-50"><i class="bi bi-telephone text-rose me-1"></i> Hotline: <strong class="text-white">1800.1235</strong> (Miễn phí)</li>
+                    <li class="text-muted"><i class="bi bi-geo-alt-fill text-rose me-2"></i> Hà Nội: 12B5 Cầu Giấy, Q. Cầu Giấy</li>
+                    <li class="text-muted"><i class="bi bi-geo-alt-fill text-rose me-2"></i> TP.HCM: 88 Nguyễn Huệ, Quận 1</li>
+                    <li class="text-muted"><i class="bi bi-clock-fill text-rose me-2"></i> Mở cửa: 08:00 - 22:00 (Cả CN & Lễ)</li>
+                    <li class="text-muted"><i class="bi bi-envelope-fill text-rose me-2"></i> Email: support@12b5.store</li>
+                    <li class="pt-1 text-white-50"><i class="bi bi-telephone-fill text-rose me-2"></i> Hotline: <strong class="text-white">1800.12B5</strong> (Miễn phí)</li>
                 </ul>
             </div>
         </div>
 
         <div class="border-top border-secondary border-opacity-25 pt-4 text-center small text-muted">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <p class="mb-0">&copy; <?= date('Y') ?> 12B5 Store. All rights reserved. Đồ án Tốt Nghiệp Chuyên Ngành CNTT.</p>
-                <p class="mb-0">Designed with Modern Pastel & Glassmorphism &bull; Powered by Rust Microservices Engine</p>
+                <p class="mb-0">&copy; <?= date('Y') ?> 12B5 Store. Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao Chính Hãng.</p>
+                <p class="mb-0">Hotline CSKH: 1800.12B5 &bull; Giấy phép số: 010812B5/GP-BCT</p>
             </div>
         </div>
     </div>

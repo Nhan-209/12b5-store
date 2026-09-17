@@ -2,22 +2,19 @@
 $currentUser = $_SESSION['user'] ?? null;
 $cartSummary = \App\Models\Cart::getCart();
 ?>
-<!-- Top Announcement & Microservice Status Bar -->
+<!-- Top Promotion & Customer Care Bar -->
 <div class="announcement-bar">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div class="d-flex align-items-center gap-2">
-            <span class="badge-thesis"><i class="bi bi-mortarboard-fill me-1"></i> Graduation Thesis</span> 
-            <span class="d-none d-md-inline text-white-50">|</span>
-            <span class="small text-light">Hệ thống TMĐT Thiết Bị Điện Tử &bull; Kiến trúc Hybrid PHP + Rust Microservice</span>
+            <span class="badge bg-danger rounded-pill px-2 py-1 fw-bold small text-white"><i class="bi bi-gift-fill me-1"></i> KHUYẾN MÃI</span> 
+            <span class="small text-light">Nhập mã <strong class="text-white">12B5NEW</strong> giảm ngay 500.000₫ cho đơn hàng đầu tiên</span>
         </div>
         <div class="d-flex align-items-center gap-3 small">
-            <span id="rustEngineBadge" class="d-inline-flex align-items-center">
-                <i class="bi bi-cpu text-warning me-1"></i> <span class="text-white-50">Rust Engine:</span> <span class="badge bg-secondary ms-1">Checking...</span>
-            </span>
+            <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-truck text-rose me-1"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
             <span class="text-white-50 d-none d-sm-inline">|</span>
             <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-shield-check text-emerald me-1"></i> 100% Chính Hãng VAT</span>
             <span class="text-white-50 d-none d-lg-inline">|</span>
-            <span class="text-white-50 d-none d-lg-inline"><i class="bi bi-telephone-fill me-1"></i> Hotline: 1800.1235</span>
+            <span class="text-white-50 d-none d-lg-inline"><i class="bi bi-telephone-fill me-1"></i> Hotline: 1800.12B5</span>
         </div>
     </div>
 </div>
@@ -48,7 +45,7 @@ $cartSummary = \App\Models\Cart::getCart();
                     <span class="input-group-text">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" id="globalSearchInput" name="q" class="form-control" placeholder="Tìm siêu tốc với Rust Levenshtein (MacBook M3, iPhone 16, Sony...)" autocomplete="off" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+                    <input type="text" id="globalSearchInput" name="q" class="form-control" placeholder="Tìm kiếm điện thoại, laptop, thiết bị âm thanh chính hãng..." autocomplete="off" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
                     <button class="btn btn-search" type="submit">Tìm kiếm</button>
                 </div>
                 <!-- Live dropdown suggestion list populated by app.js -->

@@ -79,22 +79,19 @@ header_template = """<!DOCTYPE html>
     </div>
 </div>
 
-<!-- Main Top Announcement Bar -->
+<!-- Main Top Promotion & Customer Care Bar -->
 <div class="announcement-bar">
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div class="d-flex align-items-center gap-2">
-            <span class="badge-thesis"><i class="bi bi-mortarboard-fill me-1"></i> Graduation Thesis</span> 
-            <span class="d-none d-md-inline text-white-50">|</span>
-            <span class="small text-light">Hệ thống TMĐT Thiết Bị Điện Tử &bull; Kiến trúc Hybrid PHP + Rust Microservice</span>
+            <span class="badge bg-danger rounded-pill px-2 py-1 fw-bold small text-white"><i class="bi bi-gift-fill me-1"></i> KHUYẾN MÃI</span> 
+            <span class="small text-light">Nhập mã <strong class="text-white">12B5NEW</strong> giảm ngay 500.000₫ cho đơn hàng đầu tiên</span>
         </div>
         <div class="d-flex align-items-center gap-3 small">
-            <span id="rustEngineBadge" class="d-inline-flex align-items-center">
-                <i class="bi bi-cpu text-warning me-1"></i> <span class="text-white-50">Rust Engine:</span> <span class="badge bg-success ms-1">Active (0.8ms)</span>
-            </span>
+            <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-truck text-rose me-1"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
             <span class="text-white-50 d-none d-sm-inline">|</span>
-            <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-shield-check text-success me-1"></i> 100% Chính Hãng VAT</span>
+            <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-shield-check text-emerald me-1"></i> 100% Chính Hãng VAT</span>
             <span class="text-white-50 d-none d-lg-inline">|</span>
-            <span class="text-white-50 d-none d-lg-inline"><i class="bi bi-telephone-fill me-1"></i> Hotline: 1800.1235</span>
+            <span class="text-white-50 d-none d-lg-inline"><i class="bi bi-telephone-fill me-1"></i> Hotline: 1800.12B5</span>
         </div>
     </div>
 </div>
@@ -118,7 +115,7 @@ header_template = """<!DOCTYPE html>
                     <span class="input-group-text">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="Tìm siêu tốc với Rust Levenshtein (MacBook M3, iPhone 16, Sony...)" value="{search_val}">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm điện thoại, laptop, thiết bị âm thanh chính hãng..." value="{search_val}">
                     <a href="products.html" class="btn btn-search">Tìm kiếm</a>
                 </div>
             </div>
@@ -186,7 +183,7 @@ footer_template = """
                     <span class="fs-5 fw-bold text-white">12B5 Store</span>
                 </div>
                 <p class="small text-muted mb-3" style="line-height: 1.6;">
-                    Hệ thống bán lẻ thiết bị điện tử & công nghệ cao chính hãng hàng đầu. Tối ưu hóa hiệu năng vượt trội nhờ kiến trúc Hybrid kết hợp PHP Web Core MVC và Microservice tính toán chuyên sâu viết bằng Rust.
+                    Hệ thống bán lẻ thiết bị điện tử & công nghệ cao chính hãng hàng đầu. Cam kết 100% sản phẩm nguyên seal, bảo hành chính hãng toàn quốc và mang lại trải nghiệm mua sắm công nghệ an tâm tuyệt đối.
                 </p>
                 <div class="d-flex gap-2">
                     <a href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
@@ -209,32 +206,32 @@ footer_template = """
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Thông Tin Đồ Án Tốt Nghiệp</h6>
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Hỗ Trợ Khách Hàng</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
-                    <li><span class="text-white-50">Đề tài:</span> Xây dựng Website TMĐT Thiết Bị Điện Tử</li>
-                    <li><span class="text-white-50">Kiến trúc:</span> Hybrid PHP 8.x + Rust Microservice</li>
-                    <li><span class="text-white-50">Cơ sở dữ liệu:</span> Dual DB (MySQL 8.0 + SQLite)</li>
-                    <li><span class="text-white-50">Thuật toán Rust:</span> Fuzzy Levenshtein, Cosine Sim, Pareto ABC</li>
-                    <li><span class="text-white-50">CI/CD Pipeline:</span> GitHub Actions Automated Testing</li>
+                    <li><a href="products.html"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn mua hàng online</a></li>
+                    <li><a href="products.html"><i class="bi bi-chevron-right text-rose small me-1"></i> Chính sách bảo hành VIP 24 tháng</a></li>
+                    <li><a href="cart.html"><i class="bi bi-chevron-right text-rose small me-1"></i> Quy định đổi mới trong 30 ngày</a></li>
+                    <li><a href="admin.html"><i class="bi bi-chevron-right text-rose small me-1"></i> Tra cứu trạng thái đơn hàng</a></li>
+                    <li><a href="checkout.html"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn thanh toán VietQR & MoMo</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Chính Sách & Liên Hệ</h6>
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Hệ Thống Showroom</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2">
-                    <li><a href="#"><i class="bi bi-patch-check text-rose me-1"></i> Bảo hành 12-24 tháng toàn quốc</a></li>
-                    <li><a href="#"><i class="bi bi-arrow-repeat text-rose me-1"></i> 1 đổi 1 trong 30 ngày nếu lỗi NSX</a></li>
-                    <li><a href="#"><i class="bi bi-truck text-rose me-1"></i> Giao hỏa tốc 2 giờ nội thành</a></li>
-                    <li><a href="#"><i class="bi bi-qr-code text-rose me-1"></i> Thanh toán chuẩn VietQR tự động</a></li>
-                    <li class="pt-1 text-white-50"><i class="bi bi-telephone text-rose me-1"></i> Hotline: <strong class="text-white">1800.1235</strong> (Miễn phí)</li>
+                    <li class="text-muted"><i class="bi bi-geo-alt-fill text-rose me-2"></i> Hà Nội: 12B5 Cầu Giấy, Q. Cầu Giấy</li>
+                    <li class="text-muted"><i class="bi bi-geo-alt-fill text-rose me-2"></i> TP.HCM: 88 Nguyễn Huệ, Quận 1</li>
+                    <li class="text-muted"><i class="bi bi-clock-fill text-rose me-2"></i> Mở cửa: 08:00 - 22:00 (Cả CN & Lễ)</li>
+                    <li class="text-muted"><i class="bi bi-envelope-fill text-rose me-2"></i> Email: support@12b5.store</li>
+                    <li class="pt-1 text-white-50"><i class="bi bi-telephone-fill text-rose me-2"></i> Hotline: <strong class="text-white">1800.12B5</strong> (Miễn phí)</li>
                 </ul>
             </div>
         </div>
 
         <div class="border-top border-secondary border-opacity-25 pt-4 text-center small text-muted">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <p class="mb-0">&copy; 2026 12B5 Store. All rights reserved. Đồ án Tốt Nghiệp Chuyên Ngành CNTT.</p>
-                <p class="mb-0">Designed with Modern Pastel & Glassmorphism &bull; Powered by Rust Microservices Engine</p>
+                <p class="mb-0">&copy; 2026 12B5 Store. Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao Chính Hãng.</p>
+                <p class="mb-0">Hotline CSKH: 1800.12B5 &bull; Giấy phép số: 010812B5/GP-BCT</p>
             </div>
         </div>
     </div>
@@ -315,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (filtered.length === 0) {
                 dropdown.innerHTML = '<div class="p-3 text-muted text-center small"><i class="bi bi-search me-1"></i> Không tìm thấy thiết bị phù hợp</div>';
             } else {
-                let html = '<div class="d-flex justify-content-between align-items-center px-3 py-1 border-bottom mb-2 small"><span class="text-muted fw-bold">Gợi ý tìm kiếm</span><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill"><i class="bi bi-cpu-fill me-1"></i> Rust Engine: 0.8ms</span></div>';
+                let html = '<div class="d-flex justify-content-between align-items-center px-3 py-1 border-bottom mb-2 small"><span class="text-muted fw-bold">Gợi ý sản phẩm</span><span class="badge bg-light text-muted border rounded-pill px-2 py-0">Chính Hãng</span></div>';
                 filtered.forEach(item => {
                     html += `<a href="${item.link}" class="dropdown-item d-flex align-items-center justify-content-between p-2 rounded-3 mb-1">
                         <div class="d-flex align-items-center gap-2">
@@ -363,14 +360,14 @@ home_body = """
                     <span class="gradient-text">Hiệu Năng Vượt Bậc.</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Trải nghiệm hệ sinh thái Smartphone, Laptop M3/RTX, Smartwatch và Âm thanh Hi-Res chính hãng 100%. Tối ưu hóa tính toán với <strong>Rust High-Performance Microservice</strong> mang lại phản hồi dưới 1 mili-giây.
+                    Trải nghiệm hệ sinh thái công nghệ đỉnh cao: Laptop cao cấp, Smartphone Flagship, Âm thanh Hi-Res và Phụ kiện chính hãng 100%. Miễn phí giao hàng hỏa tốc 2H, bảo hành chính hãng lên tới 24 tháng và ưu đãi trả góp 0% lãi suất.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="products.html" class="btn btn-rose btn-lg px-4 shadow-sm">
                         <i class="bi bi-bag-check-fill me-2"></i> Khám Phá Bộ Sưu Tập
                     </a>
-                    <a href="admin.html" class="btn btn-soft-slate btn-lg px-4">
-                        <i class="bi bi-speedometer2 me-2"></i> Xem Dashboard Admin
+                    <a href="products.html" class="btn btn-soft-slate btn-lg px-4">
+                        <i class="bi bi-fire text-danger me-2"></i> Xem Sản Phẩm Hot
                     </a>
                 </div>
 
@@ -705,20 +702,20 @@ home_body = """
         </div>
     </div>
 
-    <!-- Rust Engine Smart Recommendation Showcase -->
+    <!-- Smart Recommendation Showcase -->
     <div class="card-rust-showcase mb-5 p-4 p-md-5">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-10 gap-3">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2">
-                    <span class="badge-rust-power">
-                        <i class="bi bi-lightning-charge-fill"></i> RUST ENGINE RECOMMENDER
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold small">
+                        <i class="bi bi-stars me-1"></i> GỢI Ý RIÊNG CHO BẠN
                     </span>
-                    <span class="badge-rust-speed">
-                        <i class="bi bi-speedometer2"></i> Latency: 0.8ms
+                    <span class="badge bg-light text-dark border rounded-pill px-3 py-1 small">
+                        <i class="bi bi-shield-check text-success me-1"></i> Chính Hãng 100%
                     </span>
                 </div>
-                <h3 class="fw-bold text-dark mb-1">Gợi Ý Thông Minh & Phù Hợp Nhu Cầu</h3>
-                <p class="text-muted small mb-0">Thuật toán Cosine Similarity xử lý song song phân tích đặc trưng phần cứng (CPU, RAM, màn hình, phân khúc giá) tức thì.</p>
+                <h3 class="fw-bold text-dark mb-1">Gợi Ý Sản Phẩm Phù Hợp Nhu Cầu</h3>
+                <p class="text-muted small mb-0">Tuyển chọn các thiết bị công nghệ đỉnh cao được yêu thích và tương thích nhất với sở thích của bạn.</p>
             </div>
             <a href="products.html" class="btn btn-outline-rose btn-sm">Khám phá tất cả <i class="bi bi-arrow-right ms-1"></i></a>
         </div>
