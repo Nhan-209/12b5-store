@@ -8,56 +8,67 @@ header_template = """<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - 12B5 Store | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom Theme CSS -->
     <link rel="stylesheet" href="../public/css/style.css">
     <style>
         .preview-bar {{
-            background: linear-gradient(90deg, #0f172a, #1e1b4b);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             color: #fff;
-            padding: 10px 20px;
-            font-size: 0.85rem;
+            padding: 9px 20px;
+            font-size: 0.83rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #3b82f6;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             position: sticky;
             top: 0;
-            z-index: 2000;
+            z-index: 2100;
         }}
         .preview-pill {{
-            background: rgba(255,255,255,0.12);
-            padding: 5px 12px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 14px;
+            border-radius: 9999px;
             text-decoration: none;
             color: #e2e8f0;
-            margin: 0 4px;
-            transition: all 0.2s;
-            font-size: 0.82rem;
+            margin: 0 3px;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            border: 1px solid transparent;
         }}
         .preview-pill:hover, .preview-pill.active {{
-            background: #2563eb;
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
             color: #fff;
-            box-shadow: 0 2px 10px rgba(37,99,235,0.5);
+            box-shadow: 0 2px 10px rgba(244, 63, 94, 0.45);
             font-weight: 600;
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
         }}
     </style>
 </head>
 <body>
-<!-- Static Preview Mode Banner -->
+<!-- Static Preview Mode Sticky Navigation Bar -->
 <div class="preview-bar shadow-sm">
     <div class="d-flex align-items-center gap-2">
-        <span class="badge bg-warning text-dark"><i class="bi bi-eye-fill"></i> Xem Offline Trực Tiếp</span>
-        <span class="text-light">Bạn đang xem giao diện HTML/CSS không cần chạy Apache/PHP/Rust</span>
+        <span class="badge bg-danger rounded-pill px-2 py-1"><i class="bi bi-eye-fill"></i> Offline Preview Mode</span>
+        <span class="text-light d-none d-lg-inline">Giao diện Modern Pastel & Glassmorphism không cần chạy server</span>
     </div>
-    <div class="d-flex align-items-center">
-        <span class="me-2 text-white-50">Chọn màn hình:</span>
+    <div class="d-flex align-items-center overflow-x-auto">
+        <span class="me-2 text-white-50 small d-none d-sm-inline">Màn hình:</span>
         <a href="index.html" class="preview-pill {nav_home}"><i class="bi bi-house"></i> 1. Trang Chủ</a>
         <a href="products.html" class="preview-pill {nav_products}"><i class="bi bi-grid"></i> 2. Danh Mục SP</a>
         <a href="detail.html" class="preview-pill {nav_detail}"><i class="bi bi-laptop"></i> 3. Chi Tiết Cấu Hình</a>
@@ -68,67 +79,73 @@ header_template = """<!DOCTYPE html>
 </div>
 
 <!-- Main Top Announcement Bar -->
-<div class="bg-dark text-white py-1 px-3 small border-bottom border-secondary border-opacity-25">
-    <div class="container d-flex justify-content-between align-items-center">
-        <div>
-            <span class="badge bg-primary me-2">Graduation Project</span> 
-            <span>Hệ thống Thương mại Điện tử Thiết bị Điện tử - Kiến trúc Hybrid PHP + Rust Engine</span>
+<div class="announcement-bar">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge-thesis"><i class="bi bi-mortarboard-fill me-1"></i> Graduation Thesis</span> 
+            <span class="d-none d-md-inline text-white-50">|</span>
+            <span class="small text-light">Hệ thống TMĐT Thiết Bị Điện Tử &bull; Kiến trúc Hybrid PHP + Rust Microservice</span>
         </div>
-        <div class="d-flex align-items-center gap-3">
-            <span id="rustEngineBadge" class="small">
-                <i class="bi bi-cpu text-success me-1"></i> <span class="text-white-50">Rust Engine:</span> <span class="badge bg-success">Online (0.8ms)</span>
+        <div class="d-flex align-items-center gap-3 small">
+            <span id="rustEngineBadge" class="d-inline-flex align-items-center">
+                <i class="bi bi-cpu text-warning me-1"></i> <span class="text-white-50">Rust Engine:</span> <span class="badge bg-success ms-1">Active (0.8ms)</span>
             </span>
-            <span class="text-white-50">|</span>
-            <span class="text-white-50"><i class="bi bi-shield-check text-info"></i> Dual DB (MySQL + SQLite)</span>
+            <span class="text-white-50 d-none d-sm-inline">|</span>
+            <span class="text-white-50 d-none d-sm-inline"><i class="bi bi-shield-check text-success me-1"></i> 100% Chính Hãng VAT</span>
+            <span class="text-white-50 d-none d-lg-inline">|</span>
+            <span class="text-white-50 d-none d-lg-inline"><i class="bi bi-telephone-fill me-1"></i> Hotline: 1800.1235</span>
         </div>
     </div>
 </div>
 
-<!-- Main Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-tech py-3 sticky-top">
+<!-- Main Frosted Glass Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-glass py-3 sticky-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-            <div class="bg-primary bg-gradient p-2 rounded-3 d-flex align-items-center justify-content-center text-white" style="width: 38px; height: 38px;">
+            <div class="brand-logo-badge">
                 <i class="bi bi-lightning-charge-fill fs-5"></i>
             </div>
             <div>
-                <span class="brand-title fs-4 fw-bold">12B5 Store</span>
-                <div class="text-white-50" style="font-size: 0.65rem; margin-top: -4px; letter-spacing: 1px;">HIGH PERFORMANCE TECH</div>
+                <span class="brand-title fs-4">12B5 Store</span>
+                <div class="brand-subtitle">PREMIUM TECH & SMART DEVICES</div>
             </div>
         </a>
 
         <div class="collapse navbar-collapse show" id="navbarMain">
             <div class="d-flex mx-auto search-box-group my-2 my-lg-0">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted">
+                <div class="input-group w-100">
+                    <span class="input-group-text">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" class="form-control border-start-0 ps-0" placeholder="Tìm kiếm siêu tốc với Rust Levenshtein (Laptop, M3, Sony...)" value="{search_val}">
-                    <a href="products.html" class="btn btn-primary px-4 fw-medium">Tìm kiếm</a>
+                    <input type="text" class="form-control" placeholder="Tìm siêu tốc với Rust Levenshtein (MacBook M3, iPhone 16, Sony...)" value="{search_val}">
+                    <a href="products.html" class="btn btn-search">Tìm kiếm</a>
                 </div>
             </div>
 
             <ul class="navbar-nav ms-auto align-items-center gap-2">
                 <li class="nav-item">
-                    <a class="nav-link text-white fw-medium" href="products.html">
+                    <a class="nav-link-custom" href="products.html">
                         <i class="bi bi-grid me-1"></i> Sản Phẩm
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white position-relative px-3 py-2 rounded-3 bg-white bg-opacity-10" href="cart.html">
+                    <a class="cart-pill-btn" href="cart.html">
                         <i class="bi bi-cart3 fs-5"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">2</span>
+                        <span class="small d-none d-md-inline">Giỏ hàng</span>
+                        <span class="cart-pill-badge">2</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link text-white dropdown-toggle d-flex align-items-center gap-2 px-3 py-1 rounded-3 bg-primary bg-opacity-25 border border-primary border-opacity-25" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle fs-5 text-info"></i>
-                        <span class="small fw-semibold">Quản Trị Viên</span>
+                <li class="nav-item dropdown ms-lg-2">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 p-1 pe-3 rounded-pill bg-white border shadow-xs" href="#" data-bs-toggle="dropdown">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 34px; height: 34px; background: linear-gradient(135deg, #f43f5e, #fb7185); font-size: 0.85rem;">
+                            A
+                        </div>
+                        <span class="small fw-semibold text-dark">Admin</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                        <li><a class="dropdown-item" href="admin.html"><i class="bi bi-speedometer2 me-2 text-primary"></i> Admin Dashboard</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-4 mt-2">
+                        <li><a class="dropdown-item py-2 text-danger fw-bold" href="admin.html"><i class="bi bi-speedometer2 me-2"></i> Bảng Quản Trị Admin</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="index.html"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</a></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="index.html"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -136,62 +153,88 @@ header_template = """<!DOCTYPE html>
     </div>
 </nav>
 
+<!-- Category Quick Navigation Strip -->
+<div class="category-quick-strip d-none d-md-block">
+    <div class="container d-flex align-items-center justify-content-between overflow-x-auto gap-2">
+        <a href="products.html" class="category-quick-link"><i class="bi bi-phone text-danger"></i> Điện Thoại</a>
+        <a href="products.html" class="category-quick-link"><i class="bi bi-laptop text-danger"></i> Laptop & PC</a>
+        <a href="products.html" class="category-quick-link"><i class="bi bi-tablet text-danger"></i> Máy Tính Bảng</a>
+        <a href="products.html" class="category-quick-link"><i class="bi bi-headphones text-danger"></i> Tai Nghe & Âm Thanh</a>
+        <a href="products.html" class="category-quick-link"><i class="bi bi-smartwatch text-danger"></i> Smartwatch</a>
+        <a href="products.html" class="category-quick-link"><i class="bi bi-cpu text-danger"></i> Phụ Kiện</a>
+        <span class="text-muted opacity-50">|</span>
+        <a href="products.html" class="category-quick-link text-danger fw-bold"><i class="bi bi-fire text-danger"></i> Bán Chạy Nhất</a>
+        <a href="products.html" class="category-quick-link text-primary fw-bold"><i class="bi bi-tag-fill text-primary"></i> Trả Góp 0%</a>
+    </div>
+</div>
+
 <main class="py-4">
 """
 
 footer_template = """
 </main>
 
-<footer class="footer-tech pt-5 pb-4 mt-auto">
+<footer class="footer-tech">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-4">
+        <div class="row g-4 pb-4">
+            <div class="col-lg-4 col-md-6">
                 <div class="d-flex align-items-center gap-2 mb-3">
-                    <div class="bg-primary p-2 rounded-3 text-white">
-                        <i class="bi bi-lightning-charge-fill"></i>
+                    <div class="brand-logo-badge" style="width: 36px; height: 36px;">
+                        <i class="bi bi-lightning-charge-fill fs-6"></i>
                     </div>
-                    <span class="brand-title fs-4 fw-bold">12B5 Store</span>
+                    <span class="fs-5 fw-bold text-white">12B5 Store</span>
                 </div>
-                <p class="text-white-50 small">Hệ thống thương mại điện tử thiết bị công nghệ cao hàng đầu, ứng dụng kiến trúc Microservices đa ngôn ngữ (PHP MVC + Rust Engine) tối ưu hiệu năng bare-metal.</p>
-                <div class="d-flex gap-3 text-white-50">
-                    <span class="badge bg-secondary"><i class="bi bi-cpu"></i> Rust 2021</span>
-                    <span class="badge bg-primary"><i class="bi bi-filetype-php"></i> PHP 8.2+</span>
-                    <span class="badge bg-success"><i class="bi bi-database"></i> Dual DB</span>
-                    <span class="badge bg-info"><i class="bi bi-git"></i> CI/CD Ready</span>
+                <p class="small text-muted mb-3" style="line-height: 1.6;">
+                    Hệ thống bán lẻ thiết bị điện tử & công nghệ cao chính hãng hàng đầu. Tối ưu hóa hiệu năng vượt trội nhờ kiến trúc Hybrid kết hợp PHP Web Core MVC và Microservice tính toán chuyên sâu viết bằng Rust.
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="https://facebook.com" target="_blank" class="social-icon-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://youtube.com" target="_blank" class="social-icon-btn" title="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a href="https://github.com/Nhan-209/12b5-store" target="_blank" class="social-icon-btn" title="GitHub Repository"><i class="bi bi-github"></i></a>
+                    <a href="https://telegram.org" target="_blank" class="social-icon-btn" title="Telegram"><i class="bi bi-telegram"></i></a>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
-                <h6 class="text-white fw-bold mb-3">Danh Mục</h6>
-                <ul class="list-unstyled small text-white-50">
-                    <li class="mb-2"><a href="products.html" class="text-white-50 text-decoration-none">Laptops & MacBooks</a></li>
-                    <li class="mb-2"><a href="products.html" class="text-white-50 text-decoration-none">Điện thoại Flagship</a></li>
-                    <li class="mb-2"><a href="products.html" class="text-white-50 text-decoration-none">Máy tính bảng Pro</a></li>
-                    <li class="mb-2"><a href="products.html" class="text-white-50 text-decoration-none">Thiết bị Âm thanh</a></li>
+
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Danh Mục Thiết Bị</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="products.html">Điện Thoại Flagship</a></li>
+                    <li><a href="products.html">Laptop & Ultrabook</a></li>
+                    <li><a href="products.html">Máy Tính Bảng (iPad)</a></li>
+                    <li><a href="products.html">Tai Nghe Không Dây</a></li>
+                    <li><a href="products.html">Smartwatch Cao Cấp</a></li>
+                    <li><a href="products.html">Phụ Kiện Chính Hãng</a></li>
                 </ul>
             </div>
-            <div class="col-6 col-lg-3">
-                <h6 class="text-white fw-bold mb-3">Điểm Nhấn Đồ Án</h6>
-                <ul class="list-unstyled small text-white-50">
-                    <li class="mb-2"><i class="bi bi-check2-circle text-success me-1"></i> Tìm kiếm mờ Levenshtein (< 1ms)</li>
-                    <li class="mb-2"><i class="bi bi-check2-circle text-success me-1"></i> Gợi ý Cosine Similarity đa chiều</li>
-                    <li class="mb-2"><i class="bi bi-check2-circle text-success me-1"></i> Phân tích tồn kho Pareto ABC</li>
-                    <li class="mb-2"><i class="bi bi-check2-circle text-success me-1"></i> Tạo VietQR tự động chuẩn NAPAS</li>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Thông Tin Đồ Án Tốt Nghiệp</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
+                    <li><span class="text-white-50">Đề tài:</span> Xây dựng Website TMĐT Thiết Bị Điện Tử</li>
+                    <li><span class="text-white-50">Kiến trúc:</span> Hybrid PHP 8.x + Rust Microservice</li>
+                    <li><span class="text-white-50">Cơ sở dữ liệu:</span> Dual DB (MySQL 8.0 + SQLite)</li>
+                    <li><span class="text-white-50">Thuật toán Rust:</span> Fuzzy Levenshtein, Cosine Sim, Pareto ABC</li>
+                    <li><span class="text-white-50">CI/CD Pipeline:</span> GitHub Actions Automated Testing</li>
                 </ul>
             </div>
-            <div class="col-lg-3">
-                <h6 class="text-white fw-bold mb-3">Thông Tin Đồ Án</h6>
-                <div class="small text-white-50">
-                    <p class="mb-1"><strong>Chuyên ngành:</strong> Công Nghệ Thông Tin</p>
-                    <p class="mb-1"><strong>Hệ đào tạo:</strong> Đồ Án Tốt Nghiệp</p>
-                    <p class="mb-1"><strong>Trạng thái:</strong> 101/101 Kiểm thử đạt</p>
-                    <p class="mb-0 text-success fw-bold"><i class="bi bi-check-all"></i> Đã đóng gói 1-Click Run</p>
-                </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Chính Sách & Liên Hệ</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="#"><i class="bi bi-patch-check text-rose me-1"></i> Bảo hành 12-24 tháng toàn quốc</a></li>
+                    <li><a href="#"><i class="bi bi-arrow-repeat text-rose me-1"></i> 1 đổi 1 trong 30 ngày nếu lỗi NSX</a></li>
+                    <li><a href="#"><i class="bi bi-truck text-rose me-1"></i> Giao hỏa tốc 2 giờ nội thành</a></li>
+                    <li><a href="#"><i class="bi bi-qr-code text-rose me-1"></i> Thanh toán chuẩn VietQR tự động</a></li>
+                    <li class="pt-1 text-white-50"><i class="bi bi-telephone text-rose me-1"></i> Hotline: <strong class="text-white">1800.1235</strong> (Miễn phí)</li>
+                </ul>
             </div>
         </div>
-        <hr class="border-secondary border-opacity-25 my-4">
-        <div class="d-flex flex-wrap justify-content-between align-items-center small text-white-50">
-            <div>&copy; 2026 12B5 Store. Đồ án tốt nghiệp công nghệ thông tin.</div>
-            <div>GitHub Repo: <a href="https://github.com/Nhan-209/12b5-store" target="_blank" class="text-info text-decoration-none">Nhan-209/12b5-store</a></div>
+
+        <div class="border-top border-secondary border-opacity-25 pt-4 text-center small text-muted">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <p class="mb-0">&copy; 2026 12B5 Store. All rights reserved. Đồ án Tốt Nghiệp Chuyên Ngành CNTT.</p>
+                <p class="mb-0">Designed with Modern Pastel & Glassmorphism &bull; Powered by Rust Microservices Engine</p>
+            </div>
         </div>
     </div>
 </footer>
@@ -201,206 +244,475 @@ footer_template = """
 </html>
 """
 
+# ==============================================================================
 # 1. GENERATE HOME (index.html)
+# ==============================================================================
 home_body = """
 <div class="container">
-    <!-- Hero Banner -->
-    <div class="hero-banner mb-5 p-5">
-        <div class="row align-items-center">
-            <div class="col-lg-7">
-                <span class="badge bg-primary bg-opacity-75 px-3 py-2 rounded-pill mb-3">
-                    <i class="bi bi-stars"></i> Next-Gen Tech Electronics 2026
-                </span>
-                <h1 class="display-4 fw-extrabold mb-3">Siêu Phẩm Công Nghệ<br><span class="brand-title">Hiệu Năng Vượt Trội</span></h1>
-                <p class="lead text-white-50 mb-4">Trải nghiệm mua sắm thiết bị điện tử đỉnh cao với công cụ tìm kiếm mờ và gợi ý thông số tự động được tối ưu bằng Rust Bare-Metal Microservice.</p>
+    <!-- Hero Banner Section - Modern Pastel & Frosted Glass -->
+    <div class="hero-banner mb-5">
+        <div class="row align-items-center position-relative" style="z-index: 2;">
+            <div class="col-lg-7 py-2">
+                <div class="hero-pill-tag">
+                    <span class="badge bg-danger rounded-pill px-2 py-1 me-1">FLAGSHIP 2026</span>
+                    <span>Đỉnh Cao Công Nghệ &bull; Trợ Giá Lên Đời 2.500.000₫</span>
+                </div>
+                <h1 class="hero-title">
+                    Thế Hệ Thiết Bị Điện Tử.<br>
+                    <span class="gradient-text">Hiệu Năng Vượt Bậc.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Trải nghiệm hệ sinh thái Smartphone, Laptop M3/RTX, Smartwatch và Âm thanh Hi-Res chính hãng 100%. Tối ưu hóa tính toán với <strong>Rust High-Performance Microservice</strong> mang lại phản hồi dưới 1 mili-giây.
+                </p>
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="products.html" class="btn btn-primary btn-lg px-4 fw-semibold shadow">
-                        <i class="bi bi-bag-check me-2"></i> Khám phá ngay
+                    <a href="products.html" class="btn btn-rose btn-lg px-4 shadow-sm">
+                        <i class="bi bi-bag-check-fill me-2"></i> Khám Phá Bộ Sưu Tập
                     </a>
-                    <a href="admin.html" class="btn btn-outline-light btn-lg px-4 fw-semibold">
+                    <a href="admin.html" class="btn btn-soft-slate btn-lg px-4">
                         <i class="bi bi-speedometer2 me-2"></i> Xem Dashboard Admin
                     </a>
                 </div>
+
+                <!-- Trust Micro-Badges -->
+                <div class="d-flex flex-wrap align-items-center gap-3 mt-4 pt-3 border-top border-secondary border-opacity-10 text-muted small">
+                    <div><i class="bi bi-patch-check-fill text-success me-1"></i> 100% Nguyên seal VAT</div>
+                    <div><i class="bi bi-truck text-primary me-1"></i> Hỏa tốc 2H miễn phí</div>
+                    <div><i class="bi bi-arrow-repeat text-danger me-1"></i> 1 Đổi 1 trong 30 ngày</div>
+                </div>
             </div>
-            <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=700&auto=format&fit=crop&q=80" alt="MacBook M3" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-25" style="max-height: 320px; object-fit: cover;">
-            </div>
-        </div>
-    </div>
 
-    <!-- Category Pills -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold mb-0"><i class="bi bi-grid-fill text-primary me-2"></i> Danh Mục Thiết Bị Điện Tử</h3>
-        <a href="products.html" class="btn btn-sm btn-outline-primary fw-medium">Xem tất cả <i class="bi bi-arrow-right"></i></a>
-    </div>
-
-    <div class="row g-3 mb-5">
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-primary mb-2"><i class="bi bi-laptop"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Laptops & PC</h6>
-                <span class="text-muted small">12 mẫu mới</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-info mb-2"><i class="bi bi-phone"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Smartphones</h6>
-                <span class="text-muted small">18 mẫu mới</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-success mb-2"><i class="bi bi-tablet"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Máy tính bảng</h6>
-                <span class="text-muted small">8 mẫu mới</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-danger mb-2"><i class="bi bi-headphones"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Thiết bị Âm thanh</h6>
-                <span class="text-muted small">15 mẫu mới</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-warning mb-2"><i class="bi bi-smartwatch"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Smartwatches</h6>
-                <span class="text-muted small">10 mẫu mới</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="products.html" class="card text-decoration-none border-0 shadow-sm text-center p-3 h-100 category-hover" style="background:#ffffff; border-radius:14px;">
-                <div class="fs-1 text-secondary mb-2"><i class="bi bi-cpu"></i></div>
-                <h6 class="fw-bold text-dark mb-1">Linh kiện Hi-End</h6>
-                <span class="text-muted small">24 linh kiện</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Featured Products -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-1"><i class="bi bi-fire text-danger me-2"></i> Sản Phẩm Nổi Bật & Mới Nhất</h3>
-            <p class="text-muted small mb-0">Hàng chính hãng 100% - Bảo hành 12 tháng - Hỗ trợ thanh toán VietQR NAPAS 247</p>
-        </div>
-        <span class="badge bg-primary px-3 py-2 rounded-pill"><i class="bi bi-cpu-fill me-1"></i> Gợi ý bởi Rust Engine</span>
-    </div>
-
-    <div class="row g-4 mb-5">
-        <!-- Product 1 -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card card-tech h-100 border-0 shadow-sm position-relative">
-                <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-2 py-1">-7%</span>
-                <span class="badge bg-dark position-absolute top-0 end-0 m-3 px-2 py-1"><i class="bi bi-star-fill text-warning"></i> 5.0</span>
-                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80" class="card-img-top p-3 rounded-4" style="height:210px; object-fit:cover;" alt="MacBook Pro">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge bg-light text-primary border mb-2 align-self-start">Apple</span>
-                    <h6 class="card-title fw-bold mb-1 text-truncate-2">
-                        <a href="detail.html" class="text-dark text-decoration-none">MacBook Pro 16 inch M3 Max (36GB / 1TB SSD)</a>
-                    </h6>
-                    <div class="d-flex gap-1 flex-wrap mb-2">
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">M3 Max 16C</span>
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">36GB Unified</span>
+            <!-- Floating Hero Glass Showcase Card -->
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <div class="hero-glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold small">
+                            <i class="bi bi-star-fill me-1"></i> BEST SELLER
+                        </span>
+                        <span class="badge bg-light text-dark border rounded-pill px-3 py-1 small">Bảo hành 24 tháng</span>
                     </div>
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-baseline gap-2 mb-3">
-                            <span class="fs-5 fw-bold text-danger">89.990.000 ₫</span>
-                            <span class="text-muted text-decoration-line-through small">96.990.000 ₫</span>
+
+                    <div class="py-3 text-center">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=700&auto=format&fit=crop&q=80" alt="MacBook M3 Pro" class="img-fluid rounded-4 shadow-sm" style="max-height: 180px; object-fit: cover;">
+                    </div>
+
+                    <h4 class="fw-bold text-dark mb-1">MacBook Pro 16" M3 Max</h4>
+                    <p class="text-muted small mb-3">Apple M3 Max 16-Core &bull; 36GB Unified RAM &bull; 1TB SSD</p>
+
+                    <div class="d-flex justify-content-center align-items-baseline gap-2 mb-3">
+                        <span class="fs-3 fw-extrabold text-danger">89.990.000 ₫</span>
+                        <span class="text-muted text-decoration-line-through small">96.990.000 ₫</span>
+                    </div>
+
+                    <div class="p-2 bg-white rounded-3 border mb-3 small d-flex justify-content-around text-muted">
+                        <div><i class="bi bi-credit-card me-1 text-primary"></i> Trả góp 0%</div>
+                        <div><i class="bi bi-gift me-1 text-danger"></i> Tặng túi Tucano</div>
+                    </div>
+
+                    <a href="detail.html" class="btn btn-rose w-100 fw-bold py-2">
+                        Xem Chi Tiết Cấu Hình <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Guarantees Ribbon (4 Pillars of Real Store) -->
+    <div class="trust-ribbon">
+        <div class="row g-3">
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-icon-box trust-icon-rose">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <div>
+                        <div class="trust-title">100% Chính Hãng</div>
+                        <div class="trust-desc">Nguyên seal, đầy đủ VAT điện tử</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-icon-box trust-icon-emerald">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </div>
+                    <div>
+                        <div class="trust-title">1 Đổi 1 Trong 30 Ngày</div>
+                        <div class="trust-desc">Lỗi phần cứng đổi máy mới ngay</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-icon-box trust-icon-sky">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div>
+                        <div class="trust-title">Giao Hỏa Tốc 2 Giờ</div>
+                        <div class="trust-desc">Nội thành miễn phí từ 5 triệu</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-icon-box trust-icon-amber">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </div>
+                    <div>
+                        <div class="trust-title">Thu Cũ Trợ Giá 2.5TR</div>
+                        <div class="trust-desc">Lên đời máy mới, trả góp 0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Highlights Grid -->
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Danh Mục Thiết Bị Điện Tử</h3>
+                <p class="text-muted small mb-0">Hệ sinh thái thiết bị di động, điện toán và công nghệ cá nhân</p>
+            </div>
+            <a href="products.html" class="btn btn-outline-rose btn-sm">Xem tất cả danh mục <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-phone"></i></div>
+                    <div class="category-title">Điện Thoại</div>
+                    <div class="category-count">18 mẫu mới</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-laptop"></i></div>
+                    <div class="category-title">Laptop & PC</div>
+                    <div class="category-count">12 mẫu mới</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-tablet"></i></div>
+                    <div class="category-title">Máy Tính Bảng</div>
+                    <div class="category-count">8 mẫu mới</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-headphones"></i></div>
+                    <div class="category-title">Tai Nghe Âm Thanh</div>
+                    <div class="category-count">15 mẫu mới</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-smartwatch"></i></div>
+                    <div class="category-title">Smartwatch</div>
+                    <div class="category-count">10 mẫu mới</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="products.html" class="category-box">
+                    <div class="category-icon-wrapper"><i class="bi bi-cpu"></i></div>
+                    <div class="category-title">Linh Kiện Hi-End</div>
+                    <div class="category-count">24 linh kiện</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products Section -->
+    <div class="mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <div>
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="fw-bold mb-0">Thiết Bị Nổi Bật</h3>
+                    <span class="badge bg-danger rounded-pill small px-3 py-1">HOT DEAL</span>
+                </div>
+                <p class="text-muted small mb-0 mt-1">Các mẫu flagship, ultrabook và phụ kiện bán chạy nhất tại 12B5 Store</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="products.html" class="btn btn-soft-slate btn-sm">
+                    <i class="bi bi-fire text-danger me-1"></i> Bán Chạy Nhất
+                </a>
+                <a href="products.html" class="btn btn-soft-slate btn-sm">
+                    <i class="bi bi-tag me-1"></i> Giá Tốt Nhất
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Product 1 -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="tech-card">
+                    <div class="card-img-wrap">
+                        <span class="badge-discount">-7%</span>
+                        <span class="badge-installment">Trả góp 0%</span>
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80" alt="MacBook Pro" style="max-height: 165px; object-fit: cover;">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold">Apple</span>
+                            <div class="text-warning small d-flex align-items-center gap-1">
+                                <i class="bi bi-star-fill"></i>
+                                <span class="fw-bold text-dark">5.0</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">(18)</span>
+                            </div>
                         </div>
-                        <div class="d-grid gap-2">
-                            <a href="detail.html" class="btn btn-outline-primary btn-sm fw-semibold"><i class="bi bi-eye"></i> Xem Chi Tiết</a>
-                            <a href="cart.html" class="btn btn-primary btn-sm fw-semibold"><i class="bi bi-cart-plus"></i> Thêm vào giỏ</a>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                MacBook Pro 16 inch M3 Max (36GB / 1TB SSD)
+                            </a>
+                        </h6>
+                        <div class="mb-3" style="min-height: 32px;">
+                            <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> M3 Max 16C</span>
+                            <span class="spec-pill"><i class="bi bi-memory text-primary"></i> 36GB RAM</span>
+                        </div>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="price-current">89.990.000 ₫</div>
+                                <div class="price-original">96.990.000 ₫</div>
+                            </div>
+                            <a href="cart.html" class="btn-add-cart-icon" title="Thêm vào giỏ">
+                                <i class="bi bi-cart-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="tech-card">
+                    <div class="card-img-wrap">
+                        <span class="badge-discount">-11%</span>
+                        <span class="badge-installment">Trả góp 0%</span>
+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&auto=format&fit=crop&q=80" alt="Asus ROG" style="max-height: 165px; object-fit: cover;">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold">ASUS ROG</span>
+                            <div class="text-warning small d-flex align-items-center gap-1">
+                                <i class="bi bi-star-fill"></i>
+                                <span class="fw-bold text-dark">4.9</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">(25)</span>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                Laptop Gaming Asus ROG Strix SCAR 18 (RTX 4090)
+                            </a>
+                        </h6>
+                        <div class="mb-3" style="min-height: 32px;">
+                            <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> i9-14900HX</span>
+                            <span class="spec-pill"><i class="bi bi-gpu-card text-success"></i> RTX 4090 16GB</span>
+                        </div>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="price-current">99.990.000 ₫</div>
+                                <div class="price-original">112.000.000 ₫</div>
+                            </div>
+                            <a href="cart.html" class="btn-add-cart-icon" title="Thêm vào giỏ">
+                                <i class="bi bi-cart-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="tech-card">
+                    <div class="card-img-wrap">
+                        <span class="badge-discount">-14%</span>
+                        <span class="badge-installment">Trả góp 0%</span>
+                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80" alt="iPhone 15 Pro Max" style="max-height: 165px; object-fit: cover;">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold">Apple</span>
+                            <div class="text-warning small d-flex align-items-center gap-1">
+                                <i class="bi bi-star-fill"></i>
+                                <span class="fw-bold text-dark">4.9</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">(42)</span>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                iPhone 15 Pro Max 256GB Titan Tự Nhiên VN/A
+                            </a>
+                        </h6>
+                        <div class="mb-3" style="min-height: 32px;">
+                            <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> A17 Pro 3nm</span>
+                            <span class="spec-pill"><i class="bi bi-phone text-primary"></i> OLED 120Hz</span>
+                        </div>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="price-current">29.990.000 ₫</div>
+                                <div class="price-original">34.990.000 ₫</div>
+                            </div>
+                            <a href="cart.html" class="btn-add-cart-icon" title="Thêm vào giỏ">
+                                <i class="bi bi-cart-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="tech-card">
+                    <div class="card-img-wrap">
+                        <span class="badge-discount">-12%</span>
+                        <span class="badge-installment">Trả góp 0%</span>
+                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80" alt="Sony XM5" style="max-height: 165px; object-fit: cover;">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold">Sony</span>
+                            <div class="text-warning small d-flex align-items-center gap-1">
+                                <i class="bi bi-star-fill"></i>
+                                <span class="fw-bold text-dark">4.8</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">(36)</span>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                Tai nghe chống ồn Sony WH-1000XM5 Hi-Res Audio
+                            </a>
+                        </h6>
+                        <div class="mb-3" style="min-height: 32px;">
+                            <span class="spec-pill"><i class="bi bi-soundwave text-danger"></i> Dual Chip V1+QN1</span>
+                            <span class="spec-pill"><i class="bi bi-battery-charging text-success"></i> 30h Pin</span>
+                        </div>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="price-current">7.490.000 ₫</div>
+                                <div class="price-original">8.490.000 ₫</div>
+                            </div>
+                            <a href="cart.html" class="btn-add-cart-icon" title="Thêm vào giỏ">
+                                <i class="bi bi-cart-plus"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Product 2 -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card card-tech h-100 border-0 shadow-sm position-relative">
-                <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-2 py-1">-11%</span>
-                <span class="badge bg-dark position-absolute top-0 end-0 m-3 px-2 py-1"><i class="bi bi-star-fill text-warning"></i> 4.9</span>
-                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&auto=format&fit=crop&q=80" class="card-img-top p-3 rounded-4" style="height:210px; object-fit:cover;" alt="Asus ROG">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge bg-light text-primary border mb-2 align-self-start">ASUS</span>
-                    <h6 class="card-title fw-bold mb-1 text-truncate-2">
-                        <a href="detail.html" class="text-dark text-decoration-none">Laptop Gaming Asus ROG Strix SCAR 18 (RTX 4090)</a>
-                    </h6>
-                    <div class="d-flex gap-1 flex-wrap mb-2">
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">i9-14900HX</span>
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">RTX 4090 16GB</span>
+    <!-- Rust Engine Smart Recommendation Showcase -->
+    <div class="card-rust-showcase mb-5 p-4 p-md-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-10 gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge-rust-power">
+                        <i class="bi bi-lightning-charge-fill"></i> RUST ENGINE RECOMMENDER
+                    </span>
+                    <span class="badge-rust-speed">
+                        <i class="bi bi-speedometer2"></i> Latency: 0.8ms
+                    </span>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Gợi Ý Thông Minh & Phù Hợp Nhu Cầu</h3>
+                <p class="text-muted small mb-0">Thuật toán Cosine Similarity xử lý song song phân tích đặc trưng phần cứng (CPU, RAM, màn hình, phân khúc giá) tức thì.</p>
+            </div>
+            <a href="products.html" class="btn btn-outline-rose btn-sm">Khám phá tất cả <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tech-card bg-white">
+                    <div class="card-img-wrap bg-light py-4">
+                        <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300" style="max-height: 120px; object-fit: cover;" class="rounded-3">
                     </div>
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-baseline gap-2 mb-3">
-                            <span class="fs-5 fw-bold text-danger">99.990.000 ₫</span>
-                            <span class="text-muted text-decoration-line-through small">112.000.000 ₫</span>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple</span>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none">iPad Pro 13 inch M4 (OLED)</a>
+                        </h6>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div class="price-current fs-6">37.990.000 ₫</div>
+                            <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
                         </div>
-                        <div class="d-grid gap-2">
-                            <a href="detail.html" class="btn btn-outline-primary btn-sm fw-semibold"><i class="bi bi-eye"></i> Xem Chi Tiết</a>
-                            <a href="cart.html" class="btn btn-primary btn-sm fw-semibold"><i class="bi bi-cart-plus"></i> Thêm vào giỏ</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tech-card bg-white">
+                    <div class="card-img-wrap bg-light py-4">
+                        <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=300" style="max-height: 120px; object-fit: cover;" class="rounded-3">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple</span>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none">Apple Watch Ultra 2 GPS</a>
+                        </h6>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div class="price-current fs-6">20.990.000 ₫</div>
+                            <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tech-card bg-white">
+                    <div class="card-img-wrap bg-light py-4">
+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300" style="max-height: 120px; object-fit: cover;" class="rounded-3">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">ASUS</span>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none">ROG Zephyrus G16 OLED</a>
+                        </h6>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div class="price-current fs-6">54.990.000 ₫</div>
+                            <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="tech-card bg-white">
+                    <div class="card-img-wrap bg-light py-4">
+                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300" style="max-height: 120px; object-fit: cover;" class="rounded-3">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Sony</span>
+                        <h6 class="fw-bold mb-2">
+                            <a href="detail.html" class="text-dark text-decoration-none">Sony WF-1000XM5 True Wireless</a>
+                        </h6>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <div class="price-current fs-6">5.990.000 ₫</div>
+                            <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Product 3 -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card card-tech h-100 border-0 shadow-sm position-relative">
-                <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-2 py-1">-14%</span>
-                <span class="badge bg-dark position-absolute top-0 end-0 m-3 px-2 py-1"><i class="bi bi-star-fill text-warning"></i> 4.9</span>
-                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80" class="card-img-top p-3 rounded-4" style="height:210px; object-fit:cover;" alt="iPhone 15 Pro Max">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge bg-light text-primary border mb-2 align-self-start">Apple</span>
-                    <h6 class="card-title fw-bold mb-1 text-truncate-2">
-                        <a href="detail.html" class="text-dark text-decoration-none">iPhone 15 Pro Max 256GB Titan Tự Nhiên</a>
-                    </h6>
-                    <div class="d-flex gap-1 flex-wrap mb-2">
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">A17 Pro 3nm</span>
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">Màn OLED 120Hz</span>
-                    </div>
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-baseline gap-2 mb-3">
-                            <span class="fs-5 fw-bold text-danger">29.990.000 ₫</span>
-                            <span class="text-muted text-decoration-line-through small">34.990.000 ₫</span>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <a href="detail.html" class="btn btn-outline-primary btn-sm fw-semibold"><i class="bi bi-eye"></i> Xem Chi Tiết</a>
-                            <a href="cart.html" class="btn btn-primary btn-sm fw-semibold"><i class="bi bi-cart-plus"></i> Thêm vào giỏ</a>
-                        </div>
-                    </div>
+    <!-- Real Showroom & Nationwide Store Experience Banner -->
+    <div class="card border-0 rounded-4 p-4 p-md-5 mb-5" style="background: linear-gradient(135deg, #f8fafc 0%, #ffe4e6 50%, #f1f5f9 100%); border: 1px solid var(--border-color) !important;">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white border small text-danger fw-bold mb-2 shadow-xs">
+                    <i class="bi bi-geo-alt-fill"></i> 15 Showroom Trải Nghiệm Toàn Quốc
                 </div>
+                <h3 class="fw-bold text-dark mb-2">Trải Nghiệm Trực Tiếp Trước Khi Quyết Định</h3>
+                <p class="text-muted small mb-0" style="max-width: 620px;">
+                    Quý khách có thể đến trực tiếp showroom 12B5 Store để trên tay các siêu phẩm công nghệ, kiểm tra cấu hình bằng phần mềm chuyên dụng và nhận tư vấn chuyên sâu từ đội ngũ kỹ thuật viên.
+                </p>
             </div>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card card-tech h-100 border-0 shadow-sm position-relative">
-                <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-2 py-1">-12%</span>
-                <span class="badge bg-dark position-absolute top-0 end-0 m-3 px-2 py-1"><i class="bi bi-star-fill text-warning"></i> 4.8</span>
-                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80" class="card-img-top p-3 rounded-4" style="height:210px; object-fit:cover;" alt="Sony XM5">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge bg-light text-primary border mb-2 align-self-start">Sony</span>
-                    <h6 class="card-title fw-bold mb-1 text-truncate-2">
-                        <a href="detail.html" class="text-dark text-decoration-none">Tai nghe chống ồn Sony WH-1000XM5 Hi-Res</a>
-                    </h6>
-                    <div class="d-flex gap-1 flex-wrap mb-2">
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">Chống ồn V1+QN1</span>
-                        <span class="badge bg-secondary bg-opacity-10 text-dark small border">Pin 30 Giờ</span>
-                    </div>
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-baseline gap-2 mb-3">
-                            <span class="fs-5 fw-bold text-danger">7.490.000 ₫</span>
-                            <span class="text-muted text-decoration-line-through small">8.490.000 ₫</span>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <a href="detail.html" class="btn btn-outline-primary btn-sm fw-semibold"><i class="bi bi-eye"></i> Xem Chi Tiết</a>
-                            <a href="cart.html" class="btn btn-primary btn-sm fw-semibold"><i class="bi bi-cart-plus"></i> Thêm vào giỏ</a>
-                        </div>
-                    </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2">
+                    <a href="tel:18001235" class="btn btn-rose px-4 py-2"><i class="bi bi-telephone-fill me-1"></i> Gọi 1800.1235</a>
+                    <a href="#" class="btn btn-soft-slate px-3 py-2"><i class="bi bi-map me-1"></i> Tìm Showroom</a>
                 </div>
             </div>
         </div>
@@ -408,147 +720,240 @@ home_body = """
 </div>
 """
 
+# ==============================================================================
 # 2. GENERATE PRODUCTS (products.html)
+# ==============================================================================
 products_body = """
 <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tất cả thiết bị</li>
+        </ol>
+    </nav>
+
     <div class="row g-4">
-        <!-- Sidebar Filter -->
+        <!-- Sidebar Filter with Frosted Glass -->
         <div class="col-lg-3">
-            <div class="card border-0 shadow-sm p-4 sticky-top" style="top:90px; border-radius:16px;">
-                <h5 class="fw-bold mb-3"><i class="bi bi-funnel text-primary me-2"></i> Bộ Lọc Thông Minh</h5>
+            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 90px; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel-fill me-2 text-danger"></i>Bộ Lọc Thiết Bị</h5>
+                    <a href="products.html" class="text-danger small fw-semibold text-decoration-none">Xóa bộ lọc</a>
+                </div>
                 
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted text-uppercase">Danh mục</label>
-                    <select class="form-select form-select-sm">
-                        <option>Tất cả danh mục</option>
-                        <option selected>Laptops & MacBooks</option>
-                        <option>Smartphones</option>
-                        <option>Máy tính bảng</option>
-                        <option>Âm thanh Hi-Res</option>
-                        <option>Đồng hồ thông minh</option>
-                        <option>Linh kiện phần cứng</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted text-uppercase">Hãng sản xuất</label>
-                    <div class="form-check small"><input class="form-check-input" type="checkbox" checked> <label class="form-check-label">Apple (4)</label></div>
-                    <div class="form-check small"><input class="form-check-input" type="checkbox" checked> <label class="form-check-label">ASUS ROG (3)</label></div>
-                    <div class="form-check small"><input class="form-check-input" type="checkbox"> <label class="form-check-label">Sony (2)</label></div>
-                    <div class="form-check small"><input class="form-check-input" type="checkbox"> <label class="form-check-label">Samsung (3)</label></div>
-                    <div class="form-check small"><input class="form-check-input" type="checkbox"> <label class="form-check-label">NVIDIA (2)</label></div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted text-uppercase">Khoảng giá</label>
-                    <div class="d-flex gap-2 align-items-center">
-                        <input type="text" class="form-control form-control-sm" placeholder="0 ₫" value="5.000.000">
-                        <span>-</span>
-                        <input type="text" class="form-control form-control-sm" placeholder="100tr" value="100.000.000">
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Danh mục</label>
+                    <div class="d-flex flex-column gap-2 small">
+                        <div class="form-check"><input class="form-check-input" type="radio" name="c" checked> <label class="form-check-label fw-medium">Tất cả danh mục (24)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="c"> <label class="form-check-label fw-medium">Laptops & MacBooks (12)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="c"> <label class="form-check-label fw-medium">Smartphones Flagship (18)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="c"> <label class="form-check-label fw-medium">Máy tính bảng iPad (8)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" name="c"> <label class="form-check-label fw-medium">Tai nghe & Âm thanh (15)</label></div>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label small fw-bold text-muted text-uppercase">Dung lượng RAM</label>
-                    <div class="d-flex flex-wrap gap-1">
-                        <span class="badge bg-primary p-2">16GB</span>
-                        <span class="badge bg-light text-dark border p-2">32GB</span>
-                        <span class="badge bg-light text-dark border p-2">36GB</span>
-                        <span class="badge bg-light text-dark border p-2">64GB</span>
+                    <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Thương hiệu</label>
+                    <div class="d-flex flex-column gap-2 small">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" checked> <label class="form-check-label fw-medium">Apple (8)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" checked> <label class="form-check-label fw-medium">ASUS ROG (5)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="form-check-label fw-medium">Sony (4)</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="form-check-label fw-medium">Samsung (6)</label></div>
                     </div>
                 </div>
 
-                <button class="btn btn-primary w-100 fw-semibold"><i class="bi bi-filter"></i> Áp Dụng Lọc (Rust Accelerated)</button>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Khoảng giá (VNĐ)</label>
+                    <div class="row g-2 mb-2">
+                        <div class="col-6"><input type="text" class="form-control form-control-sm rounded-3" value="5.000.000"></div>
+                        <div class="col-6"><input type="text" class="form-control form-control-sm rounded-3" value="100.000.000"></div>
+                    </div>
+                    <button class="btn btn-rose btn-sm w-100 mt-2">Áp dụng giá</button>
+                </div>
+
+                <!-- Support box -->
+                <div class="p-3 bg-light rounded-3 small text-muted border">
+                    <div class="fw-bold text-dark mb-1"><i class="bi bi-headset text-danger me-1"></i> Cần tư vấn chọn máy?</div>
+                    <p class="mb-2" style="font-size: 0.78rem;">Đội ngũ kỹ thuật viên 12B5 Store hỗ trợ kiểm tra cấu hình phù hợp nhu cầu.</p>
+                    <a href="tel:18001235" class="btn btn-sm btn-outline-dark w-100 rounded-pill"><i class="bi bi-telephone me-1"></i> 1800.1235 (Miễn phí)</a>
+                </div>
             </div>
         </div>
 
-        <!-- Product Grid List -->
+        <!-- Product Grid Main -->
         <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4">
-                <div>
-                    <span class="text-muted small">Hiển thị <strong>8</strong> sản phẩm thiết bị điện tử</span>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <span class="small text-muted text-nowrap">Sắp xếp:</span>
-                    <select class="form-select form-select-sm">
-                        <option>Giá: Cao đến thấp</option>
-                        <option>Giá: Thấp đến cao</option>
-                        <option>Đánh giá cao nhất</option>
-                        <option>Gợi ý tương đồng (AI Engine)</option>
-                    </select>
+            <div class="card border-0 shadow-sm rounded-4 p-3 mb-4" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); border: 1px solid var(--border-color) !important;">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <h4 class="fw-bold mb-1 text-dark">Tất Cả Thiết Bị Công Nghệ</h4>
+                        <div class="small text-muted d-flex align-items-center gap-2">
+                            <span>Hiển thị <strong>8</strong> sản phẩm</span>
+                            <span class="badge bg-warning text-dark rounded-pill">
+                                <i class="bi bi-cpu-fill"></i> ⚡ Rust Fuzzy Search (0.8ms)
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="small text-muted text-nowrap fw-semibold">Sắp xếp:</span>
+                        <select class="form-select form-select-sm rounded-pill px-3 shadow-none border-secondary-subtle">
+                            <option>Mới nhất</option>
+                            <option>Giá: Cao đến thấp</option>
+                            <option>Giá: Thấp đến cao</option>
+                            <option>Bán chạy nhất</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <div class="row g-4">
-                <!-- Product Card A -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-7%</span>
-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">MacBook Pro 16" M3 Max</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">Apple • Laptop</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">89.990.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+            <div class="row g-4 mb-5">
+                <!-- Product 1 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-7%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple &bull; Laptop</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">MacBook Pro 16" M3 Max (36GB / 1TB)</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> M3 Max 16C</span>
+                                <span class="spec-pill"><i class="bi bi-memory text-primary"></i> 36GB RAM</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">89.990.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Card B -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-11%</span>
-                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">Asus ROG Strix SCAR 18</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">ASUS • Gaming</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">99.990.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+                <!-- Product 2 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-11%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">ASUS &bull; Gaming</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">Asus ROG Strix SCAR 18 (RTX 4090)</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> i9-14900HX</span>
+                                <span class="spec-pill"><i class="bi bi-gpu-card text-success"></i> RTX 4090</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">99.990.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Card C -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-14%</span>
-                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">iPhone 15 Pro Max 256GB</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">Apple • Điện thoại</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">29.990.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+                <!-- Product 3 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-14%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple &bull; Phone</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">iPhone 15 Pro Max 256GB Titan</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> A17 Pro</span>
+                                <span class="spec-pill"><i class="bi bi-phone text-primary"></i> OLED 120Hz</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">29.990.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Card D -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-12%</span>
-                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">Sony WH-1000XM5 Hi-Res</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">Sony • Âm thanh</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">7.490.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+                <!-- Product 4 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-12%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Sony &bull; Audio</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">Sony WH-1000XM5 Hi-Res Audio</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-soundwave text-danger"></i> Chip V1+QN1</span>
+                                <span class="spec-pill"><i class="bi bi-battery text-success"></i> 30h Pin</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">7.490.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Card E -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-6%</span>
-                        <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">iPad Pro 13 inch M4 (OLED)</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">Apple • Tablet</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">37.990.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+                <!-- Product 5 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-6%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple &bull; Tablet</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">iPad Pro 13 inch M4 (Ultra OLED)</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-cpu text-danger"></i> Chip M4</span>
+                                <span class="spec-pill"><i class="bi bi-tv text-primary"></i> Tandem OLED</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">37.990.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Card F -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card card-tech h-100 border-0 shadow-sm p-3">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-5%</span>
-                        <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&auto=format&fit=crop&q=80" class="rounded-3 mb-3" style="height:180px; object-fit:cover;">
-                        <h6 class="fw-bold mb-1"><a href="detail.html" class="text-dark text-decoration-none">Apple Watch Ultra 2 GPS</a></h6>
-                        <span class="badge bg-light text-primary border mb-2 align-self-start">Apple • Watch</span>
-                        <div class="text-danger fw-bold fs-5 mb-3">20.990.000 ₫</div>
-                        <a href="detail.html" class="btn btn-primary btn-sm w-100 mt-auto"><i class="bi bi-eye"></i> Xem cấu hình chi tiết</a>
+                <!-- Product 6 -->
+                <div class="col-12 col-sm-6 col-xl-4">
+                    <div class="tech-card">
+                        <div class="card-img-wrap">
+                            <span class="badge-discount">-5%</span>
+                            <span class="badge-installment">Trả góp 0%</span>
+                            <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500" style="max-height: 165px; object-fit: cover;">
+                        </div>
+                        <div class="p-3 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">Apple &bull; Smartwatch</span>
+                            <h6 class="fw-bold mb-2">
+                                <a href="detail.html" class="text-dark text-decoration-none">Apple Watch Ultra 2 GPS + Cellular</a>
+                            </h6>
+                            <div class="mb-3">
+                                <span class="spec-pill"><i class="bi bi-activity text-danger"></i> ECG + SpO2</span>
+                                <span class="spec-pill"><i class="bi bi-shield text-primary"></i> Titan 49mm</span>
+                            </div>
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                <div class="price-current">20.990.000 ₫</div>
+                                <a href="detail.html" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -557,148 +962,233 @@ products_body = """
 </div>
 """
 
+# ==============================================================================
 # 3. GENERATE DETAIL (detail.html)
+# ==============================================================================
 detail_body = """
 <div class="container">
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="products.html">Laptops & MacBooks</a></li>
+            <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="products.html" class="text-decoration-none">Laptop & PC</a></li>
             <li class="breadcrumb-item active" aria-current="page">MacBook Pro 16 inch M3 Max</li>
         </ol>
     </nav>
 
-    <div class="row g-5 mb-5">
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm p-3 rounded-4 bg-white text-center">
-                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&auto=format&fit=crop&q=80" class="img-fluid rounded-3 mb-3" alt="MacBook Pro" style="max-height:420px; object-fit:cover;">
-                <div class="d-flex justify-content-center gap-2">
-                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150" class="border border-primary rounded-2 p-1" width="70" height="60">
-                    <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=150" class="border rounded-2 p-1 opacity-75" width="70" height="60">
-                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=150" class="border rounded-2 p-1 opacity-75" width="70" height="60">
+    <div class="row g-4 mb-5">
+        <!-- Gallery Showcase -->
+        <div class="col-lg-5">
+            <div class="detail-gallery-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center w-100 mb-3">
+                    <span class="detail-gallery-badge position-static">
+                        <i class="bi bi-patch-check-fill me-1"></i> Chính Hãng Apple VN/A
+                    </span>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small">
+                        Bảo hành 24 Tháng VIP
+                    </span>
+                </div>
+
+                <div class="py-3 text-center my-auto">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800" class="img-fluid rounded-4 shadow-sm" style="max-height: 280px; object-fit: cover;">
+                </div>
+
+                <div class="p-3 bg-light rounded-4 border w-100 text-muted small mt-4">
+                    <div class="row g-2 text-center" style="font-size: 0.78rem;">
+                        <div class="col-4 border-end">
+                            <i class="bi bi-box-seam text-danger d-block fs-6 mb-1"></i>
+                            <span>Nguyên Seal VAT</span>
+                        </div>
+                        <div class="col-4 border-end">
+                            <i class="bi bi-arrow-repeat text-success d-block fs-6 mb-1"></i>
+                            <span>1 Đổi 1 (30 ngày)</span>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-truck text-primary d-block fs-6 mb-1"></i>
+                            <span>Hỏa tốc 2 giờ</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <span class="badge bg-light text-primary border mb-2">Apple • Thiết bị chính hãng</span>
-            <h2 class="fw-bold mb-2">MacBook Pro 16 inch M3 Max (36GB RAM / 1TB SSD Space Black)</h2>
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <div class="text-warning">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
+        <!-- Product Purchase Information -->
+        <div class="col-lg-7">
+            <div class="detail-info-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small fw-bold">Apple</span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 small fw-bold">Laptop Flagship</span>
+                    </div>
+                    <span class="text-muted small">Mã SKU: <strong class="text-dark font-monospace">MBP16-M3MAX-1TB</strong></span>
                 </div>
-                <span class="fw-bold">5.0</span>
-                <span class="text-muted">(18 đánh giá công nghệ)</span>
-                <span class="badge bg-success bg-opacity-10 text-success ms-2"><i class="bi bi-check-circle"></i> Còn 12 máy</span>
-            </div>
 
-            <div class="p-3 bg-light rounded-4 mb-4">
-                <div class="d-flex align-items-baseline gap-3">
-                    <span class="display-6 fw-bold text-danger">89.990.000 ₫</span>
+                <h2 class="fw-bold mb-2 text-dark">MacBook Pro 16 inch M3 Max (36GB RAM / 1TB SSD Space Black)</h2>
+
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-3 pb-2 border-bottom">
+                    <div class="text-warning small d-flex align-items-center gap-1">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <span class="fw-bold text-dark ms-1">5.0/5.0</span>
+                    </div>
+                    <span class="text-muted small">(18 đánh giá chuyên sâu)</span>
+                    <span class="text-muted small">&bull;</span>
+                    <span class="text-success small fw-semibold"><i class="bi bi-bag-check-fill me-1"></i> Đã bán 28 máy</span>
+                </div>
+
+                <!-- Price Box -->
+                <div class="p-3 rounded-4 mb-4 d-flex flex-wrap align-items-baseline gap-3" style="background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 100%); border: 1px solid var(--accent-rose-border);">
+                    <span class="fs-2 fw-extrabold text-danger">89.990.000 ₫</span>
                     <span class="text-muted text-decoration-line-through fs-5">96.990.000 ₫</span>
-                    <span class="badge bg-danger">-7% Giảm sốc</span>
+                    <span class="badge bg-danger rounded-pill px-3 py-1 small fw-bold">Tiết kiệm 7.000.000₫</span>
+                    <span class="text-muted small ms-auto d-none d-sm-inline"><i class="bi bi-credit-card text-primary me-1"></i> Trả góp 0% chỉ từ <strong>7.499.000₫/tháng</strong></span>
                 </div>
-                <p class="text-muted small mb-0 mt-2"><i class="bi bi-shield-check text-success me-1"></i> Giá đã bao gồm VAT & Miễn phí vận chuyển toàn quốc</p>
-            </div>
 
-            <!-- Specs Table Quick Overview -->
-            <h6 class="fw-bold text-uppercase text-muted small mb-2"><i class="bi bi-cpu me-1"></i> Thông Số Kỹ Thuật Đa Chiều (Định dạng JSON)</h6>
-            <div class="table-responsive mb-4">
-                <table class="table table-bordered table-sm small bg-white">
-                    <tbody>
-                        <tr><td class="bg-light fw-semibold" width="30%">Vi xử lý (CPU)</td><td>Apple M3 Max 16-Core CPU</td></tr>
-                        <tr><td class="bg-light fw-semibold">Card đồ họa (GPU)</td><td>40-Core GPU Metal 3</td></tr>
-                        <tr><td class="bg-light fw-semibold">Bộ nhớ RAM</td><td>36GB Unified Memory (300GB/s bandwidth)</td></tr>
-                        <tr><td class="bg-light fw-semibold">Ổ cứng lưu trữ</td><td>1TB PCIe Gen4 NVMe SSD</td></tr>
-                        <tr><td class="bg-light fw-semibold">Màn hình</td><td>16.2" Liquid Retina XDR Mini-LED (120Hz ProMotion)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="d-flex gap-3 align-items-center mb-4">
-                <div class="input-group" style="width: 130px;">
-                    <button class="btn btn-outline-secondary" type="button">-</button>
-                    <input type="text" class="form-control text-center fw-bold" value="1">
-                    <button class="btn btn-outline-secondary" type="button">+</button>
+                <!-- Variant Buttons -->
+                <div class="mb-3">
+                    <label class="fw-bold small text-uppercase text-muted d-block mb-2 tracking-wider">Phiên Bản Bộ Nhớ RAM & SSD:</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="variant-btn active">
+                            <span>36GB / 1TB</span>
+                            <span class="variant-subtext">Tiêu chuẩn</span>
+                        </button>
+                        <button type="button" class="variant-btn">
+                            <span>48GB / 1TB</span>
+                            <span class="variant-subtext">+12.000.000₫</span>
+                        </button>
+                        <button type="button" class="variant-btn">
+                            <span>128GB / 2TB</span>
+                            <span class="variant-subtext">+35.000.000₫</span>
+                        </button>
+                    </div>
                 </div>
-                <a href="cart.html" class="btn btn-primary btn-lg flex-grow-1 fw-bold shadow"><i class="bi bi-cart3 me-2"></i> Thêm Vào Giỏ Hàng</a>
-                <a href="checkout.html" class="btn btn-danger btn-lg fw-bold"><i class="bi bi-lightning-fill"></i> Mua Ngay</a>
+
+                <!-- Color Selection -->
+                <div class="mb-4">
+                    <label class="fw-bold small text-uppercase text-muted d-block mb-2 tracking-wider">Màu Sắc Thiết Bị:</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="color-option-btn active">
+                            <span class="color-circle" style="background-color: #1e293b;"></span> Space Black (Đen Không Gian)
+                        </button>
+                        <button type="button" class="color-option-btn">
+                            <span class="color-circle" style="background-color: #cbd5e1;"></span> Silver (Bạc Ánh Kim)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Promotional Gift Box -->
+                <div class="promo-gift-box mb-4">
+                    <div class="d-flex align-items-center gap-2 fw-bold text-danger mb-2 small">
+                        <i class="bi bi-gift-fill"></i> ƯU ĐÃI ĐẶC QUYỀN KHI MUA TẠI 12B5 STORE:
+                    </div>
+                    <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-1">
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng túi chống sốc Tucano Milan chính hãng trị giá <strong>890.000₫</strong></li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR tự động</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Hỗ trợ thu cũ đổi mới (Trade-in) trợ giá lên tới <strong>2.500.000₫</strong></li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Vệ sinh tra keo tản nhiệt và cài đặt phần mềm chuyên nghiệp miễn phí trọn đời</li>
+                    </ul>
+                </div>
+
+                <!-- Form Controls -->
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <label class="fw-bold small text-muted text-uppercase mb-0 tracking-wider">Số Lượng:</label>
+                    <div class="input-group" style="max-width: 140px;">
+                        <button class="btn btn-outline-secondary rounded-start-pill" type="button">-</button>
+                        <input type="number" class="form-control text-center font-monospace fw-bold" value="1" min="1">
+                        <button class="btn btn-outline-secondary rounded-end-pill" type="button">+</button>
+                    </div>
+                    <span class="small text-success">
+                        <i class="bi bi-check-circle-fill me-1"></i> Còn hàng tại 15 showroom (12 máy sẵn sàng)
+                    </span>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <a href="cart.html" class="btn btn-rose btn-lg px-4 flex-grow-1 fw-bold shadow-sm">
+                        <i class="bi bi-cart-plus me-2"></i> Thêm Vào Giỏ Hàng
+                    </a>
+                    <a href="checkout.html" class="btn btn-soft-slate btn-lg px-4 fw-bold">
+                        <i class="bi bi-lightning-charge text-danger me-1"></i> Mua Ngay
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Recommendations using Cosine Similarity -->
-    <div class="mt-5 p-4 bg-white rounded-4 shadow-sm border">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h4 class="fw-bold mb-1"><i class="bi bi-stars text-primary me-2"></i> Gợi Ý Thiết Bị Tương Đồng (AI Cosine Similarity)</h4>
-                <p class="text-muted small mb-0">Thuật toán Rust Engine tính toán độ tương đồng trên không gian vector đặc tính phần cứng (CPU, GPU, RAM, Mức giá)</p>
+    <!-- Specifications Table -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <h4 class="fw-bold mb-3 text-dark"><i class="bi bi-file-earmark-text me-2 text-danger"></i>Mô Tả & Trải Nghiệm Thiết Bị</h4>
+                <div class="text-secondary lh-lg" style="font-size: 0.95rem;">
+                    MacBook Pro 16 inch M3 Max mang lại sức mạnh vượt trội cho các kỹ sư phần mềm, nhà sáng tạo nội dung 3D và các chuyên gia đồ họa. Được trang bị chip Apple Silicon M3 Max tiến trình 3nm với 16-Core CPU và 40-Core GPU Metal 3, hệ thống xử lý các mô hình AI lớn và render video 8K ProRes mà vẫn duy trì thời lượng pin ấn tượng lên đến 22 giờ liên tục.
+                </div>
             </div>
-            <span class="badge bg-success"><i class="bi bi-cpu me-1"></i> Rust Recommender (0.9ms)</span>
         </div>
 
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="card h-100 border p-3 rounded-3">
-                    <div class="d-flex gap-3 align-items-center">
-                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=200" class="rounded-2" width="70" height="70" style="object-fit:cover;">
-                        <div>
-                            <h6 class="fw-bold mb-1 small"><a href="detail.html" class="text-dark text-decoration-none">Asus ROG Strix SCAR 18</a></h6>
-                            <span class="badge bg-info bg-opacity-10 text-info small">Độ tương đồng 94%</span>
-                            <div class="text-danger fw-bold small mt-1">99.990.000 ₫</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border p-3 rounded-3">
-                    <div class="d-flex gap-3 align-items-center">
-                        <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200" class="rounded-2" width="70" height="70" style="object-fit:cover;">
-                        <div>
-                            <h6 class="fw-bold mb-1 small"><a href="detail.html" class="text-dark text-decoration-none">iPad Pro 13 inch M4 (OLED)</a></h6>
-                            <span class="badge bg-info bg-opacity-10 text-info small">Độ tương đồng 88%</span>
-                            <div class="text-danger fw-bold small mt-1">37.990.000 ₫</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border p-3 rounded-3">
-                    <div class="d-flex gap-3 align-items-center">
-                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=200" class="rounded-2" width="70" height="70" style="object-fit:cover;">
-                        <div>
-                            <h6 class="fw-bold mb-1 small"><a href="detail.html" class="text-dark text-decoration-none">iPhone 15 Pro Max 256GB</a></h6>
-                            <span class="badge bg-info bg-opacity-10 text-info small">Độ tương đồng 85%</span>
-                            <div class="text-danger fw-bold small mt-1">29.990.000 ₫</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <h4 class="fw-bold mb-3 text-dark"><i class="bi bi-cpu me-2 text-danger"></i>Thông Số Kỹ Thuật Đa Chiều</h4>
+                <table class="table table-striped table-hover small mb-0 align-middle">
+                    <tbody>
+                        <tr><th class="text-muted fw-semibold text-uppercase" style="width: 38%;">Vi xử lý (CPU)</th><td class="fw-semibold text-dark">Apple M3 Max 16-Core (12 Performance + 4 Efficiency)</td></tr>
+                        <tr><th class="text-muted fw-semibold text-uppercase">Card đồ họa (GPU)</th><td class="fw-semibold text-dark">40-Core GPU Metal 3 Ray Tracing phần cứng</td></tr>
+                        <tr><th class="text-muted fw-semibold text-uppercase">Bộ nhớ RAM</th><td class="fw-semibold text-dark">36GB Unified Memory (300GB/s bandwidth)</td></tr>
+                        <tr><th class="text-muted fw-semibold text-uppercase">Ổ cứng SSD</th><td class="fw-semibold text-dark">1TB PCIe Gen4 NVMe Siêu Tốc (7.4GB/s)</td></tr>
+                        <tr><th class="text-muted fw-semibold text-uppercase">Màn hình</th><td class="fw-semibold text-dark">16.2" Liquid Retina XDR Mini-LED 120Hz ProMotion 1600 nits</td></tr>
+                        <tr><th class="text-muted fw-semibold text-uppercase">Cổng kết nối</th><td class="fw-semibold text-dark">3x Thunderbolt 4, HDMI 2.1, SDXC Card, MagSafe 3</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 """
 
+# ==============================================================================
 # 4. GENERATE CART (cart.html)
+# ==============================================================================
 cart_body = """
 <div class="container">
-    <h3 class="fw-bold mb-4"><i class="bi bi-cart3 text-primary me-2"></i> Giỏ Hàng Công Nghệ Của Bạn</h3>
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Giỏ hàng của bạn</li>
+        </ol>
+    </nav>
 
-    <div class="row g-4">
+    <!-- Free Shipping Milestone Progress Bar -->
+    <div class="p-3 mb-4 rounded-4" style="background: linear-gradient(135deg, #fff1f2 0%, #f0fdf4 100%); border: 1px solid var(--accent-rose-border);">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small fw-bold text-dark">
+                <i class="bi bi-truck text-danger me-1"></i> Miễn phí vận chuyển hỏa tốc 2 giờ toàn quốc cho đơn hàng từ 5.000.000₫
+            </span>
+            <span class="badge bg-success rounded-pill px-3 py-1 small">
+                Đủ điều kiện Freeship
+            </span>
+        </div>
+        <div class="progress" style="height: 7px; border-radius: 9999px;">
+            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-cart3 me-2 text-danger"></i>Giỏ Hàng Công Nghệ (2 thiết bị)</h3>
+        <a href="products.html" class="btn btn-soft-slate btn-sm"><i class="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm</a>
+    </div>
+
+    <div class="row g-4 mb-5">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="border: 1px solid var(--border-color) !important;">
                 <div class="table-responsive">
-                    <table class="table align-middle">
-                        <thead class="table-light">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light text-muted small text-uppercase">
                             <tr>
-                                <th>Sản phẩm</th>
-                                <th>Đơn giá</th>
-                                <th width="140">Số lượng</th>
-                                <th>Thành tiền</th>
+                                <th style="font-size: 0.75rem;">Sản phẩm</th>
+                                <th style="font-size: 0.75rem;">Đơn giá</th>
+                                <th style="font-size: 0.75rem; width: 140px;">Số lượng</th>
+                                <th style="font-size: 0.75rem;">Thành tiền</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -706,167 +1196,229 @@ cart_body = """
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150" class="rounded-3" width="60" height="60" style="object-fit:cover;">
+                                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=150" class="rounded-3 border p-1" width="56" height="56" style="object-fit:cover;">
                                         <div>
-                                            <h6 class="fw-bold mb-0">MacBook Pro 16" M3 Max</h6>
-                                            <span class="text-muted small">Apple • 36GB / 1TB SSD</span>
+                                            <h6 class="fw-bold mb-0 small">MacBook Pro 16" M3 Max</h6>
+                                            <div class="text-muted small">Apple &bull; 36GB / 1TB SSD &bull; Space Black</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="fw-semibold">89.990.000 ₫</td>
+                                <td class="fw-semibold small text-dark">89.990.000 ₫</td>
                                 <td>
-                                    <div class="input-group input-group-sm" style="width:100px;">
-                                        <button class="btn btn-outline-secondary">-</button>
-                                        <input type="text" class="form-control text-center fw-bold" value="1">
-                                        <button class="btn btn-outline-secondary">+</button>
+                                    <div class="input-group input-group-sm" style="width: 105px;">
+                                        <button class="btn btn-outline-secondary rounded-start-pill">-</button>
+                                        <input type="number" class="form-control text-center font-monospace fw-bold" value="1" readonly>
+                                        <button class="btn btn-outline-secondary rounded-end-pill">+</button>
                                     </div>
                                 </td>
-                                <td class="fw-bold text-danger">89.990.000 ₫</td>
-                                <td><button class="btn btn-sm text-danger"><i class="bi bi-trash"></i></button></td>
+                                <td class="fw-bold text-danger small">89.990.000 ₫</td>
+                                <td class="text-end"><button class="btn btn-sm text-danger border-0 bg-transparent"><i class="bi bi-trash3 fs-5"></i></button></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=150" class="rounded-3" width="60" height="60" style="object-fit:cover;">
+                                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=150" class="rounded-3 border p-1" width="56" height="56" style="object-fit:cover;">
                                         <div>
-                                            <h6 class="fw-bold mb-0">Tai nghe Sony WH-1000XM5</h6>
-                                            <span class="text-muted small">Sony • Chống ồn chủ động Hi-Res</span>
+                                            <h6 class="fw-bold mb-0 small">Tai nghe Sony WH-1000XM5</h6>
+                                            <div class="text-muted small">Sony &bull; Chống ồn chủ động Hi-Res</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="fw-semibold">7.490.000 ₫</td>
+                                <td class="fw-semibold small text-dark">7.490.000 ₫</td>
                                 <td>
-                                    <div class="input-group input-group-sm" style="width:100px;">
-                                        <button class="btn btn-outline-secondary">-</button>
-                                        <input type="text" class="form-control text-center fw-bold" value="1">
-                                        <button class="btn btn-outline-secondary">+</button>
+                                    <div class="input-group input-group-sm" style="width: 105px;">
+                                        <button class="btn btn-outline-secondary rounded-start-pill">-</button>
+                                        <input type="number" class="form-control text-center font-monospace fw-bold" value="1" readonly>
+                                        <button class="btn btn-outline-secondary rounded-end-pill">+</button>
                                     </div>
                                 </td>
-                                <td class="fw-bold text-danger">7.490.000 ₫</td>
-                                <td><button class="btn btn-sm text-danger"><i class="bi bi-trash"></i></button></td>
+                                <td class="fw-bold text-danger small">7.490.000 ₫</td>
+                                <td class="text-end"><button class="btn btn-sm text-danger border-0 bg-transparent"><i class="bi bi-trash3 fs-5"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-                    <a href="products.html" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Tiếp tục chọn mua</a>
-                    <span class="text-muted small"><i class="bi bi-info-circle text-primary"></i> Kiểm tra tồn kho nguyên tử tự động</span>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 pt-3 border-top text-muted small">
+                    <div><i class="bi bi-shield-check text-success me-1"></i> Bảo hành chính hãng & Bao đổi trả 30 ngày</div>
+                    <div><i class="bi bi-qr-code-scan text-primary me-1"></i> Hỗ trợ quét mã VietQR tự động</div>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                <h5 class="fw-bold mb-3">Tóm Tắt Đơn Hàng</h5>
-
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted">MÃ GIẢM GIÁ KHUYẾN MÃI</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" value="ELECTRO500" placeholder="Nhập mã voucher">
-                        <button class="btn btn-dark" type="button">Áp dụng</button>
-                    </div>
-                    <span class="badge bg-success mt-2"><i class="bi bi-check-circle"></i> Đã giảm 500.000 ₫ từ mã ELECTRO500</span>
+            <!-- Coupon Box -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
+                <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-ticket-perforated-fill me-2 text-danger"></i>Mã Ưu Đãi / Khuyến Mãi</h6>
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" value="ELECTRO500">
+                    <button class="btn btn-rose btn-sm rounded-end-pill px-3">Áp Dụng</button>
                 </div>
+                <div class="alert alert-success d-flex justify-content-between align-items-center mb-0 p-2 rounded-3 small">
+                    <span><i class="bi bi-check-circle-fill me-1"></i> Đã giảm <strong>500.000 ₫</strong> (ELECTRO500)</span>
+                    <button class="btn btn-link btn-sm text-danger p-0"><i class="bi bi-x-circle-fill"></i></button>
+                </div>
+            </div>
 
-                <hr>
-
-                <div class="d-flex justify-content-between mb-2">
+            <!-- Order Summary -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="border: 1px solid var(--border-color) !important;">
+                <h6 class="fw-bold mb-3 text-dark">Tóm Tắt Đơn Hàng</h6>
+                <div class="d-flex justify-content-between small mb-2">
                     <span class="text-muted">Tổng tiền hàng:</span>
-                    <span class="fw-semibold">97.480.000 ₫</span>
+                    <span class="fw-semibold text-dark">97.480.000 ₫</span>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Giảm giá Voucher:</span>
-                    <span class="text-success fw-semibold">-500.000 ₫</span>
+                <div class="d-flex justify-content-between small mb-2 text-success">
+                    <span>Giảm giá Voucher:</span>
+                    <span class="fw-bold">-500.000 ₫</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex justify-content-between small mb-3">
                     <span class="text-muted">Phí giao hàng:</span>
-                    <span class="text-success fw-semibold">Miễn phí</span>
+                    <span class="text-success fw-semibold">Miễn phí (Freeship)</span>
                 </div>
-
-                <hr>
-
-                <div class="d-flex justify-content-between align-items-baseline mb-4">
-                    <span class="fs-5 fw-bold">Tổng thanh toán:</span>
-                    <span class="fs-4 fw-bold text-danger">96.980.000 ₫</span>
+                <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-baseline">
+                    <span class="fw-bold text-dark fs-6">Tổng thanh toán:</span>
+                    <span class="fs-4 fw-extrabold text-danger">96.980.000 ₫</span>
                 </div>
-
-                <a href="checkout.html" class="btn btn-primary btn-lg w-100 fw-bold shadow"><i class="bi bi-credit-card me-2"></i> Tiến Hành Đặt Hàng</a>
+                <a href="checkout.html" class="btn btn-rose w-100 py-2 fw-bold shadow-sm mb-2">
+                    Tiến Hành Đặt Hàng & Thanh Toán <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
         </div>
     </div>
 </div>
 """
 
+# ==============================================================================
 # 5. GENERATE CHECKOUT (checkout.html)
+# ==============================================================================
 checkout_body = """
 <div class="container">
-    <h3 class="fw-bold mb-4"><i class="bi bi-shield-lock text-primary me-2"></i> Xác Nhận Đơn Hàng & Thanh Toán VietQR</h3>
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="cart.html" class="text-decoration-none">Giỏ hàng</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thanh toán đơn hàng</li>
+        </ol>
+    </nav>
 
-    <div class="row g-4">
+    <!-- 3-Step Stepper -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white" style="border: 1px solid var(--border-color) !important;">
+        <div class="row text-center g-2 small">
+            <div class="col-4">
+                <div class="p-2 rounded-3 bg-light text-muted">
+                    <i class="bi bi-cart-check-fill text-success me-1"></i> 1. Giỏ Hàng
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-2 rounded-3 fw-bold text-danger" style="background: var(--accent-rose-subtle); border: 1px solid var(--accent-rose-border);">
+                    <i class="bi bi-geo-alt-fill me-1"></i> 2. Thông Tin & Thanh Toán
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-2 rounded-3 bg-light text-muted">
+                    <i class="bi bi-check-circle me-1"></i> 3. Hoàn Tất Đơn Hàng
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mb-4 text-dark"><i class="bi bi-credit-card-2-front me-2 text-danger"></i>Đặt Hàng & Thanh Toán Trực Tuyến</h3>
+
+    <div class="row g-4 mb-5">
         <div class="col-lg-7">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
-                <h5 class="fw-bold mb-3"><i class="bi bi-geo-alt text-danger me-2"></i> Thông Tin Người Nhận Hàng</h5>
-                
-                <div class="row g-3 mb-3">
+            <!-- 1. Customer Shipping Details -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
+                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-geo-alt-fill me-2 text-danger"></i>1. Địa Chỉ Nhận Hàng</h5>
+                <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Họ và tên</label>
-                        <input type="text" class="form-control" value="Nguyễn Văn A">
+                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Họ và tên người nhận *</label>
+                        <input type="text" class="form-control rounded-3" value="Nguyễn Văn A">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Số điện thoại</label>
-                        <input type="text" class="form-control" value="0987654321">
+                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Số điện thoại liên hệ *</label>
+                        <input type="tel" class="form-control rounded-3" value="0987654321">
                     </div>
                     <div class="col-12">
-                        <label class="form-label small fw-bold">Email nhận hóa đơn điện tử</label>
-                        <input type="email" class="form-control" value="nguyenvana@gmail.com">
+                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Email nhận hóa đơn VAT *</label>
+                        <input type="email" class="form-control rounded-3" value="nguyenvana@gmail.com">
                     </div>
                     <div class="col-12">
-                        <label class="form-label small fw-bold">Địa chỉ giao hàng</label>
-                        <input type="text" class="form-control" value="123 Đường Công Nghệ, Phường 10, Quận 1, TP. Hồ Chí Minh">
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label small fw-bold">Ghi chú giao hàng</label>
-                        <textarea class="form-control" rows="2" placeholder="Giao hàng giờ hành chính, gọi trước khi đến"></textarea>
+                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Địa chỉ chi tiết nhận thiết bị *</label>
+                        <textarea class="form-control rounded-3" rows="2">123 Đường Công Nghệ, Phường 10, Quận 1, TP. Hồ Chí Minh</textarea>
                     </div>
                 </div>
+            </div>
 
-                <h5 class="fw-bold mb-3 pt-3 border-top"><i class="bi bi-wallet2 text-success me-2"></i> Phương Thức Thanh Toán</h5>
-                <div class="form-check p-3 border rounded-3 mb-2 bg-light">
-                    <input class="form-check-input" type="radio" name="payment" id="p1" checked>
-                    <label class="form-check-label fw-bold d-flex align-items-center gap-2" for="p1">
-                        <i class="bi bi-qr-code text-primary fs-5"></i> Chuyển khoản VietQR NAPAS 247 (Tự động nhận diện & xác nhận tức thì)
+            <!-- 2. Payment Method -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
+                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-wallet2 me-2 text-danger"></i>2. Phương Thức Thanh Toán</h5>
+                <div class="d-flex flex-column gap-3 mb-3">
+                    <label class="p-3 rounded-4 border d-flex align-items-center gap-3 cursor-pointer" style="background: #fff1f2; border-color: var(--accent-rose-border) !important;">
+                        <input class="form-check-input mt-0" type="radio" name="pay" checked>
+                        <div class="p-2 rounded-3 bg-danger bg-opacity-10 text-danger fs-4"><i class="bi bi-qr-code-scan"></i></div>
+                        <div>
+                            <div class="fw-bold small text-danger">Chuyển khoản VietQR NAPAS 247 (Khớp Lệnh Tự Động 100%)</div>
+                            <div class="text-muted small">Quét mã bằng app ngân hàng bất kỳ. Hệ thống xác nhận đơn ngay lập tức.</div>
+                        </div>
                     </label>
-                </div>
-                <div class="form-check p-3 border rounded-3 mb-2">
-                    <input class="form-check-input" type="radio" name="payment" id="p2">
-                    <label class="form-check-label fw-bold d-flex align-items-center gap-2" for="p2">
-                        <i class="bi bi-truck text-secondary fs-5"></i> Thanh toán tiền mặt khi nhận hàng (COD)
+
+                    <label class="p-3 rounded-4 border d-flex align-items-center gap-3 cursor-pointer" style="background: #f8fafc;">
+                        <input class="form-check-input mt-0" type="radio" name="pay">
+                        <div class="p-2 rounded-3 bg-success bg-opacity-10 text-success fs-4"><i class="bi bi-cash-coin"></i></div>
+                        <div>
+                            <div class="fw-bold small text-dark">Thanh toán tiền mặt khi nhận hàng (COD)</div>
+                            <div class="text-muted small">Được mở hộp đồng kiểm thiết bị cùng bưu tá trước khi thanh toán.</div>
+                        </div>
                     </label>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
-                <div class="text-center mb-3">
-                    <span class="badge bg-primary px-3 py-2 rounded-pill mb-2"><i class="bi bi-shield-check"></i> Chuẩn VietQR NAPAS 247</span>
-                    <h5 class="fw-bold">Mã QR Thanh Toán Tự Động</h5>
-                    <p class="text-muted small">Quét mã bằng ứng dụng ngân hàng bất kỳ để chuyển tiền chính xác 100%</p>
+            <!-- Dynamic VietQR Napas Card -->
+            <div class="vietqr-card mb-4">
+                <div class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold small mb-2">
+                    <i class="bi bi-patch-check-fill"></i> VietQR Napas 247 Chuẩn Quốc Gia
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Mã QR Thanh Toán Tự Động</h6>
+                <p class="text-muted small mb-3">Mở app Mobile Banking bất kỳ để quét mã chuyển khoản:</p>
+
+                <div class="vietqr-image-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH20260917ELECTRO6304" alt="VietQR" class="img-fluid">
                 </div>
 
-                <div class="text-center p-3 bg-light rounded-4 mb-3 border">
-                    <!-- VietQR Image Simulation -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH20260917ELECTRO6304" alt="VietQR" class="img-fluid rounded-3 shadow-sm border p-2 bg-white mb-2" width="200">
-                    <div class="fw-bold text-dark fs-6 mt-1">Ngân hàng Quân Đội (MB Bank)</div>
-                    <div class="text-muted small">STK: <strong>0388.999.888</strong> • Chủ TK: <strong>CTY ELECTROSTORE VN</strong></div>
-                    <div class="badge bg-warning text-dark mt-2 p-2 fs-6">Số tiền: 96.980.000 ₫</div>
-                    <div class="text-muted small mt-1">Nội dung CK: <span class="badge bg-dark">DH982743</span></div>
+                <div class="bank-detail-box">
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Ngân hàng thụ hưởng:</span>
+                        <strong class="text-dark">MBBank (Ngân Hàng Quân Đội)</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Số tài khoản:</span>
+                        <div>
+                            <strong class="font-monospace text-primary">0388.999.888</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép số tài khoản!');">Sao chép</button>
+                        </div>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Chủ tài khoản:</span>
+                        <strong class="text-dark">CONG TY TNHH THIET BI DIEN TU 12B5</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Số tiền thanh toán:</span>
+                        <strong class="text-danger fw-bold">96.980.000 ₫</strong>
+                    </div>
+                    <div class="bank-copy-row">
+                        <span class="text-muted">Nội dung chuyển khoản:</span>
+                        <div>
+                            <strong class="font-monospace text-dark">DH982743</strong>
+                            <button type="button" class="btn-copy-code ms-1" onclick="alert('Đã sao chép cú pháp!');">Sao chép</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-success btn-lg fw-bold"><i class="bi bi-check2-circle me-2"></i> Hoàn Tất & Đặt Hàng</button>
-                    <a href="cart.html" class="btn btn-outline-secondary btn-sm">Quay lại giỏ hàng</a>
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-rose btn-lg fw-bold"><i class="bi bi-check2-circle me-2"></i> Xác Nhận Đã Chuyển Khoản</button>
+                    <a href="cart.html" class="btn btn-soft-slate btn-sm">Quay lại giỏ hàng</a>
                 </div>
             </div>
         </div>
@@ -874,140 +1426,193 @@ checkout_body = """
 </div>
 """
 
+# ==============================================================================
 # 6. GENERATE ADMIN (admin.html)
+# ==============================================================================
 admin_body = """
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid px-lg-5 px-3">
+    <!-- Admin Top Nav -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-3">
         <div>
-            <h3 class="fw-bold mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i> Quản Trị Hệ Thống 12B5 Store</h3>
-            <p class="text-muted small mb-0">Hệ thống giám sát kinh doanh, quản lý kho hàng và tích hợp công cụ phân tích Pareto ABC từ Rust Engine.</p>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-danger rounded-pill px-3 py-1 small fw-bold">ADMIN CONSOLE</span>
+                <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-speedometer2 me-2 text-danger"></i>Hệ Thống Quản Trị 12B5 Store</h3>
+            </div>
+            <span class="text-muted small">Trung tâm điều hành kinh doanh & giám sát hiệu năng kiến trúc Hybrid PHP + Rust Microservice</span>
         </div>
-        <div class="d-flex gap-2">
-            <span class="badge bg-success px-3 py-2 d-flex align-items-center"><i class="bi bi-check-circle me-1"></i> Microservice Online</span>
-            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-clockwise"></i> Làm mới dữ liệu</button>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-success rounded-pill px-3 py-2 d-flex align-items-center"><i class="bi bi-cpu-fill me-1"></i> Microservice Online</span>
+            <button class="btn btn-rose btn-sm"><i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới</button>
+            <button class="btn btn-soft-slate btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Làm Mới</button>
         </div>
     </div>
 
-    <!-- KPI Metric Cards -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 rounded-4 bg-white border-start border-4 border-primary">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-muted small fw-bold text-uppercase">Doanh Thu Tháng</span>
-                        <h4 class="fw-bold text-dark mt-1 mb-0">348.500.000 ₫</h4>
-                        <span class="badge bg-success bg-opacity-10 text-success small mt-2"><i class="bi bi-arrow-up"></i> +18.4% so với kỳ trước</span>
+    <!-- Rust Engine Microservice Health Banner -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%);">
+        <div class="card-body p-4 text-white">
+            <div class="row align-items-center g-3">
+                <div class="col-md-8">
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                        <span class="badge bg-success rounded-pill px-3 py-1 text-uppercase fw-bold">
+                            <i class="bi bi-cpu-fill me-1"></i> RUST ENGINE ONLINE
+                        </span>
+                        <span class="badge bg-white bg-opacity-10 text-light border border-white border-opacity-25 rounded-pill px-3 py-1">Port 5000</span>
+                        <span class="badge bg-danger rounded-pill px-3 py-1">Độ trễ: 0.8ms</span>
                     </div>
-                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3 fs-3"><i class="bi bi-currency-dollar"></i></div>
+                    <h5 class="fw-bold mb-1 text-white">Kiến Trúc Hybrid Microservice High-Performance</h5>
+                    <p class="text-white-50 small mb-0">
+                        Rust Engine đảm nhận các tác vụ nặng: Thuật toán tìm kiếm chuỗi mờ Fuzzy TF-IDF, Gợi ý sản phẩm Cosine Similarity, Phân tích dữ liệu Pareto ABC và Dự báo doanh thu bằng Hồi quy tuyến tính (Linear Regression).
+                    </p>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 rounded-4 bg-white border-start border-4 border-success">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-muted small fw-bold text-uppercase">Đơn Hàng Mới</span>
-                        <h4 class="fw-bold text-dark mt-1 mb-0">124 Đơn</h4>
-                        <span class="badge bg-success bg-opacity-10 text-success small mt-2"><i class="bi bi-check-all"></i> 98% giao thành công</span>
+                <div class="col-md-4 text-md-end">
+                    <div class="p-3 bg-white bg-opacity-10 rounded-4 d-inline-block text-start border border-white border-opacity-10">
+                        <div class="text-white-50 small">Trạng thái kết nối REST API:</div>
+                        <div class="fw-bold text-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> Microservice Active (200 OK)</div>
                     </div>
-                    <div class="p-3 bg-success bg-opacity-10 text-success rounded-3 fs-3"><i class="bi bi-bag-check"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 rounded-4 bg-white border-start border-4 border-info">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-muted small fw-bold text-uppercase">Sản Phẩm Trong Kho</span>
-                        <h4 class="fw-bold text-dark mt-1 mb-0">48 Mẫu</h4>
-                        <span class="badge bg-info bg-opacity-10 text-info small mt-2"><i class="bi bi-cpu"></i> 100% có thông số JSON</span>
-                    </div>
-                    <div class="p-3 bg-info bg-opacity-10 text-info rounded-3 fs-3"><i class="bi bi-box-seam"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 rounded-4 bg-white border-start border-4 border-warning">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-muted small fw-bold text-uppercase">Khách Hàng Hoạt Động</span>
-                        <h4 class="fw-bold text-dark mt-1 mb-0">856 Users</h4>
-                        <span class="badge bg-warning bg-opacity-10 text-dark small mt-2"><i class="bi bi-person-plus"></i> +32 đăng ký tuần này</span>
-                    </div>
-                    <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3 fs-3"><i class="bi bi-people"></i></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Rust Pareto ABC & Linear Regression Report -->
+    <!-- KPI Summary Cards -->
     <div class="row g-4 mb-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line text-primary me-2"></i> Phân Tích Tồn Kho Pareto ABC (Rust Engine)</h5>
-                    <span class="badge bg-primary">Nguyên lý 80/20</span>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-bold text-uppercase tracking-wider">Tổng Doanh Thu</span>
+                    <div class="p-2 rounded-3 bg-success bg-opacity-10 text-success fs-5"><i class="bi bi-currency-dollar"></i></div>
                 </div>
-                <p class="text-muted small">Thuật toán Rust phân nhóm sản phẩm theo tỷ trọng doanh thu để tối ưu hóa vốn lưu động trong kho hàng thiết bị điện tử.</p>
+                <h4 class="fw-bold text-success mb-1">348.500.000 ₫</h4>
+                <span class="badge bg-success bg-opacity-10 text-success small"><i class="bi bi-arrow-up"></i> +18.4% so với kỳ trước</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-bold text-uppercase tracking-wider">Dự Báo Doanh Thu (Rust)</span>
+                    <div class="p-2 rounded-3 bg-danger bg-opacity-10 text-danger fs-5"><i class="bi bi-graph-up-arrow"></i></div>
+                </div>
+                <h4 class="fw-bold text-danger mb-1">392.400.000 ₫</h4>
+                <span class="text-muted small">Dự báo chu kỳ kế tiếp (Hồi quy R²=0.96)</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-bold text-uppercase tracking-wider">Tổng Đơn Hàng</span>
+                    <div class="p-2 rounded-3 bg-primary bg-opacity-10 text-primary fs-5"><i class="bi bi-bag-check"></i></div>
+                </div>
+                <h4 class="fw-bold mb-1 text-dark">124 đơn</h4>
+                <span class="text-muted small">98% đơn đã giao thành công</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small fw-bold text-uppercase tracking-wider">Kho Hàng & Khách Hàng</span>
+                    <div class="p-2 rounded-3 bg-info bg-opacity-10 text-info fs-5"><i class="bi bi-people"></i></div>
+                </div>
+                <h4 class="fw-bold mb-1 text-dark">48 SP / 856 Users</h4>
+                <span class="text-muted small">100% có thông số JSON đa chiều</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rust Pareto ABC Analysis & Recent Orders -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-pie-chart-fill me-2 text-danger"></i>Phân Tích Tồn Kho Pareto 80/20</h5>
+                    <span class="badge bg-danger rounded-pill px-3 py-1 small">Rust Analytics</span>
+                </div>
+                <p class="text-muted small">
+                    Thuật toán phân loại nhóm hàng tồn kho theo nguyên lý Pareto: <strong>Nhóm A</strong> (70% giá trị - Flagship), <strong>Nhóm B</strong> (20% giá trị - Tầm trung), <strong>Nhóm C</strong> (10% - Phụ kiện).
+                </p>
+
+                <div class="row g-3 text-center my-3">
+                    <div class="col-4">
+                        <div class="p-3 rounded-4 border" style="background: #fff1f2; border-color: var(--accent-rose-border) !important;">
+                            <div class="badge bg-danger rounded-pill mb-1 small">Nhóm A (Flagship)</div>
+                            <div class="fs-4 fw-bold text-danger">4</div>
+                            <span class="text-muted small">SP chủ lực (70%)</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 rounded-4 border" style="background: #f0fdf4; border-color: #bbf7d0 !important;">
+                            <div class="badge bg-success rounded-pill mb-1 small">Nhóm B (Tầm trung)</div>
+                            <div class="fs-4 fw-bold text-success">6</div>
+                            <span class="text-muted small">SP phụ trợ (20%)</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 rounded-4 border" style="background: #f8fafc; border-color: #e2e8f0 !important;">
+                            <div class="badge bg-secondary rounded-pill mb-1 small">Nhóm C (Phổ thông)</div>
+                            <div class="fs-4 fw-bold text-secondary">14</div>
+                            <span class="text-muted small">Phụ kiện kèm (10%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold small mb-2 text-dark">Top Thiết Bị Đóng Góp Doanh Số Cao Nhất:</h6>
+                <ul class="list-group list-group-flush small">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2 border-bottom">
+                        <span class="fw-semibold text-dark">MacBook Pro 16" M3 Max</span>
+                        <span class="text-danger fw-bold">179.980.000 ₫ (51.6%)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2 border-bottom">
+                        <span class="fw-semibold text-dark">Asus ROG Strix SCAR 18</span>
+                        <span class="text-danger fw-bold">99.990.000 ₫ (28.7%)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2 border-bottom">
+                        <span class="fw-semibold text-dark">iPhone 15 Pro Max 256GB</span>
+                        <span class="text-dark fw-bold">45.000.000 ₫ (12.9%)</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history me-2 text-primary"></i>Đơn Hàng Gần Đây</h5>
+                    <button class="btn btn-soft-slate btn-sm">Xem tất cả &rarr;</button>
+                </div>
 
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle small">
-                        <thead class="table-light">
+                    <table class="table small align-middle mb-0">
+                        <thead class="table-light text-muted">
                             <tr>
-                                <th>Phân nhóm</th>
-                                <th>Tên Thiết Bị</th>
-                                <th>Doanh số đóng góp</th>
-                                <th>Tỷ trọng</th>
-                                <th>Khuyến nghị quản trị</th>
+                                <th>Mã Đơn</th>
+                                <th>Khách Hàng</th>
+                                <th>Tổng Tiền</th>
+                                <th>Trạng Thái</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span class="badge bg-danger">Nhóm A</span></td>
-                                <td class="fw-bold">MacBook Pro 16" M3 Max</td>
-                                <td class="fw-bold text-danger">179.980.000 ₫</td>
-                                <td>51.6%</td>
-                                <td><span class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Luôn duy trì tồn kho an toàn</span></td>
+                                <td class="fw-bold font-monospace text-primary">ORD-2026-001</td>
+                                <td class="fw-medium text-dark">Trần Minh Hoàng</td>
+                                <td class="fw-bold text-danger">89.990.000 ₫</td>
+                                <td><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đã Hoàn Thành</span></td>
                             </tr>
                             <tr>
-                                <td><span class="badge bg-danger">Nhóm A</span></td>
-                                <td class="fw-bold">Asus ROG Strix SCAR 18</td>
-                                <td class="fw-bold text-danger">99.990.000 ₫</td>
-                                <td>28.7%</td>
-                                <td><span class="text-success fw-semibold"><i class="bi bi-shield-check"></i> Cần đặt hàng trước 7 ngày</span></td>
+                                <td class="fw-bold font-monospace text-primary">ORD-2026-002</td>
+                                <td class="fw-medium text-dark">Lê Thị Mai Anh</td>
+                                <td class="fw-bold text-danger">29.990.000 ₫</td>
+                                <td><span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill px-2 py-1">Đang Giao Hỏa Tốc</span></td>
                             </tr>
                             <tr>
-                                <td><span class="badge bg-warning text-dark">Nhóm B</span></td>
-                                <td class="fw-bold">iPhone 15 Pro Max 256GB</td>
-                                <td class="fw-bold">45.000.000 ₫</td>
-                                <td>12.9%</td>
-                                <td><span>Nhập hàng theo chu kỳ tuần</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge bg-secondary">Nhóm C</span></td>
-                                <td class="fw-bold">Tai nghe Sony WH-1000XM5</td>
-                                <td class="fw-bold">23.530.000 ₫</td>
-                                <td>6.8%</td>
-                                <td><span class="text-muted">Giữ mức tồn kho tối thiểu</span></td>
+                                <td class="fw-bold font-monospace text-primary">ORD-2026-003</td>
+                                <td class="fw-medium text-dark">Phạm Quốc Dũng</td>
+                                <td class="fw-bold text-danger">7.490.000 ₫</td>
+                                <td><span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-2 py-1">Chờ Xác Nhận VietQR</span></td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <h5 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-success me-2"></i> Dự Báo Xu Hướng</h5>
-                <p class="text-muted small">Mô hình Hồi quy tuyến tính (Linear Regression) chạy tự động bằng Rust Worker.</p>
-                <div class="p-3 bg-light rounded-4 mb-3 border">
-                    <div class="small text-muted mb-1">Dự báo doanh thu tháng tới:</div>
-                    <div class="fs-4 fw-bold text-success">+392.400.000 ₫</div>
-                    <div class="small text-muted mt-2">Hệ số tương quan R²: <span class="badge bg-dark">0.962 (Rất cao)</span></div>
-                    <div class="small text-muted">Độ dốc tăng trưởng (Slope): <span class="fw-bold text-primary">+14.2%</span></div>
-                </div>
-                <div class="alert alert-info py-2 small mb-0">
-                    <i class="bi bi-info-circle me-1"></i> Dự báo chỉ ra các dòng máy tính xách tay cấu hình cao sẽ dẫn đầu doanh số quý tới.
                 </div>
             </div>
         </div>

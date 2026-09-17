@@ -15,86 +15,164 @@ require __DIR__ . '/../layouts/header.php';
     </nav>
 
     <div class="row g-4 mb-5">
-        <!-- Product Images Gallery -->
+        <!-- Product Images & Gallery Showcase -->
         <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 p-4 text-center bg-white h-100 d-flex align-items-center justify-content-center" style="min-height: 380px;">
-                <i class="bi bi-device-hdd display-1 text-primary opacity-75"></i>
-                <div class="mt-4 text-muted small">
-                    <i class="bi bi-shield-check text-success me-1"></i> Sản phẩm chính hãng 100% nguyên seal
+            <div class="detail-gallery-card h-100 d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center w-100 mb-3">
+                    <span class="detail-gallery-badge position-static">
+                        <i class="bi bi-patch-check-fill me-1"></i> Chính Hãng VN/A
+                    </span>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small">
+                        Bảo hành 24 Tháng VIP
+                    </span>
+                </div>
+
+                <div class="py-5 text-center my-auto">
+                    <i class="bi bi-device-hdd display-1 text-primary opacity-80"></i>
+                </div>
+
+                <div class="p-3 bg-light rounded-4 border w-100 text-muted small mt-4">
+                    <div class="row g-2 text-center" style="font-size: 0.78rem;">
+                        <div class="col-4 border-end">
+                            <i class="bi bi-box-seam text-danger d-block fs-6 mb-1"></i>
+                            <span>Nguyên Seal VAT</span>
+                        </div>
+                        <div class="col-4 border-end">
+                            <i class="bi bi-arrow-repeat text-success d-block fs-6 mb-1"></i>
+                            <span>1 Đổi 1 (30 ngày)</span>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-truck text-primary d-block fs-6 mb-1"></i>
+                            <span>Hỏa tốc 2 giờ</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Product Purchase Information -->
         <div class="col-lg-7">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold">
-                        <?= htmlspecialchars($product['brand_name']) ?> &bull; <?= htmlspecialchars($product['category_name']) ?>
-                    </span>
-                    <span class="text-muted small">Mã SP: <strong><?= htmlspecialchars($product['sku']) ?></strong></span>
+            <div class="detail-info-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small fw-bold">
+                            <?= htmlspecialchars($product['brand_name']) ?>
+                        </span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 small fw-bold">
+                            <?= htmlspecialchars($product['category_name']) ?>
+                        </span>
+                    </div>
+                    <span class="text-muted small">Mã SKU: <strong class="text-dark font-monospace"><?= htmlspecialchars($product['sku']) ?></strong></span>
                 </div>
 
-                <h2 class="fw-bold mb-3"><?= htmlspecialchars($product['name']) ?></h2>
+                <h2 class="fw-bold mb-2 text-dark"><?= htmlspecialchars($product['name']) ?></h2>
 
-                <!-- Rating -->
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <div class="text-warning">
+                <!-- Rating & Sales Status -->
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-3 pb-2 border-bottom">
+                    <div class="text-warning small d-flex align-items-center gap-1">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                             <i class="bi <?= $i <= round($product['rating']) ? 'bi-star-fill' : 'bi-star' ?>"></i>
                         <?php endfor; ?>
+                        <span class="fw-bold text-dark ms-1"><?= $product['rating'] ?>/5.0</span>
                     </div>
-                    <span class="fw-bold"><?= $product['rating'] ?></span>
-                    <span class="text-muted small">(<?= $product['review_count'] ?> đánh giá từ khách hàng)</span>
-                    <span class="text-muted small">| Đã bán: <?= $product['sales_count'] ?></span>
+                    <span class="text-muted small">(<?= $product['review_count'] ?> đánh giá từ khách hàng đã mua)</span>
+                    <span class="text-muted small">&bull;</span>
+                    <span class="text-success small fw-semibold"><i class="bi bi-bag-check-fill me-1"></i> Đã bán <?= $product['sales_count'] ?> máy</span>
                 </div>
 
-                <!-- Price Box -->
-                <div class="p-3 bg-light rounded-4 mb-4 d-flex align-items-baseline gap-3">
-                    <span class="fs-2 fw-extrabold text-primary"><?= $product['formatted_price'] ?></span>
+                <!-- Price Box (Pastel Glass) -->
+                <div class="p-3 rounded-4 mb-4 d-flex flex-wrap align-items-baseline gap-3" style="background: linear-gradient(135deg, #fff1f2 0%, #fdf2f8 100%); border: 1px solid var(--accent-rose-border);">
+                    <span class="fs-2 fw-extrabold text-danger"><?= $product['formatted_price'] ?></span>
                     <?php if ($product['formatted_original_price']): ?>
                         <span class="text-muted text-decoration-line-through fs-5"><?= $product['formatted_original_price'] ?></span>
-                        <span class="badge bg-danger">Tiết kiệm <?= $product['discount_percent'] ?>%</span>
+                        <span class="badge bg-danger rounded-pill px-3 py-1 small fw-bold">Tiết kiệm <?= $product['discount_percent'] ?>%</span>
                     <?php endif; ?>
+                    <span class="text-muted small ms-auto d-none d-sm-inline"><i class="bi bi-credit-card text-primary me-1"></i> Trả góp 0% chỉ từ <strong><?= number_format(round($product['price'] / 12), 0, ',', '.') ?>₫/tháng</strong></span>
                 </div>
 
-                <!-- Short description -->
-                <p class="text-muted mb-4">
-                    <?= nl2br(htmlspecialchars($product['short_description'] ?? '')) ?>
-                </p>
+                <!-- Storage / Variant Selection -->
+                <div class="mb-3">
+                    <label class="fw-bold small text-uppercase text-muted d-block mb-2 tracking-wider">Phiên Bản Bộ Nhớ:</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="variant-btn active">
+                            <span>256GB</span>
+                            <span class="variant-subtext">Tiêu chuẩn</span>
+                        </button>
+                        <button type="button" class="variant-btn">
+                            <span>512GB</span>
+                            <span class="variant-subtext">+3.500.000₫</span>
+                        </button>
+                        <button type="button" class="variant-btn">
+                            <span>1TB</span>
+                            <span class="variant-subtext">+8.000.000₫</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div class="mb-4">
+                    <label class="fw-bold small text-uppercase text-muted d-block mb-2 tracking-wider">Màu Sắc Thiết Bị:</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="color-option-btn active">
+                            <span class="color-circle" style="background-color: #94a3b8;"></span> Titan Tự Nhiên
+                        </button>
+                        <button type="button" class="color-option-btn">
+                            <span class="color-circle" style="background-color: #334155;"></span> Titan Đen
+                        </button>
+                        <button type="button" class="color-option-btn">
+                            <span class="color-circle" style="background-color: #f1f5f9;"></span> Titan Trắng
+                        </button>
+                        <button type="button" class="color-option-btn">
+                            <span class="color-circle" style="background-color: #fed7aa;"></span> Titan Sa Mạc
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Promotional Gift & Trade-in Box -->
+                <div class="promo-gift-box mb-4">
+                    <div class="d-flex align-items-center gap-2 fw-bold text-danger mb-2 small">
+                        <i class="bi bi-gift-fill"></i> ƯU ĐÃI ĐẶC QUYỀN KHI MUA TẠI 12B5 STORE:
+                    </div>
+                    <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-1">
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng củ sạc nhanh GaN 35W chính hãng trị giá <strong>690.000₫</strong></li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR tự động</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Trợ giá thu cũ đổi mới (Trade-in) lên đến <strong>2.500.000₫</strong></li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng gói bảo dưỡng, vệ sinh thiết bị định kỳ trọn đời máy</li>
+                    </ul>
+                </div>
 
                 <!-- Stock & Add to Cart Form -->
                 <form action="/cart/add" method="POST" class="mb-4">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
 
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <label class="fw-bold small text-muted text-uppercase mb-0">Số Lượng:</label>
+                        <label class="fw-bold small text-muted text-uppercase mb-0 tracking-wider">Số Lượng:</label>
                         <div class="input-group" style="max-width: 140px;">
-                            <button class="btn btn-outline-secondary" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value > 1) input.value--;">-</button>
+                            <button class="btn btn-outline-secondary rounded-start-pill" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value > 1) input.value--;">-</button>
                             <input type="number" id="qtyInput" name="quantity" class="form-control text-center font-monospace fw-bold" value="1" min="1" max="<?= $product['stock'] ?>">
-                            <button class="btn btn-outline-secondary" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value < <?= $product['stock'] ?>) input.value++;">+</button>
+                            <button class="btn btn-outline-secondary rounded-end-pill" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value < <?= $product['stock'] ?>) input.value++;">+</button>
                         </div>
                         <span class="small <?= $product['stock'] > 0 ? 'text-success' : 'text-danger' ?>">
                             <i class="bi <?= $product['stock'] > 0 ? 'bi-check-circle-fill' : 'bi-x-circle-fill' ?> me-1"></i>
-                            <?= $product['stock'] > 0 ? 'Còn hàng trong kho (' . $product['stock'] . ' sản phẩm)' : 'Tạm hết hàng' ?>
+                            <?= $product['stock'] > 0 ? 'Còn hàng tại 15 showroom (' . $product['stock'] . ' máy sẵn sàng)' : 'Tạm hết hàng' ?>
                         </span>
                     </div>
 
                     <div class="d-flex gap-3">
-                        <button type="submit" class="btn btn-primary btn-lg px-4 flex-grow-1 fw-bold shadow-sm" <?= $product['stock'] <= 0 ? 'disabled' : '' ?>>
+                        <button type="submit" class="btn btn-rose btn-lg px-4 flex-grow-1 fw-bold shadow-sm" <?= $product['stock'] <= 0 ? 'disabled' : '' ?>>
                             <i class="bi bi-cart-plus me-2"></i> Thêm Vào Giỏ Hàng
                         </button>
-                        <button type="button" class="btn btn-outline-primary btn-lg px-3 btn-ajax-add-cart" data-product-id="<?= $product['id'] ?>" title="Thêm nhanh">
-                            <i class="bi bi-lightning-charge"></i>
+                        <button type="button" class="btn btn-soft-slate btn-lg px-3 btn-ajax-add-cart" data-product-id="<?= $product['id'] ?>" title="Thêm nhanh tức thì">
+                            <i class="bi bi-lightning-charge text-danger"></i>
                         </button>
                     </div>
                 </form>
 
                 <!-- Guarantee checklist -->
                 <div class="border-top pt-3 text-muted small d-flex flex-column gap-2">
-                    <div><i class="bi bi-shield-check text-primary me-2"></i>Bảo hành 12 tháng tại các trung tâm bảo hành ủy quyền</div>
-                    <div><i class="bi bi-arrow-counterclockwise text-primary me-2"></i>Đổi mới trong 30 ngày nếu có lỗi do nhà sản xuất</div>
-                    <div><i class="bi bi-truck text-primary me-2"></i>Miễn phí vận chuyển toàn quốc cho đơn hàng từ 5.000.000đ</div>
+                    <div><i class="bi bi-shield-check text-danger me-2"></i>Bảo hành 24 tháng chính hãng tại tất cả TTBH ủy quyền Apple/Samsung/Sony/Dell</div>
+                    <div><i class="bi bi-arrow-counterclockwise text-danger me-2"></i>Đổi mới 1-đổi-1 trong 30 ngày nếu phát hiện lỗi từ nhà sản xuất</div>
+                    <div><i class="bi bi-truck text-danger me-2"></i>Miễn phí vận chuyển hỏa tốc 2 giờ toàn quốc cho đơn hàng từ 5.000.000₫</div>
                 </div>
             </div>
         </div>
@@ -104,8 +182,8 @@ require __DIR__ . '/../layouts/header.php';
     <div class="row g-4 mb-5">
         <div class="col-lg-7">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <h4 class="fw-bold mb-3"><i class="bi bi-file-text me-2 text-primary"></i>Mô Tả Chi Tiết Sản Phẩm</h4>
-                <div class="text-muted lh-lg">
+                <h4 class="fw-bold mb-3 text-dark"><i class="bi bi-file-earmark-text me-2 text-danger"></i>Mô Tả Chi Tiết Sản Phẩm</h4>
+                <div class="text-secondary lh-lg" style="font-size: 0.95rem;">
                     <?= nl2br(htmlspecialchars($product['description'] ?? '')) ?>
                 </div>
             </div>
@@ -113,22 +191,22 @@ require __DIR__ . '/../layouts/header.php';
 
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <h4 class="fw-bold mb-3"><i class="bi bi-cpu me-2 text-primary"></i>Thông Số Kỹ Thuật</h4>
+                <h4 class="fw-bold mb-3 text-dark"><i class="bi bi-cpu me-2 text-danger"></i>Thông Số Kỹ Thuật Chi Tiết</h4>
                 <?php if (!empty($product['specs_array'])): ?>
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover small mb-0">
+                        <table class="table table-striped table-hover small mb-0 align-middle">
                             <tbody>
                                 <?php foreach ($product['specs_array'] as $specKey => $specVal): ?>
                                     <tr>
-                                        <th class="text-muted fw-semibold text-uppercase" style="width: 35%;"><?= htmlspecialchars(str_replace('_', ' ', $specKey)) ?></th>
-                                        <td class="fw-medium"><?= htmlspecialchars(is_array($specVal) ? implode(', ', $specVal) : $specVal) ?></td>
+                                        <th class="text-muted fw-semibold text-uppercase" style="width: 38%; font-size: 0.75rem;"><?= htmlspecialchars(str_replace('_', ' ', $specKey)) ?></th>
+                                        <td class="fw-semibold text-dark"><?= htmlspecialchars(is_array($specVal) ? implode(', ', $specVal) : $specVal) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                 <?php else: ?>
-                    <p class="text-muted small">Chưa có thông số kỹ thuật chi tiết.</p>
+                    <p class="text-muted small">Đang cập nhật thông số kỹ thuật chi tiết từ nhà sản xuất.</p>
                 <?php endif; ?>
             </div>
         </div>
@@ -137,31 +215,36 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Smart Related Recommendations via Rust Cosine Similarity -->
     <?php if (!empty($relatedProducts)): ?>
         <div class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                 <div>
-                    <h4 class="fw-bold mb-1">Thiết Bị Cùng Phân Khúc Đề Xuất</h4>
-                    <span class="badge <?= $engineInfo['engine'] === 'rust' ? 'bg-warning text-dark' : 'bg-secondary' ?>">
-                        <i class="bi bi-cpu-fill"></i> Cosine Similarity: <?= $engineInfo['engine'] === 'rust' ? 'Rust High-Speed Engine' : 'PHP Core Engine' ?> (<?= $engineInfo['latency_ms'] ?>ms)
+                    <h4 class="fw-bold mb-1 text-dark">Thiết Bị Cùng Phân Khúc Đề Xuất</h4>
+                    <span class="badge <?= $engineInfo['engine'] === 'rust' ? 'bg-warning text-dark' : 'bg-secondary' ?> rounded-pill px-3 py-1">
+                        <i class="bi bi-cpu-fill"></i> Vector Cosine Similarity: <?= $engineInfo['engine'] === 'rust' ? 'Rust High-Speed Microservice' : 'PHP Core Engine' ?> (<?= $engineInfo['latency_ms'] ?>ms)
                     </span>
                 </div>
-                <a href="/products?category=<?= urlencode($product['category_slug']) ?>" class="small text-primary text-decoration-none">Xem thêm cùng loại &rarr;</a>
+                <a href="/products?category=<?= urlencode($product['category_slug']) ?>" class="btn btn-outline-rose btn-sm">Xem thêm cùng loại &rarr;</a>
             </div>
 
             <div class="row g-3">
-                <?php foreach ($relatedProducts as $rel): ?>
-                    <div class="col-6 col-md-3">
-                        <div class="tech-card p-3">
-                            <div class="text-center py-2">
-                                <i class="bi bi-device-hdd display-6 text-primary opacity-75"></i>
+                <?php foreach ($relatedProducts as $relProd): ?>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="tech-card">
+                            <div class="card-img-wrap py-4">
+                                <i class="bi bi-device-hdd display-5 text-primary opacity-75"></i>
                             </div>
-                            <h6 class="fw-bold small mb-2">
-                                <a href="/product/<?= urlencode($rel['slug']) ?>" class="text-dark text-decoration-none line-clamp-2">
-                                    <?= htmlspecialchars($rel['name']) ?>
-                                </a>
-                            </h6>
-                            <div class="mt-auto pt-2 d-flex justify-content-between align-items-center">
-                                <span class="fw-bold text-primary small"><?= $rel['formatted_price'] ?? number_format((float)$rel['price'], 0, ',', '.') . ' ₫' ?></span>
-                                <a href="/product/<?= urlencode($rel['slug']) ?>" class="btn btn-sm btn-outline-primary py-0 px-2">Xem</a>
+                            <div class="p-3 d-flex flex-column flex-grow-1">
+                                <span class="badge bg-light text-muted border rounded-pill px-2 py-1 small fw-semibold mb-1 w-auto d-inline-block">
+                                    <?= htmlspecialchars($relProd['brand_name'] ?? 'Chính Hãng') ?>
+                                </span>
+                                <h6 class="fw-bold mb-2">
+                                    <a href="/product/<?= urlencode($relProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                        <?= htmlspecialchars($relProd['name']) ?>
+                                    </a>
+                                </h6>
+                                <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                    <div class="price-current fs-6"><?= $relProd['formatted_price'] ?></div>
+                                    <a href="/product/<?= urlencode($relProd['slug']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -170,67 +253,75 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Customer Reviews Section -->
-    <div id="reviews" class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-5">
-        <h4 class="fw-bold mb-4"><i class="bi bi-chat-left-text me-2 text-primary"></i>Đánh Giá & Nhận Xét Từ Khách Hàng</h4>
+    <!-- Customer Reviews & Feedback Section -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-5">
+        <h4 class="fw-bold mb-4 text-dark"><i class="bi bi-chat-heart me-2 text-danger"></i>Đánh Giá & Nhận Xét Từ Khách Hàng</h4>
 
-        <div class="row g-4">
-            <!-- Review submission form -->
-            <div class="col-lg-5 border-end">
-                <h6 class="fw-bold mb-3">Gửi đánh giá của bạn</h6>
-                <form action="/product/review" method="POST">
+        <div class="row g-4 mb-4 pb-4 border-bottom align-items-center">
+            <div class="col-md-4 text-center border-end">
+                <div class="display-3 fw-bold text-danger mb-1"><?= $product['rating'] ?></div>
+                <div class="text-warning mb-2">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <i class="bi <?= $i <= round($product['rating']) ? 'bi-star-fill' : 'bi-star' ?>"></i>
+                    <?php endfor; ?>
+                </div>
+                <div class="text-muted small">Dựa trên <?= $product['review_count'] ?> đánh giá thực tế</div>
+            </div>
+
+            <div class="col-md-8">
+                <!-- Write a review form -->
+                <h6 class="fw-bold mb-2 text-dark">Gửi Đánh Giá Của Bạn</h6>
+                <form action="/product/review" method="POST" class="row g-2">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-
-                    <div class="mb-3">
-                        <label class="form-label small text-muted">Đánh giá số sao:</label>
-                        <select name="rating" class="form-select form-select-sm">
-                            <option value="5">⭐⭐⭐⭐⭐ (5/5 - Cực kỳ hài lòng)</option>
-                            <option value="4">⭐⭐⭐⭐ (4/5 - Rất tốt)</option>
-                            <option value="3">⭐⭐⭐ (3/5 - Bình thường)</option>
-                            <option value="2">⭐⭐ (2/5 - Kém)</option>
-                            <option value="1">⭐ (1/5 - Rất tệ)</option>
+                    <div class="col-sm-6">
+                        <input type="text" name="user_name" class="form-control form-control-sm rounded-3" placeholder="Họ và tên của bạn *" required value="<?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?>">
+                    </div>
+                    <div class="col-sm-6">
+                        <select name="rating" class="form-select form-select-sm rounded-3">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 sao - Cực kỳ hài lòng)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 sao - Hài lòng)</option>
+                            <option value="3">⭐⭐⭐ (3 sao - Bình thường)</option>
+                            <option value="2">⭐⭐ (2 sao - Chưa ưng ý)</option>
+                            <option value="1">⭐ (1 sao - Thất vọng)</option>
                         </select>
                     </div>
-
-                    <?php if (empty($_SESSION['user'])): ?>
-                        <div class="mb-3">
-                            <label class="form-label small text-muted">Họ và tên:</label>
-                            <input type="text" name="user_name" class="form-control form-control-sm" placeholder="Nhập tên của bạn" required>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="mb-3">
-                        <label class="form-label small text-muted">Nội dung nhận xét:</label>
-                        <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="Chia sẻ cảm nhận về thiết kế, hiệu năng, màn hình, pin..." required></textarea>
+                    <div class="col-12">
+                        <textarea name="comment" class="form-control form-control-sm rounded-3" rows="3" placeholder="Chia sẻ cảm nhận thực tế về thiết bị, hiệu năng, đóng gói và thời gian giao hàng..." required></textarea>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-sm px-4">Gửi Nhận Xét</button>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-rose btn-sm px-4">Gửi Đánh Giá</button>
+                    </div>
                 </form>
             </div>
+        </div>
 
-            <!-- Review list -->
-            <div class="col-lg-7">
-                <?php if (empty($reviews)): ?>
-                    <p class="text-muted small">Chưa có đánh giá nào cho sản phẩm này. Hãy là người đầu tiên để lại nhận xét!</p>
-                <?php else: ?>
-                    <div class="d-flex flex-column gap-3">
-                        <?php foreach ($reviews as $rev): ?>
-                            <div class="p-3 bg-light rounded-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="fw-bold small"><?= htmlspecialchars($rev['user_name']) ?></span>
-                                    <div class="text-warning small">
-                                        <?php for ($s = 1; $s <= 5; $s++): ?>
-                                            <i class="bi <?= $s <= (int)$rev['rating'] ? 'bi-star-fill' : 'bi-star' ?>"></i>
-                                        <?php endfor; ?>
-                                    </div>
-                                </div>
-                                <p class="small text-muted mb-1"><?= nl2br(htmlspecialchars($rev['comment'])) ?></p>
-                                <span class="text-muted" style="font-size: 0.75rem;"><?= htmlspecialchars($rev['created_at']) ?></span>
+        <!-- Reviews List -->
+        <div class="d-flex flex-column gap-3">
+            <?php if (!empty($reviews)): ?>
+                <?php foreach ($reviews as $rev): ?>
+                    <div class="p-3 bg-light rounded-4 border">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-bold small text-dark"><?= htmlspecialchars($rev['user_name']) ?></span>
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill small" style="font-size: 0.68rem;">
+                                    <i class="bi bi-patch-check-fill"></i> Đã mua hàng tại 12B5 Store
+                                </span>
                             </div>
-                        <?php endforeach; ?>
+                            <span class="text-muted small" style="font-size: 0.75rem;"><?= htmlspecialchars($rev['created_at'] ?? 'Vừa xong') ?></span>
+                        </div>
+                        <div class="text-warning small mb-2">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <i class="bi <?= $i <= $rev['rating'] ? 'bi-star-fill' : 'bi-star' ?>"></i>
+                            <?php endfor; ?>
+                        </div>
+                        <p class="mb-0 text-secondary small"><?= nl2br(htmlspecialchars($rev['comment'])) ?></p>
                     </div>
-                <?php endif; ?>
-            </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="p-4 text-center text-muted small bg-light rounded-4">
+                    Chưa có đánh giá nào cho sản phẩm này. Hãy là người đầu tiên trải nghiệm và chia sẻ!
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
