@@ -101,7 +101,7 @@ pub fn execute_search(req: SearchRequest) -> SearchResponse {
         let full_text = text_parts.join(" ");
         let full_text_tokens: Vec<&str> = full_text.split_whitespace().collect();
 
-        let mut score = 0.0;
+        let mut score: f64 = 0.0;
 
         // 1. Exact phrase match
         if full_text.contains(&q) {
@@ -110,7 +110,7 @@ pub fn execute_search(req: SearchRequest) -> SearchResponse {
 
         // 2. Token overlap and fuzzy matching
         for q_tok in &query_tokens {
-            let mut best_token_score = 0.0;
+            let mut best_token_score: f64 = 0.0;
 
             for d_tok in &full_text_tokens {
                 if d_tok == q_tok {

@@ -6,7 +6,6 @@ mod recommender;
 mod search;
 
 use handlers::ServerContext;
-use std::io::Read;
 use std::sync::Arc;
 use std::time::Instant;
 use tiny_http::{Header, Response, Server, StatusCode};
