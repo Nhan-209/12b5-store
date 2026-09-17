@@ -1,0 +1,96 @@
+name: ElectroStore Hybrid CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # 1. PHP Quality Control and Automated Tests
+  test-php:
+    name: PHP Lint & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, pdo_mysql, curl, mbstring, json
+          coverage: none
+
+      - name: PHP Syntax Check (Lint All Files)
+        run: |
+          echo "Checking syntax across all PHP files..."
+          find app public database -name "*.php" -exec php -l {} \;
+
+      - name: Run Database Migration (SQLite Engine)
+        run: |
+          php database/migrate.php --driver=sqlite
+
+      - name: Run PHP Unit & Integration Test Suite
+        run: |
+          php tests/run_tests.php
+
+  # 2. Rust Microservice Build, Tests & Cross-Platform Compilation
+  build-rust:
+    name: Rust Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            binary_name: rust_engine.exe
+            output_dir: bin/windows
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary_name: rust_engine
+            output_dir: bin/linux
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust Cache Dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust-engine
+
+      - name: Run Rust Unit Tests
+        working-directory: ./rust-engine
+        run: |
+          cargo test --verbose
+
+      - name: Build Optimized Release Binary
+        working-directory: ./rust-engine
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+
+      - name: Prepare Artifact Directory
+        shell: bash
+        run: |
+          mkdir -p ${{ matrix.output_dir }}
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            cp rust-engine/target/${{ matrix.target }}/release/rust-engine.exe ${{ matrix.output_dir }}/rust_engine.exe
+          else
+            cp rust-engine/target/${{ matrix.target }}/release/rust-engine ${{ matrix.output_dir }}/rust_engine
+            chmod +x ${{ matrix.output_dir }}/rust_engine
+          fi
+
+      - name: Upload Binary Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-engine-${{ matrix.os }}
+          path: ${{ matrix.output_dir }}/
+          retention-days: 14

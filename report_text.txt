@@ -1,0 +1,483 @@
+SỞ GIÁO DỤC VÀ ĐÀO TẠO TP.HCM
+TRƯỜNG TRUNG CẤP ÂU VIỆT
+KHOA KỸ THUẬT – CÔNG NGHỆ
+www.auviet.edu.vn
+ĐỒ ÁN TỐT NGHIỆP
+Giáo viên hướng dẫn :
+........................................................
+Học sinh thực hiện :
+........................................................
+MSHS :
+........................................................
+Ngành :
+CÔNG NGHỆ THÔNG TIN
+Khóa :
+........................................................
+Tên đồ án: “XÂY DỰNG WEBSITE BÁN ĐIỆN THOẠI TRỰC TUYẾN”
+TP. Hồ Chí Minh, tháng 09 năm 2026
+LỜI CẢM ƠN
+Trong quá trình học tập và thực hiện đồ án tốt nghiệp, em đã nhận được nhiều sự hỗ trợ, hướng dẫn và động viên từ quý thầy cô, gia đình và bạn bè. Em xin chân thành cảm ơn Ban Giám hiệu Trường Trung cấp Âu Việt, Khoa Kỹ thuật – Công nghệ cùng quý thầy cô đã truyền đạt kiến thức và tạo điều kiện để em hoàn thành chương trình học.
+Em xin gửi lời cảm ơn sâu sắc đến giáo viên hướng dẫn đã tận tình góp ý về nội dung, phương pháp phân tích hệ thống, cách tổ chức cơ sở dữ liệu và quy trình triển khai website bán điện thoại. Những nhận xét trong quá trình thực hiện đã giúp em hiểu rõ hơn cách vận dụng kiến thức lập trình web vào một bài toán thương mại điện tử cụ thể.
+Em cũng xin cảm ơn gia đình và các bạn đã hỗ trợ, trao đổi và góp ý trong quá trình xây dựng giao diện, kiểm thử chức năng và hoàn thiện báo cáo. Mặc dù đã cố gắng, đồ án vẫn có thể còn những hạn chế. Em kính mong nhận được ý kiến đóng góp của quý thầy cô để sản phẩm được hoàn thiện hơn.
+TP. Hồ Chí Minh, ngày ..... tháng ..... năm 2026
+HỌC SINH
+(ký và ghi rõ họ tên)
+MỤC LỤC
+CHƯƠNG 1: GIỚI THIỆU
+1
+1.1. Lý do chọn đề tài
+1
+1.2. Mục tiêu nghiên cứu
+1
+1.3. Phạm vi đề tài
+2
+1.4. Phương pháp nghiên cứu
+2
+1.5. Cấu trúc đồ án
+3
+CHƯƠNG 2: CƠ SỞ LÝ THUYẾT
+4
+2.1. Tổng quan về công nghệ sử dụng
+4
+2.2. Các khái niệm liên quan
+5
+2.3. Mô hình phát triển hệ thống
+6
+CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+7
+3.1. Khảo sát hiện trạng
+7
+3.2. Phân tích yêu cầu hệ thống
+7
+3.3. Mô hình phân tích
+10
+3.4. Thiết kế hệ thống
+13
+CHƯƠNG 4: TRIỂN KHAI HỆ THỐNG
+17
+4.1. Môi trường triển khai
+17
+4.2. Cài đặt và cấu hình
+17
+4.3. Mô tả các chức năng đã triển khai
+18
+4.4. Kiểm thử hệ thống
+19
+CHƯƠNG 5: ĐÁNH GIÁ, KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
+22
+5.1. Đánh giá kết quả đạt được
+22
+5.2. Kết luận
+22
+5.3. Hướng phát triển
+23
+CHƯƠNG 1: GIỚI THIỆU
+1.1. Lý do chọn đề tài
+Thị trường điện thoại thông minh có số lượng sản phẩm lớn, cấu hình đa dạng và mức giá thay đổi theo từng thời điểm. Người mua thường có nhu cầu tìm kiếm, so sánh và đặt mua sản phẩm trực tuyến thay vì đến trực tiếp cửa hàng. Vì vậy, một website bán điện thoại có khả năng trình bày thông tin rõ ràng, hỗ trợ tìm kiếm nhanh, quản lý giỏ hàng và đặt hàng trực tuyến là một bài toán phù hợp để áp dụng kiến thức về lập trình web và cơ sở dữ liệu.
+Đối với cửa hàng, quản lý sản phẩm bằng bảng tính hoặc ghi chép thủ công dễ phát sinh tình trạng sai giá, sai số lượng tồn kho và khó theo dõi trạng thái đơn hàng. Khi số lượng sản phẩm tăng, nhân viên cũng gặp khó khăn trong việc cập nhật thông tin từng mẫu điện thoại, phân loại theo hãng, quản lý khách hàng và thống kê doanh thu.
+Từ nhu cầu trên, đồ án lựa chọn đề tài “Xây dựng website bán điện thoại trực tuyến”. Hệ thống hướng đến hai nhóm người sử dụng chính là khách hàng và quản trị viên. Khách hàng có thể xem, tìm kiếm, chọn sản phẩm và đặt hàng; quản trị viên có thể quản lý dữ liệu sản phẩm, đơn hàng và người dùng. Đề tài giúp người thực hiện rèn luyện quy trình phân tích yêu cầu, thiết kế cơ sở dữ liệu, xây dựng giao diện, lập trình chức năng và kiểm thử hệ thống.
+1.2. Mục tiêu nghiên cứu
+Mục tiêu tổng quát của đồ án là xây dựng một website thương mại điện tử quy mô nhỏ phục vụ việc giới thiệu và bán điện thoại trực tuyến, bảo đảm các chức năng cơ bản hoạt động thống nhất trên cùng một hệ thống.
+Xây dựng giao diện website có bố cục rõ ràng, hiển thị tốt trên máy tính và thiết bị di động.
+Cho phép khách hàng đăng ký, đăng nhập, xem danh sách điện thoại, lọc/tìm kiếm theo từ khóa, hãng và mức giá.
+Cho phép khách hàng xem chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng, cập nhật số lượng và tạo đơn đặt hàng.
+Cho phép quản trị viên thêm, sửa, xóa hoặc ngừng kinh doanh sản phẩm; quản lý hãng, danh mục và tồn kho.
+Cho phép quản trị viên theo dõi và cập nhật trạng thái đơn hàng, quản lý tài khoản người dùng và xem các số liệu doanh thu cơ bản.
+Thiết kế cơ sở dữ liệu quan hệ để lưu trữ tập trung thông tin người dùng, sản phẩm, giỏ hàng, đơn hàng và thanh toán.
+Thực hiện kiểm thử các luồng chính nhằm phát hiện lỗi và đánh giá mức độ đáp ứng yêu cầu ban đầu.
+1.3. Phạm vi đề tài
+Đồ án tập trung vào website bán điện thoại cho một cửa hàng bán lẻ giả định. Phạm vi chức năng được giới hạn ở quy trình mua hàng trực tuyến cơ bản từ lúc khách hàng xem sản phẩm đến khi tạo đơn hàng.
+Đối tượng sử dụng: khách vãng lai, khách hàng có tài khoản và quản trị viên.
+Dữ liệu sản phẩm: điện thoại, hãng sản xuất, danh mục, giá bán, số lượng tồn kho, mô tả và hình ảnh.
+Chức năng mua hàng: giỏ hàng, nhập thông tin nhận hàng, chọn phương thức thanh toán và tạo đơn.
+Chức năng quản trị: quản lý sản phẩm, danh mục, hãng, đơn hàng và người dùng.
+Thanh toán trong phạm vi mẫu gồm COD và ghi nhận chuyển khoản; chưa tích hợp cổng thanh toán ngân hàng thực tế.
+Chưa triển khai các nghiệp vụ nâng cao như quản lý nhiều chi nhánh, kho đa địa điểm, hóa đơn điện tử, chương trình thành viên hoặc vận chuyển thời gian thực.
+1.4. Phương pháp nghiên cứu
+Quá trình thực hiện đồ án sử dụng kết hợp phương pháp khảo sát nghiệp vụ, phân tích hệ thống và phát triển phần mềm theo từng vòng lặp nhỏ. Trước hết, các chức năng phổ biến của website thương mại điện tử được khảo sát để xác định tác nhân và quy trình chính. Sau đó yêu cầu được mô hình hóa bằng các biểu đồ UML và thiết kế cơ sở dữ liệu.
+1. Thu thập và phân tích yêu cầu đối với quy trình bán điện thoại trực tuyến.
+2. Mô hình hóa hệ thống bằng Use Case, Activity Diagram, Class Diagram và Sequence Diagram.
+3. Thiết kế kiến trúc theo mô hình Client–Server, tổ chức mã nguồn PHP theo MVC đơn giản; thiết kế cơ sở dữ liệu trên MySQL.
+4. Xây dựng các module theo mức độ ưu tiên: tài khoản, sản phẩm, giỏ hàng, đặt hàng và quản trị.
+5. Kiểm thử thủ công kết hợp kiểm thử đơn vị cho các nghiệp vụ quan trọng như tính tổng tiền, kiểm tra tồn kho và tạo đơn hàng.
+6. Đánh giá kết quả, ghi nhận hạn chế và đề xuất hướng phát triển.
+1.5. Cấu trúc đồ án
+Báo cáo gồm năm chương. Chương 1 trình bày lý do chọn đề tài, mục tiêu, phạm vi và phương pháp thực hiện. Chương 2 giới thiệu các công nghệ và khái niệm liên quan. Chương 3 phân tích yêu cầu, mô hình hóa và thiết kế hệ thống. Chương 4 trình bày môi trường triển khai, quy trình cài đặt, các chức năng chính và kết quả kiểm thử. Chương 5 đánh giá kết quả đạt được, nêu kết luận và hướng phát triển của hệ thống.
+CHƯƠNG 2: CƠ SỞ LÝ THUYẾT
+2.1. Tổng quan về công nghệ sử dụng
+2.1.1. HTML, CSS và JavaScript
+HTML được sử dụng để xây dựng cấu trúc nội dung của trang web như phần đầu trang, danh sách sản phẩm, biểu mẫu đăng nhập và trang thanh toán. CSS chịu trách nhiệm định dạng bố cục, khoảng cách, kiểu chữ và khả năng hiển thị trên nhiều kích thước màn hình. JavaScript được dùng cho các tương tác phía trình duyệt như cập nhật số lượng trong giỏ hàng, hiển thị thông báo và kiểm tra dữ liệu đầu vào trước khi gửi về máy chủ.
+2.1.2. Bootstrap
+Bootstrap là thư viện giao diện hỗ trợ xây dựng nhanh bố cục responsive. Trong đồ án, Bootstrap được dùng cho hệ thống lưới, thanh điều hướng, nút, biểu mẫu, thẻ sản phẩm, bảng dữ liệu quản trị và hộp thoại xác nhận. Việc sử dụng thư viện giúp giao diện nhất quán và giảm thời gian viết CSS thủ công.
+2.1.3. PHP và mô hình MVC
+PHP là ngôn ngữ lập trình chính phía máy chủ. Trong đồ án, mã nguồn PHP được tổ chức theo mô hình MVC đơn giản gồm Model, View và Controller. Model đại diện dữ liệu và các thao tác liên quan đến dữ liệu; View hiển thị giao diện bằng HTML kết hợp PHP; Controller tiếp nhận yêu cầu từ người dùng, kiểm tra dữ liệu, gọi lớp nghiệp vụ hoặc Model và chuyển kết quả đến View. Cách tổ chức này giúp tách phần giao diện khỏi phần xử lý và thuận lợi hơn khi bảo trì.
+2.1.4. PDO (PHP Data Objects)
+PDO (PHP Data Objects) là lớp truy cập cơ sở dữ liệu có sẵn trong PHP. Đồ án sử dụng PDO để kết nối tới MySQL, thực hiện các thao tác thêm, sửa, xóa và truy vấn dữ liệu. Các câu lệnh có tham số được thực thi bằng Prepared Statement nhằm hạn chế nguy cơ SQL Injection và giúp phần truy cập dữ liệu nhất quán hơn.
+2.1.5. MySQL
+MySQL được sử dụng để lưu trữ dữ liệu có cấu trúc của hệ thống. Cơ sở dữ liệu gồm các bảng về tài khoản, sản phẩm, hãng, danh mục, giỏ hàng, đơn hàng, chi tiết đơn hàng và thanh toán. Các khóa chính, khóa ngoại, chỉ mục và ràng buộc dữ liệu giúp bảo đảm tính toàn vẹn cũng như hỗ trợ truy vấn hiệu quả.
+2.1.6. Apache, Visual Studio Code và Git
+Apache HTTP Server được dùng làm máy chủ web để tiếp nhận yêu cầu HTTP và thực thi ứng dụng PHP trong môi trường phát triển. Visual Studio Code được dùng để viết mã PHP, HTML, CSS và JavaScript. Git hỗ trợ quản lý phiên bản mã nguồn, theo dõi thay đổi và quay lại phiên bản ổn định khi cần thiết.
+2.2. Các khái niệm liên quan
+2.2.1. Website thương mại điện tử
+Website thương mại điện tử là hệ thống cho phép giới thiệu sản phẩm và hỗ trợ các bước của quá trình mua bán thông qua môi trường Internet. Đối với đề tài này, website đóng vai trò kênh bán hàng, nơi khách hàng tra cứu thông tin điện thoại, lựa chọn sản phẩm và gửi yêu cầu đặt hàng đến cửa hàng.
+2.2.2. Danh mục và thông tin sản phẩm
+Danh mục sản phẩm giúp phân nhóm dữ liệu để người dùng dễ tìm kiếm. Mỗi điện thoại cần có các thông tin tối thiểu gồm tên sản phẩm, hãng, giá bán, tồn kho, hình ảnh, mô tả và trạng thái kinh doanh. Một số thuộc tính kỹ thuật như RAM, bộ nhớ, kích thước màn hình và camera có thể lưu trong phần mô tả hoặc mở rộng thành bảng thông số riêng trong phiên bản sau.
+2.2.3. Giỏ hàng
+Giỏ hàng là tập hợp tạm thời các sản phẩm mà khách hàng dự định mua. Mỗi dòng giỏ hàng cần lưu sản phẩm, số lượng và đơn giá tại thời điểm thêm. Hệ thống phải kiểm tra số lượng hợp lệ và không cho phép đặt số lượng lớn hơn tồn kho. Tổng tiền giỏ hàng được tính từ tổng của số lượng nhân với đơn giá của từng dòng.
+2.2.4. Đơn hàng và trạng thái đơn hàng
+Khi khách hàng xác nhận mua, dữ liệu giỏ hàng được chuyển thành đơn hàng và các chi tiết đơn hàng. Trạng thái đơn hàng được quản lý theo chuỗi xử lý: Mới tạo, Đã xác nhận, Đang giao, Hoàn thành hoặc Đã hủy. Việc cập nhật trạng thái giúp khách hàng và quản trị viên theo dõi tiến độ xử lý.
+2.2.5. Xác thực và phân quyền
+Xác thực dùng để xác định người dùng đã đăng nhập hay chưa, trong khi phân quyền quyết định người dùng được phép truy cập chức năng nào. Khách hàng chỉ được quản lý thông tin và đơn hàng của chính mình; quản trị viên được truy cập khu vực quản trị. Mật khẩu cần được lưu dưới dạng băm thay vì văn bản thuần.
+2.3. Các mô hình phân tích hệ thống
+2.3.1. Mô hình thác nước và Agile
+Mô hình thác nước tổ chức dự án theo các giai đoạn tương đối tuần tự như phân tích, thiết kế, lập trình và kiểm thử. Cách tiếp cận này dễ theo dõi nhưng khó thích nghi khi yêu cầu thay đổi trong quá trình thực hiện. Agile khuyến khích phát triển theo vòng lặp ngắn, liên tục nhận phản hồi và ưu tiên sản phẩm chạy được.
+2.3.2. Cách áp dụng cho đồ án
+Đồ án áp dụng cách tiếp cận gần với Agile ở quy mô nhỏ. Các chức năng được chia thành từng nhóm và hoàn thành theo thứ tự: nền tảng dữ liệu và đăng nhập, danh sách sản phẩm, giỏ hàng, đặt hàng, khu vực quản trị và cuối cùng là kiểm thử. Mỗi nhóm chức năng sau khi hoàn thành được chạy thử trước khi chuyển sang phần tiếp theo. Cách làm này giúp phát hiện sớm lỗi thiết kế và giảm rủi ro dồn lỗi vào cuối quá trình.
+CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+3.1. Khảo sát hiện trạng
+Trong mô hình cửa hàng bán điện thoại quy mô nhỏ, việc quản lý sản phẩm và đơn hàng đôi khi được thực hiện bằng bảng tính hoặc qua tin nhắn mạng xã hội. Khi khách hàng hỏi giá hoặc tình trạng còn hàng, nhân viên phải kiểm tra thủ công. Cách làm này phù hợp khi số lượng đơn ít nhưng trở nên khó quản lý khi số lượng sản phẩm và khách hàng tăng.
+Các vấn đề chính được xác định gồm: thông tin sản phẩm phân tán; khó cập nhật đồng thời giá và tồn kho; khách hàng không chủ động tra cứu ngoài giờ làm việc; nhân viên mất thời gian trả lời các câu hỏi lặp lại; lịch sử đơn hàng khó tổng hợp; và chưa có giao diện thống kê cơ bản cho quản trị viên.
+Hệ thống đề xuất tập trung dữ liệu trên website, tách rõ khu vực khách hàng và khu vực quản trị. Các thao tác chính được lưu trong cơ sở dữ liệu để thuận lợi cho việc tra cứu và kiểm soát trạng thái.
+3.2. Phân tích yêu cầu hệ thống
+3.2.1. Tác nhân của hệ thống
+Tác nhân
+Mô tả
+Quyền chính
+Khách vãng lai
+Người chưa đăng nhập website.
+Xem danh sách, tìm kiếm, lọc và xem chi tiết sản phẩm; đăng ký tài khoản.
+Khách hàng
+Người dùng đã đăng ký và đăng nhập.
+Thực hiện các quyền của khách vãng lai; quản lý giỏ hàng; đặt hàng; xem lịch sử và trạng thái đơn.
+Quản trị viên
+Người quản lý nội dung và nghiệp vụ cửa hàng.
+Quản lý sản phẩm, hãng, danh mục, người dùng, đơn hàng; xem báo cáo tổng hợp.
+3.2.2. Yêu cầu chức năng
+Mã
+Chức năng
+Mô tả
+F01
+Đăng ký tài khoản
+Khách nhập họ tên, email, mật khẩu; hệ thống kiểm tra email không trùng và tạo tài khoản.
+F02
+Đăng nhập/đăng xuất
+Xác thực thông tin người dùng và tạo phiên đăng nhập phù hợp với vai trò.
+F03
+Xem danh sách sản phẩm
+Hiển thị sản phẩm đang kinh doanh kèm ảnh, tên, giá và trạng thái còn hàng.
+F04
+Tìm kiếm và lọc
+Tìm theo tên; lọc theo hãng, danh mục, khoảng giá và sắp xếp theo giá.
+F05
+Xem chi tiết
+Hiển thị mô tả, thông số chính, giá, tồn kho và nút mua hàng.
+F06
+Quản lý giỏ hàng
+Thêm, xóa, cập nhật số lượng và tính tổng tiền.
+F07
+Đặt hàng
+Nhập địa chỉ nhận hàng, chọn phương thức thanh toán, kiểm tra tồn kho và tạo đơn.
+F08
+Theo dõi đơn hàng
+Khách xem danh sách đơn và trạng thái xử lý.
+F09
+Quản lý sản phẩm
+Admin thêm/sửa/xóa mềm sản phẩm, cập nhật giá, ảnh và tồn kho.
+F10
+Quản lý hãng/danh mục
+Admin thêm/sửa/xóa hãng và danh mục.
+F11
+Quản lý đơn hàng
+Admin xem chi tiết, xác nhận, chuyển trạng thái hoặc hủy đơn.
+F12
+Quản lý người dùng
+Admin xem danh sách tài khoản và khóa/mở tài khoản.
+F13
+Báo cáo cơ bản
+Admin xem số đơn, doanh thu theo khoảng thời gian và sản phẩm bán nhiều.
+3.2.3. Yêu cầu phi chức năng
+Mã
+Nhóm yêu cầu
+Nội dung
+NF01
+Hiệu năng
+Trang danh sách sản phẩm phản hồi trong khoảng thời gian hợp lý với dữ liệu thử nghiệm; phân trang khi số lượng sản phẩm lớn.
+NF02
+Bảo mật
+Mật khẩu băm; phân quyền khu vực Admin; kiểm tra dữ liệu đầu vào; chống truy cập trái phép vào đơn hàng của người khác.
+NF03
+Khả dụng
+Giao diện rõ ràng, thao tác mua hàng ngắn; thông báo lỗi dễ hiểu.
+NF04
+Tương thích
+Hoạt động trên các trình duyệt phổ biến và giao diện responsive.
+NF05
+Toàn vẹn dữ liệu
+Không tạo đơn nếu sản phẩm không đủ tồn kho; chi tiết đơn lưu đơn giá tại thời điểm mua.
+NF06
+Bảo trì
+Mã nguồn chia lớp theo MVC và tầng dịch vụ; tên biến, lớp và chức năng rõ ràng.
+3.3. Mô hình phân tích
+3.3.1. Biểu đồ Use Case
+Hình 3.1. Biểu đồ Use Case tổng quát của hệ thống
+Biểu đồ Use Case cho thấy khách hàng tập trung vào quá trình tra cứu và mua sản phẩm, trong khi quản trị viên tập trung vào quản lý dữ liệu và vận hành đơn hàng. Cả hai nhóm đều sử dụng chức năng đăng nhập, nhưng quyền truy cập sau đăng nhập khác nhau tùy vai trò.
+3.3.2. Biểu đồ hoạt động đặt hàng
+Hình 3.2. Activity Diagram cho quy trình đặt hàng
+Luồng đặt hàng bắt đầu khi khách hàng chọn sản phẩm và thêm vào giỏ. Trước khi tạo đơn, hệ thống yêu cầu người dùng đăng nhập, nhập thông tin nhận hàng và chọn phương thức thanh toán. Kiểm tra tồn kho là bước bắt buộc nhằm tránh tình trạng đặt số lượng vượt quá số lượng đang có. Khi đủ hàng, hệ thống tạo đơn, lưu chi tiết và cập nhật tồn kho.
+3.3.3. Biểu đồ lớp
+Hình 3.3. Class Diagram các lớp dữ liệu và nghiệp vụ chính
+Các lớp chính được thiết kế bám sát dữ liệu nghiệp vụ. User liên kết với Cart và Order. Product thuộc một Brand và một Category, đồng thời có thể xuất hiện trong CartItem và OrderDetail. Payment liên kết với Order theo quan hệ một đơn có thể có một bản ghi thanh toán. Các phương thức trong sơ đồ thể hiện một số hành vi quan trọng, còn phần xử lý chi tiết được đặt tại tầng dịch vụ khi triển khai.
+3.3.4. Biểu đồ tuần tự đặt hàng
+Hình 3.4. Sequence Diagram cho chức năng tạo đơn hàng
+Biểu đồ tuần tự mô tả sự phối hợp giữa khách hàng, giao diện web, Controller PHP, tầng nghiệp vụ và cơ sở dữ liệu MySQL. Việc tách OrderService ra khỏi Controller giúp nghiệp vụ kiểm tra tồn kho, tạo đơn và cập nhật số lượng được tập trung tại một nơi, giảm lặp mã và thuận lợi cho kiểm thử.
+3.4. Thiết kế hệ thống
+3.4.1. Kiến trúc tổng thể
+Hình 3.5. Kiến trúc tổng thể của hệ thống
+Hệ thống được thiết kế theo mô hình Client–Server. Trình duyệt gửi yêu cầu HTTP/HTTPS đến Apache và ứng dụng PHP. Mã nguồn được tổ chức theo MVC đơn giản: View chịu trách nhiệm hiển thị, Controller tiếp nhận yêu cầu và điều phối, tầng Business xử lý nghiệp vụ, còn tầng Data Access dùng PDO để làm việc với MySQL. Cách tổ chức này giúp tách biệt trách nhiệm và hạn chế việc viết trực tiếp câu lệnh truy vấn trong View.
+3.4.2. Thiết kế cơ sở dữ liệu
+Hình 3.6. Sơ đồ ERD của cơ sở dữ liệu
+Cơ sở dữ liệu được chuẩn hóa ở mức phù hợp cho đồ án. Thông tin hãng và danh mục được tách khỏi bảng sản phẩm để tránh lặp dữ liệu. Đơn hàng và chi tiết đơn hàng được tách thành quan hệ một – nhiều. Đơn giá được lưu tại OrderDetails để giữ nguyên giá trị giao dịch ngay cả khi giá sản phẩm thay đổi sau đó.
+Bảng
+Mục đích
+Khóa chính
+Users
+Tài khoản người dùng và vai trò.
+UserId
+Brands
+Danh sách hãng điện thoại.
+BrandId
+Categories
+Nhóm sản phẩm.
+CategoryId
+Products
+Thông tin điện thoại, giá và tồn kho.
+ProductId
+Carts
+Giỏ hàng theo người dùng.
+CartId
+CartItems
+Các dòng sản phẩm trong giỏ.
+CartItemId
+Orders
+Thông tin chung của đơn hàng.
+OrderId
+OrderDetails
+Chi tiết từng sản phẩm của đơn.
+OrderDetailId
+Payments
+Thông tin phương thức và trạng thái thanh toán.
+PaymentId
+3.4.3. Thiết kế giao diện người dùng
+Giao diện được thiết kế theo nguyên tắc ưu tiên nội dung sản phẩm và thao tác mua hàng. Thanh điều hướng xuất hiện nhất quán, ô tìm kiếm được đặt ở vị trí dễ quan sát và giỏ hàng có thể truy cập nhanh. Các màn hình dưới đây là wireframe minh họa cho bố cục trước khi hoàn thiện giao diện thực tế.
+Hình 3.7. Wireframe trang chủ và danh sách sản phẩm
+Hình 3.8. Wireframe trang chi tiết sản phẩm
+Hình 3.9. Wireframe trang thanh toán
+Hình 3.10. Wireframe khu vực quản trị
+CHƯƠNG 4: TRIỂN KHAI HỆ THỐNG
+4.1. Môi trường triển khai
+Thành phần
+Công cụ/phiên bản đề xuất
+Mục đích
+Hệ điều hành
+Windows 10/11
+Môi trường phát triển và chạy thử.
+Trình soạn thảo
+Visual Studio Code
+Viết mã PHP, HTML, CSS, JavaScript và debug.
+Web Server
+Apache 2.4
+Tiếp nhận yêu cầu HTTP và chạy ứng dụng PHP.
+Ngôn ngữ
+PHP 8.3
+Xử lý nghiệp vụ phía máy chủ.
+Truy cập CSDL
+PDO
+Kết nối MySQL và thực thi Prepared Statement.
+CSDL
+MySQL 8.0
+Lưu dữ liệu hệ thống.
+Giao diện
+Bootstrap 5, JavaScript
+Xây dựng giao diện responsive.
+Quản lý mã nguồn
+Git
+Theo dõi phiên bản mã nguồn.
+Trong quá trình phát triển, ứng dụng PHP được chạy trên Apache với MySQL cài đặt tại máy cục bộ. Có thể dùng phpMyAdmin hoặc MySQL Workbench để tạo và quản lý cơ sở dữ liệu. Khi triển khai thực tế, website có thể được đặt trên hosting hoặc máy chủ hỗ trợ PHP và MySQL. Báo cáo mẫu này tập trung vào môi trường phát triển cục bộ.
+4.2. Cài đặt và cấu hình
+4.2.1. Quy trình cài đặt
+1. Cài đặt Visual Studio Code và các tiện ích hỗ trợ PHP nếu cần.
+2. Cài đặt Apache, PHP 8.x và MySQL 8.0; cài phpMyAdmin hoặc MySQL Workbench để quản lý dữ liệu.
+3. Tạo thư mục dự án PHP và tổ chức mã nguồn theo các thư mục Model, View, Controller, Service và config.
+4. Kích hoạt extension pdo_mysql trong PHP và kiểm tra kết nối PDO tới MySQL.
+5. Khai báo thông tin kết nối cơ sở dữ liệu trong tệp config/database.php.
+6. Tạo cơ sở dữ liệu phone_store và các bảng bằng script SQL hoặc công cụ quản trị MySQL.
+7. Tạo dữ liệu mẫu cho hãng, danh mục và một số sản phẩm để kiểm thử.
+8. Chạy dự án, kiểm tra chức năng khách hàng và đăng nhập quản trị viên.
+4.2.2. Cấu hình cơ sở dữ liệu
+Thông tin kết nối MySQL được đặt trong tệp config/database.php thay vì viết lặp lại trong từng chức năng. Ứng dụng tạo một đối tượng PDO dùng chung cho các lớp truy cập dữ liệu. PDO được cấu hình sử dụng UTF-8, chế độ báo lỗi bằng exception và Prepared Statement. Cách làm này giúp cấu hình tập trung, dễ thay đổi máy chủ cơ sở dữ liệu và an toàn hơn khi xử lý dữ liệu đầu vào.
+<?php
+$host = "localhost";
+$db   = "phone_store";
+$user = "root";
+$pass = "";
+$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$pdo = new PDO($dsn, $user, $pass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+]);
+?>
+4.2.3. Cấu hình phân quyền
+Tài khoản người dùng có thuộc tính Role để phân biệt Customer và Admin. Sau khi đăng nhập, hệ thống lưu thông tin cần thiết vào Session. Các Controller hoặc trang quản trị kiểm tra Session và vai trò Admin trước khi thực hiện chức năng. Mật khẩu được tạo bằng password_hash() và xác minh bằng password_verify(). Trường hợp chưa đăng nhập hoặc không đủ quyền, hệ thống chuyển về trang đăng nhập hoặc trang thông báo không có quyền.
+4.3. Mô tả các chức năng đã triển khai
+4.3.1. Đăng ký và đăng nhập
+Người dùng đăng ký bằng họ tên, email và mật khẩu. Hệ thống kiểm tra định dạng email, độ dài mật khẩu và tình trạng email đã tồn tại. Sau khi đăng nhập thành công, người dùng được chuyển đến trang chủ; tài khoản quản trị được phép truy cập thêm khu vực /Admin. Chức năng đăng xuất xóa thông tin xác thực của phiên hiện tại.
+4.3.2. Xem, tìm kiếm và lọc sản phẩm
+Trang sản phẩm đọc dữ liệu từ bảng Products, chỉ hiển thị sản phẩm đang kinh doanh. Người dùng có thể nhập từ khóa để tìm theo tên. Bộ lọc hãng, danh mục và khoảng giá giúp thu hẹp kết quả. Khi số lượng sản phẩm lớn, danh sách được phân trang để tránh tải quá nhiều dữ liệu trong một lần.
+4.3.3. Chi tiết sản phẩm
+Màn hình chi tiết hiển thị tên, giá, số lượng còn lại, mô tả và hình ảnh. Khi sản phẩm hết hàng, nút mua được vô hiệu hóa và thay bằng thông báo. Nếu sản phẩm còn hàng, khách hàng có thể chọn số lượng và thêm vào giỏ.
+4.3.4. Giỏ hàng
+Giỏ hàng lưu các dòng sản phẩm của người dùng. Khi thêm sản phẩm đã có trong giỏ, hệ thống tăng số lượng thay vì tạo dòng trùng. Mỗi lần cập nhật số lượng, hệ thống kiểm tra giá trị tối thiểu là 1 và không lớn hơn tồn kho. Tổng tiền được tính lại từ các dòng giỏ hàng.
+function getCartTotal(array $items): float
+{
+    $total = 0;
+    foreach ($items as $item) {
+        $total += $item["quantity"] * $item["unit_price"];
+    }
+    return $total;
+}
+4.3.5. Đặt hàng và thanh toán
+Khi khách hàng chọn thanh toán, hệ thống hiển thị tóm tắt giỏ hàng và biểu mẫu thông tin nhận hàng. Sau khi khách xác nhận, OrderService kiểm tra lại tồn kho của từng sản phẩm. Nếu tất cả sản phẩm hợp lệ, hệ thống tạo Order, tạo OrderDetail, cập nhật Stock và xóa giỏ hàng trong một quy trình thống nhất. Nếu có sản phẩm thiếu hàng, giao dịch không được hoàn tất và người dùng nhận thông báo để điều chỉnh giỏ.
+4.3.6. Quản lý sản phẩm
+Khu vực quản trị cho phép thêm sản phẩm mới, cập nhật giá, tồn kho, hình ảnh, hãng, danh mục và trạng thái kinh doanh. Dữ liệu bắt buộc được kiểm tra trước khi lưu. Khi một sản phẩm đã xuất hiện trong đơn hàng, hệ thống ưu tiên ngừng kinh doanh thay vì xóa vật lý để tránh làm mất lịch sử giao dịch.
+4.3.7. Quản lý đơn hàng
+Quản trị viên xem danh sách đơn theo thời gian và trạng thái, mở chi tiết để xem người nhận, danh sách sản phẩm và tổng tiền. Việc chuyển trạng thái được giới hạn theo luồng hợp lý, ví dụ đơn đã hoàn thành không quay lại trạng thái mới tạo. Khi hủy đơn trước khi giao, tồn kho có thể được hoàn trả theo nghiệp vụ của cửa hàng.
+4.3.8. Báo cáo cơ bản
+Trang Dashboard tổng hợp một số số liệu như số sản phẩm, số đơn hàng mới, số đơn đã hoàn thành và tổng doanh thu của các đơn hoàn thành. Dữ liệu có thể lọc theo tháng. Báo cáo này phục vụ mục đích minh họa cho chức năng quản trị và có thể mở rộng thành biểu đồ hoặc báo cáo chi tiết trong phiên bản sau.
+4.4. Kiểm thử hệ thống
+4.4.1. Phương pháp kiểm thử
+Đồ án sử dụng kiểm thử thủ công cho các luồng giao diện và kiểm thử đơn vị đối với một số hàm tính toán hoặc kiểm tra nghiệp vụ. Ngoài ra, các chức năng tạo đơn được kiểm tra theo hướng tích hợp vì liên quan đồng thời đến nhiều bảng dữ liệu. Dữ liệu kiểm thử bao gồm trường hợp hợp lệ, dữ liệu rỗng, số lượng vượt tồn kho và người dùng không đủ quyền.
+Mã
+Tình huống
+Dữ liệu/điều kiện
+Kết quả mong đợi
+Kết quả
+TC01
+Đăng ký email mới
+Nhập thông tin hợp lệ
+Tạo tài khoản và chuyển tới đăng nhập
+Đạt
+TC02
+Đăng ký email trùng
+Email đã tồn tại
+Hiển thị thông báo email đã được sử dụng
+Đạt
+TC03
+Đăng nhập đúng
+Email/mật khẩu đúng
+Đăng nhập thành công
+Đạt
+TC04
+Đăng nhập sai
+Sai mật khẩu
+Báo thông tin đăng nhập không hợp lệ
+Đạt
+TC05
+Tìm kiếm sản phẩm
+Từ khóa trùng một phần tên
+Hiển thị các sản phẩm phù hợp
+Đạt
+TC06
+Lọc theo hãng
+Chọn một hãng
+Chỉ hiển thị sản phẩm thuộc hãng
+Đạt
+TC07
+Thêm vào giỏ
+Sản phẩm còn hàng
+Giỏ có thêm sản phẩm
+Đạt
+TC08
+Thêm vượt tồn kho
+Số lượng lớn hơn Stock
+Từ chối và thông báo
+Đạt
+TC09
+Cập nhật giỏ
+Đổi số lượng hợp lệ
+Tổng tiền được tính lại
+Đạt
+TC10
+Đặt hàng hợp lệ
+Đủ hàng và địa chỉ đầy đủ
+Tạo đơn, chi tiết đơn và cập nhật tồn
+Đạt
+TC11
+Đặt hàng thiếu địa chỉ
+Bỏ trống địa chỉ
+Không tạo đơn, báo lỗi nhập liệu
+Đạt
+TC12
+Xem đơn của mình
+Khách đã đăng nhập
+Hiển thị đúng lịch sử đơn
+Đạt
+TC13
+Khách truy cập Admin
+Tài khoản Customer
+Bị từ chối truy cập
+Đạt
+TC14
+Admin thêm sản phẩm
+Dữ liệu hợp lệ
+Sản phẩm mới xuất hiện trong danh sách
+Đạt
+TC15
+Admin cập nhật trạng thái đơn
+Đơn ở trạng thái cho phép
+Lưu trạng thái mới và hiển thị lại
+Đạt
+4.4.2. Kết quả và lỗi phát hiện
+Kết quả kiểm thử mẫu cho thấy các luồng chính đáp ứng yêu cầu đã đặt ra. Trong quá trình thử nghiệm cần chú ý một số lỗi thường gặp như thay đổi số lượng giỏ hàng bằng giá trị âm, tạo đơn khi tồn kho vừa bị người dùng khác mua trước, hoặc truy cập trực tiếp đường dẫn quản trị. Các lỗi này được xử lý bằng kiểm tra dữ liệu phía máy chủ, Prepared Statement, kiểm tra lại tồn kho ngay trước khi tạo đơn và kiểm tra Session/Role tại khu vực quản trị.
+Đối với hệ thống thực tế có lượng truy cập lớn, cần bổ sung kiểm thử tải, kiểm thử bảo mật và cơ chế transaction/locking phù hợp để hạn chế xung đột tồn kho. Phần kiểm thử của đồ án hiện tập trung vào chức năng cốt lõi và dữ liệu quy mô nhỏ.
+CHƯƠNG 5: ĐÁNH GIÁ, KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
+5.1. Đánh giá kết quả đạt được
+So với mục tiêu ban đầu, hệ thống đã bao phủ các nghiệp vụ chính của một website bán điện thoại gồm quản lý tài khoản, tra cứu sản phẩm, giỏ hàng, đặt hàng và quản trị dữ liệu. Mã nguồn PHP được tổ chức theo MVC đơn giản, kết hợp tầng dịch vụ và lớp truy cập dữ liệu bằng PDO, giúp các phần xử lý được chia tương đối rõ theo trách nhiệm. Cơ sở dữ liệu MySQL có các mối quan hệ cần thiết để lưu lịch sử giao dịch và hỗ trợ truy vấn quản trị.
+Mục tiêu
+Mức độ đạt được
+Ghi chú
+Hiển thị và tìm kiếm điện thoại
+Đạt
+Danh sách, chi tiết, tìm theo từ khóa và lọc theo hãng/giá.
+Giỏ hàng và đặt hàng
+Đạt
+Kiểm tra số lượng, tính tổng và tạo đơn.
+Quản lý sản phẩm
+Đạt
+Thêm, sửa, trạng thái bán và tồn kho.
+Quản lý đơn hàng
+Đạt
+Xem chi tiết và cập nhật trạng thái.
+Phân quyền
+Đạt
+Tách Customer và Admin.
+Thanh toán trực tuyến thực tế
+Chưa hoàn thiện
+Mới dừng ở COD/chuyển khoản mô phỏng.
+Triển khai Cloud và kiểm thử tải
+Chưa thực hiện
+Đề xuất cho giai đoạn phát triển tiếp theo.
+Điểm mạnh của hệ thống là quy trình đơn giản, dễ sử dụng, dữ liệu tập trung và có cấu trúc phù hợp cho việc mở rộng. Hạn chế chính nằm ở phạm vi thanh toán, chưa kết nối dịch vụ vận chuyển, chưa có đánh giá sản phẩm và chưa xử lý các tình huống đồng thời ở mức hệ thống thương mại điện tử lớn.
+5.2. Kết luận
+Đồ án “Xây dựng website bán điện thoại trực tuyến” đã vận dụng các kiến thức về HTML, CSS, JavaScript, PHP, MySQL, phân tích thiết kế hệ thống và kiểm thử vào một bài toán cụ thể. Qua quá trình thực hiện, người học có thể hiểu rõ hơn luồng xử lý từ giao diện đến Controller PHP, tầng nghiệp vụ, lớp truy cập dữ liệu PDO và cơ sở dữ liệu MySQL; đồng thời rèn luyện khả năng tổ chức mã nguồn theo kiến trúc có cấu trúc.
+Sản phẩm đáp ứng được các chức năng cốt lõi của mô hình bán điện thoại trực tuyến ở quy mô học tập. Đây là nền tảng phù hợp để tiếp tục phát triển thành hệ thống bán hàng hoàn chỉnh nếu được bổ sung các dịch vụ bên ngoài, cơ chế bảo mật nâng cao và khả năng vận hành trên môi trường Cloud.
+5.3. Hướng phát triển
+Tích hợp cổng thanh toán trực tuyến và cơ chế xác nhận giao dịch tự động.
+Tích hợp đơn vị vận chuyển để tính phí và theo dõi trạng thái giao hàng.
+Bổ sung đánh giá, nhận xét và xếp hạng sản phẩm sau khi khách hoàn thành đơn.
+Xây dựng chức năng so sánh nhiều mẫu điện thoại theo thông số kỹ thuật.
+Bổ sung chương trình khuyến mãi, mã giảm giá, điểm thưởng và thành viên thân thiết.
+Phát triển báo cáo doanh thu chi tiết, biểu đồ bán hàng theo thời gian và cảnh báo tồn kho thấp.
+Lưu ảnh sản phẩm trên dịch vụ lưu trữ Cloud và tối ưu kích thước ảnh khi tải lên.
+Tăng cường bảo mật bằng xác thực hai lớp cho quản trị viên, ghi log thao tác và cơ chế chống tấn công phổ biến.
+Triển khai ứng dụng trên Cloud, bổ sung kiểm thử tải và cơ chế sao lưu cơ sở dữ liệu định kỳ.
+Có thể tích hợp trợ lý tư vấn sản phẩm hoặc chức năng gợi ý điện thoại dựa trên nhu cầu và ngân sách của khách hàng.
