@@ -93,7 +93,13 @@ echo "[OK] Tables created.\n";
 echo "[INFO] Seeding initial data from: " . basename($seedFile) . "...\n";
 $seedSql = file_get_contents($seedFile);
 $pdo->exec($seedSql);
-echo "[OK] Initial data seeded.\n\n";
+
+// Guarantee 100% valid bcrypt hashes using runtime password_hash()
+$adminHash = password_hash('admin123', PASSWORD_BCRYPT);
+$customerHash = password_hash('user123', PASSWORD_BCRYPT);
+$pdo->prepare("UPDATE users SET password_hash = ? WHERE id = 1")->execute([$adminHash]);
+$pdo->prepare("UPDATE users SET password_hash = ? WHERE id = 2")->execute([$customerHash]);
+echo "[OK] Initial data seeded with verified bcrypt credentials.\n\n";
 
 $stmt = $pdo->query("SELECT COUNT(*) as cnt FROM products");
 $prodCount = $stmt->fetch()['cnt'];

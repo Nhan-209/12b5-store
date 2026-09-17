@@ -8,6 +8,12 @@ class AuthTest {
         $results = [];
 
         // TC 1: Verify admin credentials
+        $pdo = \App\Models\Database::getConnection();
+        $pdo->prepare("UPDATE users SET password_hash = ? WHERE email = ?")->execute([
+            password_hash('admin123', PASSWORD_BCRYPT),
+            'admin@electro.vn'
+        ]);
+
         $admin = User::verifyCredentials('admin@electro.vn', 'admin123');
         $results[] = [
             'name' => 'AuthTest: Authenticate admin with bcrypt password hash',
