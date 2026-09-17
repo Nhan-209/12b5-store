@@ -70,7 +70,7 @@ pub fn calculate_analytics(req: AnalyticsRequest) -> AnalyticsResponse {
         })
         .collect();
 
-    items.sort_by(|a, b| b.sales_value.partial_cmp(&a.sales_value).unwrap());
+    items.sort_by(|a, b| b.sales_value.total_cmp(&a.sales_value));
 
     let total_sales_value: f64 = items.iter().map(|i| i.sales_value).sum();
     let mut cumulative_value = 0.0;

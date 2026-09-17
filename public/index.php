@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Simple PSR-4 style autoloader
+// Simple PSR-4 style autoloader with Linux case-insensitivity tolerance
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
     $baseDir = __DIR__ . '/../app/';
@@ -19,18 +19,36 @@ spl_autoload_register(function ($class) {
     }
 
     $relativeClass = substr($class, $len);
-    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+    $path = str_replace('\\', '/', $relativeClass) . '.php';
 
-    if (file_exists($file)) {
-        require_once $file;
+    if (file_exists($baseDir . $path)) {
+        require_once $baseDir . $path;
+        return;
+    }
+
+    // Try lowercase directory for Linux ext4 case-sensitive filesystem
+    $parts = explode('/', $path);
+    if (count($parts) > 1) {
+        $parts[0] = strtolower($parts[0]);
+        $fallback = $baseDir . implode('/', $parts);
+        if (file_exists($fallback)) {
+            require_once $fallback;
+            return;
+        }
     }
 });
 
-// Normalize request path
+// Normalize request path (supports both root and Apache/XAMPP subfolder execution)
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $parsedUrl = parse_url($requestUri);
-$path = rtrim($parsedUrl['path'] ?? '/', '/');
-if (empty($path)) {
+$path = $parsedUrl['path'] ?? '/';
+
+$scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '');
+if ($scriptDir !== '/' && $scriptDir !== '\\' && !empty($scriptDir) && str_starts_with($path, $scriptDir)) {
+    $path = substr($path, strlen($scriptDir));
+}
+$path = '/' . trim($path, '/');
+if ($path === '//') {
     $path = '/';
 }
 
@@ -40,10 +58,10 @@ try {
         (new \App\Controllers\HomeController())->index();
     } elseif ($path === '/products') {
         (new \App\Controllers\ProductController())->index();
-    } elseif (preg_match('#^/product/([a-zA-Z0-9_-]+)$#', $path, $matches)) {
-        (new \App\Controllers\ProductController())->detail($matches[1]);
     } elseif ($path === '/product/review') {
         (new \App\Controllers\ProductController())->addReview();
+    } elseif (preg_match('#^/product/([a-zA-Z0-9_-]+)$#', $path, $matches)) {
+        (new \App\Controllers\ProductController())->detail($matches[1]);
     } elseif ($path === '/cart') {
         (new \App\Controllers\CartController())->index();
     } elseif ($path === '/cart/add') {

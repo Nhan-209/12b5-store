@@ -52,12 +52,12 @@ class Order {
             ]);
             $orderId = (int)$pdo->lastInsertId();
 
-            // 3. Insert Order items & decrease stock
+            // 3. Insert Order items & decrease stock atomically
             $itemStmt = $pdo->prepare("
                 INSERT INTO order_items (order_id, product_id, product_name, product_sku, unit_price, quantity, subtotal)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ");
-            $stockStmt = $pdo->prepare("UPDATE products SET stock = stock - ?, sales_count = sales_count + ? WHERE id = ?");
+            $stockStmt = $pdo->prepare("UPDATE products SET stock = stock - ?, sales_count = sales_count + ? WHERE id = ? AND stock >= ?");
 
             foreach ($cartItems as $item) {
                 $itemStmt->execute([
@@ -72,8 +72,16 @@ class Order {
                 $stockStmt->execute([
                     $item['quantity'],
                     $item['quantity'],
-                    $item['product_id']
+                    $item['product_id'],
+                    $item['quantity']
                 ]);
+                if ($stockStmt->rowCount() === 0) {
+                    $pdo->rollBack();
+                    return [
+                        'success' => false,
+                        'message' => 'Sản phẩm "' . $item['name'] . '" không còn đủ số lượng trong kho.'
+                    ];
+                }
             }
 
             $pdo->commit();
@@ -85,7 +93,7 @@ class Order {
                 'final_amount' => $orderData['final_amount'],
                 'message' => 'Đặt hàng thành công!'
             ];
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }

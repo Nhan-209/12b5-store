@@ -144,7 +144,7 @@ pub fn execute_search(req: SearchRequest) -> SearchResponse {
     }
 
     // Sort descending by score
-    scored_results.sort_by(|a, b| b.match_score.partial_cmp(&a.match_score).unwrap());
+    scored_results.sort_by(|a, b| b.match_score.total_cmp(&a.match_score));
 
     SearchResponse {
         count: scored_results.len(),

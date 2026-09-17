@@ -61,15 +61,16 @@ pub fn cosine_similarity(v1: &HashMap<String, f64>, v2: &HashMap<String, f64>) -
 
 /// Compute top-N product recommendations for a target item
 pub fn generate_recommendations(req: RecommendationRequest) -> RecommendationResponse {
-    let target = req.products.iter().find(|p| p.id == req.target_id);
+    let target = match req.products.iter().find(|p| p.id == req.target_id) {
+        Some(t) => t,
+        None => {
+            return RecommendationResponse {
+                recommendations: Vec::new(),
+            };
+        }
+    };
 
-    if target.is_none() {
-        return RecommendationResponse {
-            recommendations: Vec::new(),
-        };
-    }
-
-    let target_vec = build_feature_vector(target.unwrap());
+    let target_vec = build_feature_vector(target);
     let mut scored: Vec<RecommendationItem> = Vec::new();
 
     for p in &req.products {
@@ -90,7 +91,7 @@ pub fn generate_recommendations(req: RecommendationRequest) -> RecommendationRes
     }
 
     // Sort descending by similarity
-    scored.sort_by(|a, b| b.similarity.partial_cmp(&a.similarity).unwrap());
+    scored.sort_by(|a, b| b.similarity.total_cmp(&a.similarity));
 
     scored.truncate(req.limit);
 

@@ -41,7 +41,7 @@ class RustEngineService {
                         'category_name' => $p['category_name'] ?? '',
                         'brand_name' => $p['brand_name'] ?? '',
                         'short_description' => $p['short_description'] ?? '',
-                        'specs' => $p['specs_array'] ?? []
+                        'specs' => empty($p['specs_array']) ? (object)[] : $p['specs_array']
                     ];
                 }, $products)
             ];
@@ -49,11 +49,30 @@ class RustEngineService {
             $apiRes = $this->callApi('POST', '/api/search', $payload);
             if (!empty($apiRes['success']) && isset($apiRes['data']['results'])) {
                 $duration = round((microtime(true) - $startTime) * 1000, 2);
+                
+                // Enrich Rust scored results with full product view fields
+                $productsById = [];
+                foreach ($products as $p) {
+                    $productsById[$p['id']] = $p;
+                }
+
+                $enriched = [];
+                foreach ($apiRes['data']['results'] as $scored) {
+                    $pid = $scored['id'];
+                    if (isset($productsById[$pid])) {
+                        $p = $productsById[$pid];
+                        $p['match_score'] = $scored['match_score'] ?? 1.0;
+                        $enriched[] = $p;
+                    } else {
+                        $enriched[] = $scored;
+                    }
+                }
+
                 return [
                     'engine' => 'rust',
                     'latency_ms' => $duration,
-                    'count' => count($apiRes['data']['results']),
-                    'results' => $apiRes['data']['results']
+                    'count' => count($enriched),
+                    'results' => $enriched
                 ];
             }
         }
@@ -84,7 +103,7 @@ class RustEngineService {
                         'brand_id' => (int)$p['brand_id'],
                         'price' => (float)$p['price'],
                         'rating' => (float)($p['rating'] ?? 5.0),
-                        'specs' => $p['specs_array'] ?? []
+                        'specs' => empty($p['specs_array']) ? (object)[] : $p['specs_array']
                     ];
                 }, $allProducts)
             ];
@@ -92,10 +111,23 @@ class RustEngineService {
             $apiRes = $this->callApi('POST', '/api/recommendations', $payload);
             if (!empty($apiRes['success']) && isset($apiRes['data']['recommendations'])) {
                 $duration = round((microtime(true) - $startTime) * 1000, 2);
+                
+                $productsById = [];
+                foreach ($allProducts as $p) {
+                    $productsById[$p['id']] = $p;
+                }
+
+                $enrichedRecs = [];
+                foreach ($apiRes['data']['recommendations'] as $rec) {
+                    $pid = $rec['product_id'];
+                    $rec['product'] = $productsById[$pid] ?? ($rec['product'] ?? []);
+                    $enrichedRecs[] = $rec;
+                }
+
                 return [
                     'engine' => 'rust',
                     'latency_ms' => $duration,
-                    'recommendations' => $apiRes['data']['recommendations']
+                    'recommendations' => $enrichedRecs
                 ];
             }
         }

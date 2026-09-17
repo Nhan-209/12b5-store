@@ -41,18 +41,24 @@ fn main() {
     for mut request in server.incoming_requests() {
         let ctx = Arc::clone(&ctx);
 
-        let url = request.url().to_string();
+        let raw_url = request.url().to_string();
+        let path = raw_url.split('?').next().unwrap_or(&raw_url).to_string();
         let method = request.method().as_str().to_uppercase();
 
         let mut body = String::new();
-        if let Err(e) = request.as_reader().read_to_string(&mut body) {
-            eprintln!("[WARN] Failed to read request body: {}", e);
+        if method == "POST" || method == "PUT" {
+            if let Err(e) = request.as_reader().read_to_string(&mut body) {
+                eprintln!("[WARN] Failed to read request body: {}", e);
+            }
         }
 
         let content_type = Header::from_bytes(&b"Content-Type"[..], &b"application/json"[..]).unwrap();
-        let cors = Header::from_bytes(&b"Access-Control-Allow-Origin"[..], &b"*"[..]).unwrap();
+        let cors_origin = Header::from_bytes(&b"Access-Control-Allow-Origin"[..], &b"*"[..]).unwrap();
+        let cors_methods = Header::from_bytes(&b"Access-Control-Allow-Methods"[..], &b"GET, POST, OPTIONS"[..]).unwrap();
+        let cors_headers = Header::from_bytes(&b"Access-Control-Allow-Headers"[..], &b"Content-Type, Authorization, X-Requested-With"[..]).unwrap();
 
-        let (status_code, resp_body) = match (method.as_str(), url.as_str()) {
+        let (status_code, resp_body) = match (method.as_str(), path.as_str()) {
+            ("OPTIONS", _) => (200, r#"{"status": "ok"}"#.to_string()),
             ("GET", "/api/health") => (200, handlers::handle_health(&ctx)),
             ("POST", "/api/search") => match handlers::handle_search(&body) {
                 Ok(res) => (200, res),
@@ -76,7 +82,9 @@ fn main() {
         let response = Response::from_string(resp_body)
             .with_status_code(StatusCode(status_code))
             .with_header(content_type)
-            .with_header(cors);
+            .with_header(cors_origin)
+            .with_header(cors_methods)
+            .with_header(cors_headers);
 
         let _ = request.respond(response);
     }

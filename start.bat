@@ -14,8 +14,14 @@ if %errorlevel% neq 0 (
         set PHP_BIN="C:\xampp\php\php.exe"
     ) else if exist "D:\xampp\php\php.exe" (
         set PHP_BIN="D:\xampp\php\php.exe"
+    ) else if exist "E:\xampp\php\php.exe" (
+        set PHP_BIN="E:\xampp\php\php.exe"
+    ) else if exist "C:\php\php.exe" (
+        set PHP_BIN="C:\php\php.exe"
+    ) else if exist "C:\tools\php\php.exe" (
+        set PHP_BIN="C:\tools\php\php.exe"
     ) else (
-        echo [LỖI] Không tìm thấy PHP trong PATH hoặc C:\xampp\php!
+        echo [LỖI] Không tìm thấy PHP trong PATH hoặc thư mục XAMPP!
         echo Quý thầy cô / bạn vui lòng cài đặt PHP hoặc mở XAMPP và thêm PHP vào PATH.
         pause
         exit /b 1

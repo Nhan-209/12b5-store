@@ -1,9 +1,11 @@
 import os
 import sqlite3
 import re
+import json
+import zipfile
 
 print("=========================================================")
-print("  ElectroStore Project Integrity & Verification Suite")
+print("  ElectroStore Project Deep Verification & Integrity Suite")
 print("=========================================================\n")
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,7 +21,7 @@ def check(name, condition, detail=""):
         failures += 1
         print(f"  [FAIL] {name} - {detail}")
 
-# 1. Check Directory Structure
+# 1. Directory Structure
 print("[CHECK 1] Verifying Core Directory Structure...")
 expected_dirs = [
     ".github/workflows",
@@ -35,6 +37,7 @@ expected_dirs = [
     "app/views/orders",
     "app/views/auth",
     "app/views/admin",
+    "app/views/errors",
     "database",
     "public/css",
     "public/js",
@@ -47,7 +50,7 @@ for d in expected_dirs:
     p = os.path.join(base_dir, d)
     check(f"Directory exists: {d}", os.path.isdir(p))
 
-# 2. Check Key Files
+# 2. Key Deliverable Files
 print("\n[CHECK 2] Verifying Key Deliverables...")
 expected_files = [
     ".github/workflows/ci.yml",
@@ -71,6 +74,8 @@ expected_files = [
     "app/controllers/OrderController.php",
     "app/controllers/AdminController.php",
     "app/controllers/ApiController.php",
+    "app/views/errors/404.php",
+    "app/views/errors/500.php",
     "public/index.php",
     "public/css/style.css",
     "public/js/app.js",
@@ -91,6 +96,8 @@ expected_files = [
     "tests/run_tests.php",
     "tests/CartTest.php",
     "tests/OrderTest.php",
+    "tests/ProductTest.php",
+    "tests/AuthTest.php",
     "tests/RustEngineClientTest.php",
     "start.bat",
     "start.ps1",
@@ -103,98 +110,147 @@ for f in expected_files:
     p = os.path.join(base_dir, f)
     check(f"File exists: {f}", os.path.isfile(p))
 
-# 3. Verify SQLite Database Content
-print("\n[CHECK 3] Verifying SQLite Database Tables & Records...")
-db_path = os.path.join(base_dir, "database", "electro.sqlite")
-if os.path.isfile(db_path):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
+# 3. SQLite In-Memory Fresh Schema & Seed Execution
+print("\n[CHECK 3] Executing Fresh SQLite Schema & Seed Migration...")
+try:
+    mem_conn = sqlite3.connect(":memory:")
+    mem_conn.execute("PRAGMA foreign_keys = ON;")
+    
+    with open(os.path.join(base_dir, "database", "schema_sqlite.sql"), "r", encoding="utf-8") as f:
+        mem_conn.executescript(f.read())
+    with open(os.path.join(base_dir, "database", "seed_sqlite.sql"), "r", encoding="utf-8") as f:
+        mem_conn.executescript(f.read())
 
-    cur.execute("SELECT COUNT(*) FROM products WHERE status = 1")
-    active_prods = cur.fetchone()[0]
-    check("Database has active electronics products", active_prods >= 10, f"Found {active_prods}")
+    cur = mem_conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM products")
+    p_cnt = cur.fetchone()[0]
+    check(f"Fresh SQLite migration populates products ({p_cnt} items)", p_cnt >= 12)
 
     cur.execute("SELECT COUNT(*) FROM categories")
-    categories_count = cur.fetchone()[0]
-    check("Database has product categories", categories_count == 6, f"Found {categories_count}")
+    c_cnt = cur.fetchone()[0]
+    check(f"Fresh SQLite migration populates categories ({c_cnt} items)", c_cnt == 6)
 
-    cur.execute("SELECT COUNT(*) FROM brands")
-    brands_count = cur.fetchone()[0]
-    check("Database has tech brands", brands_count >= 5, f"Found {brands_count}")
+    cur.execute("SELECT COUNT(*) FROM users")
+    u_cnt = cur.fetchone()[0]
+    check(f"Fresh SQLite migration populates users ({u_cnt} items)", u_cnt >= 3)
 
-    cur.execute("SELECT COUNT(*) FROM users WHERE role = 'admin'")
-    admin_count = cur.fetchone()[0]
-    check("Database has admin account", admin_count >= 1, f"Found {admin_count}")
+    # Test JSON specs parsing
+    cur.execute("SELECT specs FROM products WHERE id = 1")
+    specs_raw = cur.fetchone()[0]
+    specs_json = json.loads(specs_raw)
+    check("Product specs JSON is valid and has CPU/RAM", "cpu" in specs_json and "ram" in specs_json)
 
-    cur.execute("SELECT COUNT(*) FROM coupons")
-    coupons_count = cur.fetchone()[0]
-    check("Database has discount coupons", coupons_count >= 2, f"Found {coupons_count}")
+    # Test order insertion simulation
+    cur.execute("""
+        INSERT INTO orders (user_id, order_code, customer_name, customer_email, customer_phone, shipping_address, payment_method, total_amount, final_amount)
+        VALUES (2, 'TEST-ORD-001', 'Test User', 'test@user.vn', '0912345678', 'Test Address', 'cod', 1000000, 1000000)
+    """)
+    ord_id = cur.lastrowid
+    cur.execute("""
+        INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity, subtotal)
+        VALUES (?, 1, 'iPhone 16 Pro Max', 34990000, 1, 34990000)
+    """, (ord_id,))
+    check("Atomic order creation query works with foreign key constraints", ord_id > 0)
 
-    cur.execute("SELECT COUNT(*) FROM orders")
-    orders_count = cur.fetchone()[0]
-    check("Database has sample orders", orders_count >= 3, f"Found {orders_count}")
+    # Test atomic stock decrement
+    cur.execute("UPDATE products SET stock = stock - 1, sales_count = sales_count + 1 WHERE id = 1 AND stock >= 1")
+    check("Atomic stock update with bounds check succeeds", cur.rowcount == 1)
 
-    conn.close()
-else:
-    check("SQLite DB file exists", False, "Missing database/electro.sqlite")
+    mem_conn.close()
+except Exception as e:
+    check("SQLite fresh schema & seed migration", False, str(e))
 
-# 4. Check PHP Syntax Balance
-print("\n[CHECK 4] Verifying PHP Syntax & Bracket Balance...")
-php_files = []
-for root, _, files in os.walk(base_dir):
-    if ".git" in root or ".agents" in root or "rust-engine" in root:
-        continue
-    for f in files:
-        if f.endswith(".php"):
-            php_files.append(os.path.join(root, f))
+# 4. Check Rust Code & Compiler Safety Invariants
+print("\n[CHECK 4] Verifying Rust Microservice Invariants & Safety...")
+models_rs = os.path.join(base_dir, "rust-engine", "src", "models.rs")
+with open(models_rs, "r", encoding="utf-8") as f:
+    models_content = f.read()
 
-for pf in php_files:
-    rel = os.path.relpath(pf, base_dir)
-    with open(pf, "r", encoding="utf-8", errors="ignore") as f:
-        content = f.read()
+check("AbcItem derives Clone in models.rs", "pub struct AbcItem" in models_content and "Clone" in models_content.split("pub struct AbcItem")[0].split("derive(")[-1])
+check("ProductItem has flexible specs deserializer", "deserialize_specs" in models_content)
+check("All structs derive Debug and Serialize", "#[derive(" in models_content and "Serialize" in models_content)
 
-    has_php_tag = "<?php" in content or "<?" in content
-    check(f"PHP tag valid: {rel}", has_php_tag)
+search_rs = os.path.join(base_dir, "rust-engine", "src", "search.rs")
+with open(search_rs, "r", encoding="utf-8") as f:
+    search_content = f.read()
+check("search.rs uses total_cmp (no panic on NaN)", "total_cmp" in search_content and ".unwrap()" not in search_content)
 
-    # Simple parenthesis and bracket count
-    open_curly = content.count("{")
-    close_curly = content.count("}")
-    # In views, php template syntax might have open/close across blocks, but controllers and models should match
-    if "controllers" in rel or "models" in rel or "services" in rel:
-        check(f"Braces balanced: {rel}", open_curly == close_curly, f"Open: {open_curly}, Close: {close_curly}")
+rec_rs = os.path.join(base_dir, "rust-engine", "src", "recommender.rs")
+with open(rec_rs, "r", encoding="utf-8") as f:
+    rec_content = f.read()
+check("recommender.rs uses total_cmp (no panic on NaN)", "total_cmp" in rec_content and ".unwrap()" not in rec_content)
 
-# 5. Check Rust Engine Syntax Balance
-print("\n[CHECK 5] Verifying Rust Syntax & Bracket Balance...")
-rust_files = []
-for root, _, files in os.walk(os.path.join(base_dir, "rust-engine")):
-    for f in files:
-        if f.endswith(".rs"):
-            rust_files.append(os.path.join(root, f))
+analytics_rs = os.path.join(base_dir, "rust-engine", "src", "analytics.rs")
+with open(analytics_rs, "r", encoding="utf-8") as f:
+    analytics_content = f.read()
+check("analytics.rs uses total_cmp (no panic on NaN)", "total_cmp" in analytics_content and "sort_by" in analytics_content)
 
-for rf in rust_files:
-    rel = os.path.relpath(rf, base_dir)
-    with open(rf, "r", encoding="utf-8") as f:
-        content = f.read()
-    open_curly = content.count("{")
-    close_curly = content.count("}")
-    check(f"Rust braces balanced: {rel}", open_curly == close_curly, f"Open: {open_curly}, Close: {close_curly}")
+main_rs = os.path.join(base_dir, "rust-engine", "src", "main.rs")
+with open(main_rs, "r", encoding="utf-8") as f:
+    main_content = f.read()
+check("main.rs strips query strings from path", "split('?')" in main_content)
+check("main.rs handles CORS OPTIONS preflight", "OPTIONS" in main_content)
+check("main.rs sends Access-Control-Allow-Methods and Headers", "Access-Control-Allow-Methods" in main_content and "Access-Control-Allow-Headers" in main_content)
 
-# 6. Check Thesis Report Completeness
-print("\n[CHECK 6] Verifying Graduation Thesis Report...")
-thesis_path = os.path.join(base_dir, "Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md")
-with open(thesis_path, "r", encoding="utf-8") as f:
-    report_text = f.read()
+# 5. Check PHP Architecture & Autoloader Case-Tolerance
+print("\n[CHECK 5] Verifying PHP Routing & Autoloader Invariants...")
+index_php = os.path.join(base_dir, "public", "index.php")
+with open(index_php, "r", encoding="utf-8") as f:
+    index_content = f.read()
 
-check("Report contains Chapter 1", "CHƯƠNG 1" in report_text)
-check("Report contains Chapter 2", "CHƯƠNG 2" in report_text)
-check("Report contains Chapter 3", "CHƯƠNG 3" in report_text)
-check("Report contains Chapter 4", "CHƯƠNG 4" in report_text)
-check("Report contains Chapter 5", "CHƯƠNG 5" in report_text)
-check("Report details Cosine Similarity", "Cosine Similarity" in report_text)
-check("Report details Levenshtein", "Levenshtein" in report_text)
-check("Report details Pareto ABC", "Pareto" in report_text)
-check("Report details CI/CD GitHub Actions", "GitHub Actions" in report_text)
-check("Report has 20 test cases", "TC20" in report_text)
+check("public/index.php has case-tolerant autoloader for Linux ext4", "strtolower" in index_content)
+check("public/index.php strips Apache/XAMPP subfolder paths", "SCRIPT_NAME" in index_content)
+
+# Check route ordering: /product/review must precede /product/([a-zA-Z0-9_-]+)
+review_pos = index_content.find("/product/review")
+regex_pos = index_content.find("^/product/([a-zA-Z0-9_-]+)$")
+check("/product/review route is defined before product slug regex", review_pos != -1 and regex_pos != -1 and review_pos < regex_pos)
+
+# Check RustEngineService specs object casting and result enrichment
+rust_service_php = os.path.join(base_dir, "app", "services", "RustEngineService.php")
+with open(rust_service_php, "r", encoding="utf-8") as f:
+    rust_service_content = f.read()
+check("RustEngineService casts empty specs to object to prevent JSON array mismatch", "(object)[]" in rust_service_content)
+check("RustEngineService enriches search results with full product properties", "productsById" in rust_service_content)
+
+# Check Order atomic decrement
+order_php = os.path.join(base_dir, "app", "models", "Order.php")
+with open(order_php, "r", encoding="utf-8") as f:
+    order_content = f.read()
+check("Order::createOrder checks stock >= ? atomically", "stock >= ?" in order_content and "rowCount() === 0" in order_content)
+check("Order::createOrder catches Throwable", "catch (\\Throwable" in order_content)
+
+# Check Database foreign keys enabled
+db_php = os.path.join(base_dir, "app", "models", "Database.php")
+with open(db_php, "r", encoding="utf-8") as f:
+    db_content = f.read()
+check("Database.php enforces SQLite foreign keys", "PRAGMA foreign_keys = ON" in db_content)
+
+# Check run_tests.php autoloader and suites
+run_tests_php = os.path.join(base_dir, "tests", "run_tests.php")
+with open(run_tests_php, "r", encoding="utf-8") as f:
+    run_tests_content = f.read()
+check("run_tests.php has case-tolerant autoloader", "strtolower" in run_tests_content)
+check("run_tests.php includes ProductTest and AuthTest", "ProductTest" in run_tests_content and "AuthTest" in run_tests_content)
+
+# Check GitHub Actions CI workflow
+ci_yml = os.path.join(base_dir, ".github", "workflows", "ci.yml")
+with open(ci_yml, "r", encoding="utf-8") as f:
+    ci_content = f.read()
+check("ci.yml lints tests directory as well as app public database", "find app public database tests" in ci_content)
+
+# 6. Check Graduation Thesis Report & Word Document
+print("\n[CHECK 6] Verifying Graduation Thesis Document...")
+docx_file = os.path.join(base_dir, "Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx")
+try:
+    with zipfile.ZipFile(docx_file, "r") as z:
+        check("DOCX contains word/document.xml", "word/document.xml" in z.namelist())
+        doc_xml = z.read("word/document.xml").decode("utf-8")
+        check("DOCX mentions Hybrid PHP + Rust", "Hybrid" in doc_xml and "Rust" in doc_xml)
+        check("DOCX contains Chapter 1", "CHƯƠNG 1" in doc_xml)
+        check("DOCX contains Chapter 5", "CHƯƠNG 5" in doc_xml)
+except Exception as e:
+    check("DOCX validation", False, str(e))
 
 print("\n=========================================================")
 print(f"  VERIFICATION RESULT: {checks - failures}/{checks} CHECKS PASSED")

@@ -54,10 +54,12 @@ class Database {
         if (!is_dir($sqliteDir)) {
             mkdir($sqliteDir, 0777, true);
         }
-        return new PDO("sqlite:" . $path, null, null, [
+        $pdo = new PDO("sqlite:" . $path, null, null, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]);
+        $pdo->exec("PRAGMA foreign_keys = ON;");
+        return $pdo;
     }
 
     public static function getDriverUsed(): string {

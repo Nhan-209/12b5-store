@@ -8,23 +8,41 @@ echo "=========================================================\n";
 echo "  ElectroStore - Automated PHP Test Suite Runner\n";
 echo "=========================================================\n\n";
 
-// Autoloader
+// Autoloader with Linux ext4 case-tolerance
 spl_autoload_register(function ($class) {
     if (str_starts_with($class, 'App\\')) {
-        $file = __DIR__ . '/../app/' . str_replace('\\', '/', substr($class, 4)) . '.php';
+        $baseDir = __DIR__ . '/../app/';
+        $rel = substr($class, 4);
     } elseif (str_starts_with($class, 'Tests\\')) {
-        $file = __DIR__ . '/' . str_replace('\\', '/', substr($class, 6)) . '.php';
+        $baseDir = __DIR__ . '/';
+        $rel = substr($class, 6);
     } else {
         return;
     }
-    if (file_exists($file)) {
-        require_once $file;
+
+    $path = str_replace('\\', '/', $rel) . '.php';
+    if (file_exists($baseDir . $path)) {
+        require_once $baseDir . $path;
+        return;
+    }
+
+    // Fallback for Linux ext4 lowercase directory structure (e.g. models/Cart.php)
+    $parts = explode('/', $path);
+    if (count($parts) > 1) {
+        $parts[0] = strtolower($parts[0]);
+        $lowercaseDirFile = $baseDir . implode('/', $parts);
+        if (file_exists($lowercaseDirFile)) {
+            require_once $lowercaseDirFile;
+            return;
+        }
     }
 });
 
 $testSuites = [
     \Tests\CartTest::class,
     \Tests\OrderTest::class,
+    \Tests\ProductTest::class,
+    \Tests\AuthTest::class,
     \Tests\RustEngineClientTest::class,
 ];
 

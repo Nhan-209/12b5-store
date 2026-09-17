@@ -14,6 +14,12 @@ if (-not (Get-Command php -ErrorAction SilentlyContinue)) {
         $phpCmd = "C:\xampp\php\php.exe"
     } elseif (Test-Path "D:\xampp\php\php.exe") {
         $phpCmd = "D:\xampp\php\php.exe"
+    } elseif (Test-Path "E:\xampp\php\php.exe") {
+        $phpCmd = "E:\xampp\php\php.exe"
+    } elseif (Test-Path "C:\php\php.exe") {
+        $phpCmd = "C:\php\php.exe"
+    } elseif (Test-Path "C:\tools\php\php.exe") {
+        $phpCmd = "C:\tools\php\php.exe"
     } else {
         Write-Host "[LỖI] Không tìm thấy PHP trong hệ thống hoặc thư mục XAMPP." -ForegroundColor Red
         Write-Host "Vui lòng cài đặt PHP hoặc thêm đường dẫn php.exe vào PATH." -ForegroundColor Yellow
