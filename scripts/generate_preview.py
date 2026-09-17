@@ -1536,8 +1536,8 @@ admin_body = """
             <span class="text-muted small">Trung tâm quản lý bán hàng, theo dõi đơn hàng, tồn kho và phân tích doanh thu cửa hàng</span>
         </div>
         <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-rose btn-sm"><i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới</button>
-            <button class="btn btn-soft-slate btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Làm Mới</button>
+            <button class="btn btn-rose btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal"><i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới</button>
+            <button class="btn btn-soft-slate btn-sm" onclick="location.reload();"><i class="bi bi-arrow-clockwise me-1"></i> Làm Mới</button>
         </div>
     </div>
 
@@ -1712,7 +1712,559 @@ admin_body = """
             </div>
         </div>
     </div>
+
+    <!-- Quản Lý Kho & Danh Mục Sản Phẩm (Product Management & Stock Control) -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-5" style="border: 1px solid var(--border-color) !important;">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold small">
+                        <i class="bi bi-box-seam me-1"></i> QUẢN LÝ KHO THIẾT BỊ
+                    </span>
+                    <h5 class="fw-bold mb-0 text-dark">Danh Mục Sản Phẩm & Kiểm Soát Tồn Kho</h5>
+                </div>
+                <span class="text-muted small">Kiểm soát số lượng tồn kho tự động, cảnh báo hàng sắp hết, thêm/sửa/xóa sản phẩm và đồng bộ cơ sở dữ liệu</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <div class="input-group input-group-sm" style="max-width: 240px;">
+                    <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" id="adminProductSearch" class="form-control bg-light border-0" placeholder="Lọc sản phẩm...">
+                </div>
+                <button class="btn btn-rose btn-sm fw-semibold shadow-sm px-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                    <i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới
+                </button>
+            </div>
+        </div>
+
+        <div id="adminAlertNotice" class="alert alert-success alert-dismissible fade show rounded-3 py-2 px-3 small d-none mb-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i><span id="adminAlertText">Thao tác thành công!</span>
+            <button type="button" class="btn-close py-2" onclick="document.getElementById('adminAlertNotice').classList.add('d-none');"></button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle table-hover small mb-0" id="adminProductTable">
+                <thead class="table-light text-muted text-uppercase">
+                    <tr>
+                        <th style="width: 70px;">ID</th>
+                        <th>Thiết Bị</th>
+                        <th>Danh Mục / Hãng</th>
+                        <th>Đơn Giá</th>
+                        <th>Số Lượng Tồn Kho</th>
+                        <th>Đã Bán</th>
+                        <th>Trạng Thái</th>
+                        <th class="text-end" style="width: 110px;">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="adminProductTableBody">
+                    <tr data-prod-id="1">
+                        <td class="text-muted fw-bold font-monospace">#1</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=100&auto=format&fit=crop&q=80" alt="iPhone 16" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">iPhone 16 Pro Max 256GB Titan Tự Nhiên</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-IP16PM</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-phone me-1 text-danger"></i> Điện Thoại</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Apple</div>
+                        </td>
+                        <td class="fw-bold text-danger">34.990.000 ₫</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-check2-circle me-1"></i>25 chiếc (Sẵn hàng)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">142</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(1, 'iPhone 16 Pro Max 256GB Titan Tự Nhiên', 34990000, 25)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'iPhone 16 Pro Max 256GB Titan Tự Nhiên')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-prod-id="2">
+                        <td class="text-muted fw-bold font-monospace">#2</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=100&auto=format&fit=crop&q=80" alt="MacBook Pro" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">MacBook Pro 14" M3 Pro 18GB/512GB Space Black</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-MBP14M3</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-laptop me-1 text-danger"></i> Laptop & PC</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Apple</div>
+                        </td>
+                        <td class="fw-bold text-danger">49.990.000 ₫</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-check2-circle me-1"></i>12 chiếc (Sẵn hàng)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">89</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(2, 'MacBook Pro 14&quot; M3 Pro', 49990000, 12)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'MacBook Pro 14&quot; M3 Pro')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-prod-id="3">
+                        <td class="text-muted fw-bold font-monospace">#3</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=100&auto=format&fit=crop&q=80" alt="Asus ROG" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">Laptop Gaming Asus ROG Zephyrus G16 GU605</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-ROG-G16</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-laptop me-1 text-danger"></i> Laptop Gaming</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Asus</div>
+                        </td>
+                        <td class="fw-bold text-danger">62.990.000 ₫</td>
+                        <td>
+                            <span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-exclamation-triangle me-1"></i>4 chiếc (Sắp hết)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">34</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(3, 'Laptop Gaming Asus ROG Zephyrus G16', 62990000, 4)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'Laptop Gaming Asus ROG Zephyrus G16')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-prod-id="4">
+                        <td class="text-muted fw-bold font-monospace">#4</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=100&auto=format&fit=crop&q=80" alt="iPad Pro" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">iPad Pro M4 11 inch 256GB WiFi Silver</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-IPADM4</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-tablet me-1 text-danger"></i> Máy Tính Bảng</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Apple</div>
+                        </td>
+                        <td class="fw-bold text-danger">28.990.000 ₫</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-check2-circle me-1"></i>18 chiếc (Sẵn hàng)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">67</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(4, 'iPad Pro M4 11 inch 256GB', 28990000, 18)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'iPad Pro M4 11 inch 256GB')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-prod-id="5">
+                        <td class="text-muted fw-bold font-monospace">#5</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=100&auto=format&fit=crop&q=80" alt="Sony WH-1000XM5" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">Tai Nghe Chống Ồn Không Dây Sony WH-1000XM5</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-WH1000XM5</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-headphones me-1 text-danger"></i> Tai Nghe & Âm Thanh</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Sony</div>
+                        </td>
+                        <td class="fw-bold text-danger">8.490.000 ₫</td>
+                        <td>
+                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-x-circle me-1"></i>0 chiếc (Hết hàng)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">95</td>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1">Tạm ẩn</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(5, 'Tai Nghe Sony WH-1000XM5', 8490000, 0)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'Tai Nghe Sony WH-1000XM5')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-prod-id="6">
+                        <td class="text-muted fw-bold font-monospace">#6</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=100&auto=format&fit=crop&q=80" alt="Galaxy S24 Ultra" class="rounded-3" style="width: 42px; height: 42px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark prod-name">Samsung Galaxy S24 Ultra 256GB AI Titanium</div>
+                                    <div class="text-muted small font-monospace">SKU: <code>EL-S24U</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark fw-medium"><i class="bi bi-phone me-1 text-danger"></i> Điện Thoại</div>
+                            <div class="text-muted small"><i class="bi bi-award me-1"></i> Samsung</div>
+                        </td>
+                        <td class="fw-bold text-danger">29.990.000 ₫</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-check2-circle me-1"></i>15 chiếc (Sẵn hàng)
+                            </span>
+                        </td>
+                        <td class="fw-semibold text-muted">78</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(6, 'Samsung Galaxy S24 Ultra 256GB', 29990000, 15)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, 'Samsung Galaxy S24 Ultra 256GB')">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<!-- Modal Thêm Thiết Bị Mới (Add Product Modal) -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom py-3 px-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger rounded-pill px-2 py-1 small fw-bold"><i class="bi bi-plus-lg"></i></span>
+                    <h5 class="modal-title fw-bold text-dark" id="addProductModalLabel">Thêm Thiết Bị Điện Tử Mới</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="addProductForm">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label small fw-semibold text-muted">Tên thiết bị điện tử *</label>
+                            <input type="text" id="newProdName" class="form-control" required placeholder="VD: Laptop Lenovo Legion Pro 5 Gen 9">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Mã SKU</label>
+                            <input type="text" id="newProdSku" class="form-control font-monospace" placeholder="Tự sinh nếu trống (VD: EL-LEGION5)">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">Danh mục *</label>
+                            <select id="newProdCategory" class="form-select" required>
+                                <option value="Điện Thoại" selected>Điện Thoại & Smartphone</option>
+                                <option value="Laptop & PC">Laptop & Máy Tính Bàn</option>
+                                <option value="Máy Tính Bảng">Máy Tính Bảng (Tablet)</option>
+                                <option value="Tai Nghe & Âm Thanh">Tai Nghe & Loa Âm Thanh</option>
+                                <option value="Đồng Hồ Thông Minh">Smartwatch & Vòng Đeo Tay</option>
+                                <option value="Phụ Kiện Điện Tử">Phụ Kiện & Cáp Sạc</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">Thương hiệu *</label>
+                            <select id="newProdBrand" class="form-select" required>
+                                <option value="Apple" selected>Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Asus">Asus</option>
+                                <option value="Dell">Dell</option>
+                                <option value="Sony">Sony</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="Lenovo">Lenovo</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Giá bán hiện tại (VNĐ) *</label>
+                            <input type="number" id="newProdPrice" class="form-control" required step="10000" placeholder="25990000">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Giá niêm yết cũ (VNĐ)</label>
+                            <input type="number" id="newProdOriginalPrice" class="form-control" step="10000" placeholder="28990000">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Số lượng tồn kho ban đầu *</label>
+                            <input type="number" id="newProdStock" class="form-control" required min="0" value="20" placeholder="20">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold text-muted">Mô tả ngắn</label>
+                            <input type="text" id="newProdShortDesc" class="form-control" placeholder="Tóm tắt điểm mạnh nổi bật của thiết bị...">
+                        </div>
+                    </div>
+
+                    <!-- Thông số kỹ thuật -->
+                    <h6 class="fw-bold mb-3 border-top pt-3 text-dark"><i class="bi bi-cpu me-2 text-danger"></i>Thông Số Kỹ Thuật Phần Cứng</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Vi xử lý (CPU / Chip)</label>
+                            <input type="text" id="newProdCpu" class="form-control form-control-sm" placeholder="VD: AMD Ryzen 7 7745HX">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Bộ nhớ RAM</label>
+                            <input type="text" id="newProdRam" class="form-control form-control-sm" placeholder="VD: 16 GB DDR5 5600MHz">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Ổ cứng lưu trữ (Storage)</label>
+                            <input type="text" id="newProdStorage" class="form-control form-control-sm" placeholder="VD: 512 GB PCIe 4.0 SSD">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Màn hình (Screen)</label>
+                            <input type="text" id="newProdScreen" class="form-control form-control-sm" placeholder="VD: 16.0 inch 240Hz QHD+">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Card đồ họa (GPU)</label>
+                            <input type="text" id="newProdGpu" class="form-control form-control-sm" placeholder="VD: NVIDIA RTX 4060 8GB">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-semibold text-muted">Pin & Sạc</label>
+                            <input type="text" id="newProdBattery" class="form-control form-control-sm" placeholder="VD: 80Wh, Sạc 230W">
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-4 mb-2 border-top pt-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="newProdFeatured" checked>
+                            <label class="form-check-label small fw-semibold" for="newProdFeatured">Sản phẩm nổi bật (Trang chủ)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="newProdStatus" checked>
+                            <label class="form-check-label small fw-semibold" for="newProdStatus">Kích hoạt kinh doanh ngay</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top py-3 px-4">
+                <button type="button" class="btn btn-soft-slate px-4" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-rose fw-bold px-4 shadow-sm" onclick="handleAddNewProduct()">
+                    <i class="bi bi-floppy me-1"></i> Lưu Thiết Bị Vào Kho
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let nextProdId = 7;
+
+function formatVndCurrency(num) {
+    return new Intl.NumberFormat('vi-VN').format(num) + ' ₫';
+}
+
+function showAdminAlert(msg, isSuccess = true) {
+    const alertBox = document.getElementById('adminAlertNotice');
+    const alertText = document.getElementById('adminAlertText');
+    if (!alertBox || !alertText) return;
+    alertBox.className = `alert alert-${isSuccess ? 'success' : 'danger'} alert-dismissible fade show rounded-3 py-2 px-3 small mb-3`;
+    alertText.textContent = msg;
+    alertBox.classList.remove('d-none');
+    window.scrollTo({ top: alertBox.offsetTop - 80, behavior: 'smooth' });
+}
+
+function handleAddNewProduct() {
+    const nameInput = document.getElementById('newProdName');
+    const priceInput = document.getElementById('newProdPrice');
+    const stockInput = document.getElementById('newProdStock');
+    const catInput = document.getElementById('newProdCategory');
+    const brandInput = document.getElementById('newProdBrand');
+    const skuInput = document.getElementById('newProdSku');
+
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value);
+    const stock = parseInt(stockInput.value);
+    const category = catInput.value;
+    const brand = brandInput.value;
+    const sku = skuInput.value.trim() || 'EL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    if (!name) {
+        alert('Vui lòng nhập tên thiết bị điện tử!');
+        nameInput.focus();
+        return;
+    }
+    if (isNaN(price) || price <= 0) {
+        alert('Vui lòng nhập giá bán hợp lệ!');
+        priceInput.focus();
+        return;
+    }
+    if (isNaN(stock) || stock < 0) {
+        alert('Vui lòng nhập số lượng tồn kho hợp lệ (>= 0)!');
+        stockInput.focus();
+        return;
+    }
+
+    // Determine stock badge
+    let stockBadge = '';
+    if (stock > 10) {
+        stockBadge = `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-check2-circle me-1"></i>${stock} chiếc (Sẵn hàng)</span>`;
+    } else if (stock > 0) {
+        stockBadge = `<span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>${stock} chiếc (Sắp hết)</span>`;
+    } else {
+        stockBadge = `<span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-x-circle me-1"></i>0 chiếc (Hết hàng)</span>`;
+    }
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-prod-id', nextProdId);
+    tr.className = 'table-success table-opacity-25';
+    tr.innerHTML = `
+        <td class="text-muted fw-bold font-monospace">#${nextProdId}</td>
+        <td>
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-3 bg-light d-flex align-items-center justify-content-center border" style="width: 42px; height: 42px;">
+                    <i class="bi bi-cpu fs-5 text-rose"></i>
+                </div>
+                <div>
+                    <div class="fw-bold text-dark prod-name">${name}</div>
+                    <div class="text-muted small font-monospace">SKU: <code>${sku}</code></div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="text-dark fw-medium"><i class="bi bi-tag me-1 text-danger"></i> ${category}</div>
+            <div class="text-muted small"><i class="bi bi-award me-1"></i> ${brand}</div>
+        </td>
+        <td class="fw-bold text-danger">${formatVndCurrency(price)}</td>
+        <td>${stockBadge}</td>
+        <td class="fw-semibold text-muted">0</td>
+        <td><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span></td>
+        <td class="text-end">
+            <div class="d-inline-flex gap-1">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2" title="Chỉnh sửa" onclick="editProductPrompt(${nextProdId}, '${name.replace(/'/g, "\\'")}', ${price}, ${stock})">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" title="Xóa thiết bị" onclick="deleteProductRow(this, '${name.replace(/'/g, "\\'")}')">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+        </td>
+    `;
+
+    const tbody = document.getElementById('adminProductTableBody');
+    tbody.insertBefore(tr, tbody.firstChild);
+
+    // Close modal
+    const modalEl = document.getElementById('addProductModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+    if (modalInstance) {
+        modalInstance.hide();
+    }
+
+    // Reset form
+    document.getElementById('addProductForm').reset();
+    showAdminAlert(`Đã thêm thiết bị "${name}" với số lượng tồn kho ${stock} chiếc thành công!`);
+    nextProdId++;
+
+    setTimeout(() => {
+        tr.classList.remove('table-success', 'table-opacity-25');
+    }, 2500);
+}
+
+function deleteProductRow(btn, name) {
+    if (confirm(`Bạn có chắc chắn muốn xóa thiết bị "${name}" khỏi cơ sở dữ liệu kho?`)) {
+        const row = btn.closest('tr');
+        row.style.transition = 'all 0.4s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            row.remove();
+            showAdminAlert(`Đã xóa thiết bị "${name}" thành công!`);
+        }, 400);
+    }
+}
+
+function editProductPrompt(id, name, currentPrice, currentStock) {
+    const newStock = prompt(`Cập nhật số lượng tồn kho cho "${name}":`, currentStock);
+    if (newStock !== null) {
+        const parsedStock = parseInt(newStock);
+        if (isNaN(parsedStock) || parsedStock < 0) {
+            alert('Số lượng tồn kho không hợp lệ!');
+            return;
+        }
+        const row = document.querySelector(`tr[data-prod-id="${id}"]`);
+        if (row) {
+            const stockCell = row.children[4];
+            let badgeHtml = '';
+            if (parsedStock > 10) {
+                badgeHtml = `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-check2-circle me-1"></i>${parsedStock} chiếc (Sẵn hàng)</span>`;
+            } else if (parsedStock > 0) {
+                badgeHtml = `<span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>${parsedStock} chiếc (Sắp hết)</span>`;
+            } else {
+                badgeHtml = `<span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-1 fw-bold"><i class="bi bi-x-circle me-1"></i>0 chiếc (Hết hàng)</span>`;
+            }
+            stockCell.innerHTML = badgeHtml;
+            showAdminAlert(`Đã cập nhật số lượng tồn kho "${name}" thành ${parsedStock} chiếc!`);
+        }
+    }
+}
+
+// Quick filter
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('adminProductSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#adminProductTableBody tr');
+            rows.forEach(r => {
+                const text = r.textContent.toLowerCase();
+                r.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    }
+});
+</script>
 """
 
 # ==============================================================================
