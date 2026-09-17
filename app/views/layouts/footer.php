@@ -8,7 +8,7 @@
                     <div class="bg-primary p-2 rounded-3 text-white">
                         <i class="bi bi-lightning-charge-fill"></i>
                     </div>
-                    <span class="fs-5 fw-bold text-white">ElectroStore</span>
+                    <span class="fs-5 fw-bold text-white">12B5 Store</span>
                 </div>
                 <p class="small text-muted">
                     Hệ thống bán lẻ thiết bị điện tử & công nghệ cao. Tối ưu hóa hiệu năng bằng kiến trúc Hybrid kết hợp PHP Web Core và Microservice xử lý tính toán chuyên sâu bằng ngôn ngữ Rust.
@@ -51,7 +51,7 @@
         </div>
 
         <div class="border-top border-secondary border-opacity-25 pt-4 text-center small text-muted">
-            <p class="mb-1">&copy; <?= date('Y') ?> ElectroStore - Graduation Project. All rights reserved.</p>
+            <p class="mb-1">&copy; <?= date('Y') ?> 12B5 Store - Graduation Project. All rights reserved.</p>
             <p class="mb-0">Designed & Engineered with PHP, HTML/CSS and Rust High-Performance Engine.</p>
         </div>
     </div>

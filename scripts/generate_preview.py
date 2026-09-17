@@ -7,7 +7,7 @@ header_template = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - ElectroStore | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
+    <title>{title} - 12B5 Store | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@ header_template = """<!DOCTYPE html>
                 <i class="bi bi-lightning-charge-fill fs-5"></i>
             </div>
             <div>
-                <span class="brand-title fs-4 fw-bold">ElectroStore</span>
+                <span class="brand-title fs-4 fw-bold">12B5 Store</span>
                 <div class="text-white-50" style="font-size: 0.65rem; margin-top: -4px; letter-spacing: 1px;">HIGH PERFORMANCE TECH</div>
             </div>
         </a>
@@ -150,7 +150,7 @@ footer_template = """
                     <div class="bg-primary p-2 rounded-3 text-white">
                         <i class="bi bi-lightning-charge-fill"></i>
                     </div>
-                    <span class="brand-title fs-4 fw-bold">ElectroStore</span>
+                    <span class="brand-title fs-4 fw-bold">12B5 Store</span>
                 </div>
                 <p class="text-white-50 small">Hệ thống thương mại điện tử thiết bị công nghệ cao hàng đầu, ứng dụng kiến trúc Microservices đa ngôn ngữ (PHP MVC + Rust Engine) tối ưu hiệu năng bare-metal.</p>
                 <div class="d-flex gap-3 text-white-50">
@@ -190,8 +190,8 @@ footer_template = """
         </div>
         <hr class="border-secondary border-opacity-25 my-4">
         <div class="d-flex flex-wrap justify-content-between align-items-center small text-white-50">
-            <div>&copy; 2026 ElectroStore. Đồ án tốt nghiệp công nghệ thông tin.</div>
-            <div>GitHub Repo: <a href="https://github.com/Nhan-209/electrostore-ecommerce" target="_blank" class="text-info text-decoration-none">Nhan-209/electrostore-ecommerce</a></div>
+            <div>&copy; 2026 12B5 Store. Đồ án tốt nghiệp công nghệ thông tin.</div>
+            <div>GitHub Repo: <a href="https://github.com/Nhan-209/12b5-store" target="_blank" class="text-info text-decoration-none">Nhan-209/12b5-store</a></div>
         </div>
     </div>
 </footer>
@@ -879,7 +879,7 @@ admin_body = """
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i> Quản Trị Hệ Thống ElectroStore</h3>
+            <h3 class="fw-bold mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i> Quản Trị Hệ Thống 12B5 Store</h3>
             <p class="text-muted small mb-0">Hệ thống giám sát kinh doanh, quản lý kho hàng và tích hợp công cụ phân tích Pareto ABC từ Rust Engine.</p>
         </div>
         <div class="d-flex gap-2">

@@ -1,8 +1,8 @@
 -- Database Schema for Electronics E-Commerce (MySQL / MariaDB)
 -- Encoding: UTF8MB4
 
-CREATE DATABASE IF NOT EXISTS `electro_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `electro_db`;
+CREATE DATABASE IF NOT EXISTS `12b5_store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `12b5_store`;
 
 -- Drop existing tables in reverse dependency order
 DROP TABLE IF EXISTS `order_items`;

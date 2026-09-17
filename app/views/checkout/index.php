@@ -116,7 +116,7 @@ require __DIR__ . '/../layouts/header.php';
                     </button>
 
                     <p class="text-muted small text-center mt-3 mb-0" style="font-size: 0.75rem;">
-                        Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của ElectroStore.
+                        Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của 12B5 Store.
                     </p>
                 </div>
             </div>

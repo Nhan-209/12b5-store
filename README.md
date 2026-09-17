@@ -1,17 +1,17 @@
-# ElectroStore - Hệ Thống Thương Mại Điện Tử Thiết Bị Điện Tử
+# 12B5 Store - Hệ Thống Thương Mại Điện Tử Thiết Bị Điện Tử
 ## Đồ Án Tốt Nghiệp: Kiến Trúc Hybrid Microservices (PHP Web Core + Rust High-Performance Engine)
 
-[![ElectroStore CI/CD](https://github.com/your-username/electrostore/actions/workflows/ci.yml/badge.svg)](https://github.com)
+[![12B5 Store CI/CD](https://github.com/Nhan-209/12b5-store/actions/workflows/ci.yml/badge.svg)](https://github.com/Nhan-209/12b5-store/actions)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777bb4?logo=php&logoColor=white)](https://www.php.net/)
 [![Rust](https://img.shields.io/badge/Rust-2021%20Edition-black?logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Database](https://img.shields.io/badge/Database-MySQL%20%2B%20SQLite%20Portable-blue)](https://www.mysql.com/)
+[![Database](https://img.shields.io/badge/Database-MySQL%20(XAMPP)%20%2B%20SQLite%20Portable-blue)](https://www.mysql.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
 ## 📖 1. Giới Thiệu Dự Án
 
-**ElectroStore** là hệ thống thương mại điện tử chuyên biệt cho ngành hàng thiết bị điện tử và công nghệ cao (Smartphones, Laptops, Máy tính bảng, Thiết bị âm thanh, Đồng hồ thông minh và Linh kiện cao cấp).
+**12B5 Store** là hệ thống thương mại điện tử chuyên biệt cho ngành hàng thiết bị điện tử và công nghệ cao (Smartphones, Laptops, Máy tính bảng, Thiết bị âm thanh, Đồng hồ thông minh và Linh kiện cao cấp).
 
 Dự án được xây dựng với kiến trúc **Hybrid Microservices**:
 1. **PHP Web Application (Core E-Commerce):** Xây dựng theo mô hình kiến trúc MVC sạch (Clean Code), xử lý điều phối logic nghiệp vụ, quản lý phiên làm việc, giỏ hàng, đặt hàng, tạo mã VietQR chuẩn NAPAS 247 và phân quyền tài khoản.
@@ -48,6 +48,29 @@ Kịch bản sẽ tự động:
 chmod +x start.sh
 ./start.sh
 ```
+
+---
+
+## 🐬 2.1. Hướng Dẫn Sử Dụng MySQL Trên XAMPP (Nếu bạn muốn dùng XAMPP)
+
+Hệ thống được thiết kế cơ chế **Dual Database thông minh (MySQL + SQLite)**:
+- Mặc định khi chạy `start.bat`, hệ thống tự động kiểm tra xem MySQL của XAMPP có đang bật hay không.
+- Nếu **MySQL đang bật**, web sẽ tự động kết nối và dùng MySQL (`12b5_store`).
+- Nếu **MySQL tắt** hoặc máy trường không có XAMPP, web sẽ tự động chuyển sang SQLite nhúng (`database/electro.sqlite`) mà không bị lỗi!
+
+### Các bước nạp CSDL vào MySQL XAMPP:
+1. Mở **XAMPP Control Panel**, nhấn **Start** cho cả **Apache** và **MySQL**.
+2. Mở trình duyệt truy cập: `http://localhost/phpmyadmin`
+3. Nhấn **New** (Mới) -> Nhập tên cơ sở dữ liệu: `12b5_store` (bảng mã `utf8mb4_unicode_ci`) -> Nhấn **Create** (Tạo).
+4. Chọn CSDL `12b5_store` vừa tạo -> Chọn tab **Import** (Nhập):
+   - Chọn tệp: [database/schema.sql](file:///d:/laptrinh/duan/doantotnghiep/database/schema.sql) -> Nhấn **Import** (Thực hiện).
+   - Tiếp tục chọn tệp: [database/seed.sql](file:///d:/laptrinh/duan/doantotnghiep/database/seed.sql) -> Nhấn **Import** (Thực hiện).
+5. **Cách 2 (Siêu tốc bằng dòng lệnh):**
+   Bạn chỉ cần mở Terminal/CMD tại thư mục dự án và gõ:
+   ```bash
+   php database/migrate.php --driver=mysql
+   ```
+   Lệnh này sẽ tự động tạo database `12b5_store`, tạo đủ các bảng và nạp toàn bộ sản phẩm mẫu!
 
 ---
 

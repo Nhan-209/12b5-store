@@ -1,5 +1,5 @@
 -- Seed data for Electronics E-Commerce Store
-USE `electro_db`;
+USE `12b5_store`;
 
 -- Default Users: admin (admin@electro.vn / admin123) and customer (customer@gmail.com / user123)
 -- Password hashes generated using standard BCRYPT

@@ -7,7 +7,7 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Admin Top Nav / Breadcrumb -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom">
         <div>
-            <h3 class="fw-bold mb-1"><i class="bi bi-speedometer2 me-2 text-primary"></i>Hệ Thống Quản Trị ElectroStore</h3>
+            <h3 class="fw-bold mb-1"><i class="bi bi-speedometer2 me-2 text-primary"></i>Hệ Thống Quản Trị 12B5 Store</h3>
             <span class="text-muted small">Trung tâm điều hành kinh doanh & giám sát hiệu năng kiến trúc Hybrid PHP + Rust</span>
         </div>
         <div class="d-flex gap-2">

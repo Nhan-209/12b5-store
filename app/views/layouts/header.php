@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : '' ?>ElectroStore | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
+    <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : '' ?>12B5 Store | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

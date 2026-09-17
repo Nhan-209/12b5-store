@@ -30,7 +30,7 @@ $cartSummary = \App\Models\Cart::getCart();
                 <i class="bi bi-lightning-charge-fill fs-5"></i>
             </div>
             <div>
-                <span class="brand-title fs-4 fw-bold">ElectroStore</span>
+                <span class="brand-title fs-4 fw-bold">12B5 Store</span>
                 <div class="text-white-50" style="font-size: 0.65rem; margin-top: -4px; letter-spacing: 1px;">HIGH PERFORMANCE TECH</div>
             </div>
         </a>

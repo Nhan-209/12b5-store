@@ -12,7 +12,7 @@ require __DIR__ . '/../layouts/header.php';
                     <i class="bi bi-check-circle-fill display-2"></i>
                 </div>
                 <h3 class="fw-bold text-success mb-2">Đặt Hàng Thành Công!</h3>
-                <p class="text-muted">Cảm ơn bạn đã tin tưởng và mua sắm tại ElectroStore. Mã đơn hàng của bạn là:</p>
+                <p class="text-muted">Cảm ơn bạn đã tin tưởng và mua sắm tại 12B5 Store. Mã đơn hàng của bạn là:</p>
                 <div class="d-inline-block bg-light px-4 py-2 rounded-3 border fw-bold fs-4 text-primary font-monospace mb-3">
                     <?= htmlspecialchars($order['order_code']) ?>
                 </div>
