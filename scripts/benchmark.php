@@ -64,7 +64,7 @@ echo "  - Rust Engine (127.0.0.1:5000): " . ($rustOnline ? "ONLINE" : "OFFLINE (
 
 // 1. Benchmark: Fuzzy Search (Levenshtein & Token Matching)
 echo "--- 1. Benchmarking Fuzzy Search (Levenshtein + Token Matching) ---\n";
-$iterations = 300;
+$iterations = 200;
 $query = "macbook pro m3";
 
 $startMem = memory_get_usage();
@@ -75,10 +75,10 @@ for ($i = 0; $i < $iterations; $i++) {
 $endTime = microtime(true);
 $phpFuzzyDuration = ($endTime - $startTime) * 1000;
 $phpFuzzyAvg = $phpFuzzyDuration / $iterations;
-$phpFuzzyOps = round($iterations / ($endTime - $startTime));
+$phpFuzzyOps = round($iterations / max(0.0001, ($endTime - $startTime)));
 $phpFuzzyMem = (memory_get_usage() - $startMem) / 1024;
 
-echo "  [A] PHP Fallback Search (Pure CPU Algorithm In-Memory):\n";
+echo "  [A] PHP Fallback Search (Pure CPU Algorithm In-Memory, N = " . count($products) . "):\n";
 echo "    Total time ({$iterations} runs): " . round($phpFuzzyDuration, 2) . " ms\n";
 echo "    Average algorithm latency: " . round($phpFuzzyAvg, 3) . " ms\n";
 echo "    Throughput: {$phpFuzzyOps} ops/sec\n";
@@ -88,7 +88,7 @@ if ($rustOnline) {
     $rustSearchRuns = 50;
     $rustStart = microtime(true);
     for ($i = 0; $i < $rustSearchRuns; $i++) {
-        $rustService->searchProducts($query, $products);
+        $rustService->search($products, $query);
     }
     $rustSearchDuration = (microtime(true) - $rustStart) * 1000;
     $rustSearchAvg = $rustSearchDuration / $rustSearchRuns;
@@ -99,7 +99,7 @@ echo "\n";
 
 // 2. Benchmark: Recommendation Engine (Cosine Similarity on Feature Vectors)
 echo "--- 2. Benchmarking Recommendation Engine (Cosine Similarity) ---\n";
-$recIterations = 200;
+$recIterations = 150;
 $targetId = $products[0]['id'] ?? 1;
 
 $startTime = microtime(true);
@@ -109,9 +109,9 @@ for ($i = 0; $i < $recIterations; $i++) {
 $endTime = microtime(true);
 $phpRecDuration = ($endTime - $startTime) * 1000;
 $phpRecAvg = $phpRecDuration / $recIterations;
-$phpRecOps = round($recIterations / ($endTime - $startTime));
+$phpRecOps = round($recIterations / max(0.0001, ($endTime - $startTime)));
 
-echo "  [A] PHP Fallback Cosine Recommendation (Pure CPU Algorithm):\n";
+echo "  [A] PHP Fallback Cosine Recommendation (Pure CPU Algorithm, N = " . count($products) . "):\n";
 echo "    Total time ({$recIterations} runs): " . round($phpRecDuration, 2) . " ms\n";
 echo "    Average algorithm latency: " . round($phpRecAvg, 3) . " ms\n";
 echo "    Throughput: {$phpRecOps} ops/sec\n";
@@ -120,7 +120,7 @@ if ($rustOnline) {
     $rustRecRuns = 50;
     $rustStart = microtime(true);
     for ($i = 0; $i < $rustRecRuns; $i++) {
-        $rustService->getRecommendations($targetId, $products, 4);
+        $rustService->getRecommendations($products, $targetId, 4);
     }
     $rustRecDuration = (microtime(true) - $rustStart) * 1000;
     $rustRecAvg = $rustRecDuration / $rustRecRuns;
@@ -132,7 +132,7 @@ echo "\n";
 // 3. Benchmark: Analytics (Linear Regression & Pareto ABC Analysis)
 echo "--- 3. Benchmarking Business Analytics (Linear Regression & ABC) ---\n";
 $orders = Order::all(50);
-$analyticsIterations = 200;
+$analyticsIterations = 150;
 
 $startTime = microtime(true);
 for ($i = 0; $i < $analyticsIterations; $i++) {
@@ -141,7 +141,7 @@ for ($i = 0; $i < $analyticsIterations; $i++) {
 $endTime = microtime(true);
 $phpAnalyticsDuration = ($endTime - $startTime) * 1000;
 $phpAnalyticsAvg = $phpAnalyticsDuration / $analyticsIterations;
-$phpAnalyticsOps = round($analyticsIterations / ($endTime - $startTime));
+$phpAnalyticsOps = round($analyticsIterations / max(0.0001, ($endTime - $startTime)));
 
 echo "  [A] PHP Fallback Analytics (Pure CPU Algorithm):\n";
 echo "    Total time ({$analyticsIterations} runs): " . round($phpAnalyticsDuration, 2) . " ms\n";
@@ -152,12 +152,46 @@ if ($rustOnline) {
     $rustAnaRuns = 50;
     $rustStart = microtime(true);
     for ($i = 0; $i < $rustAnaRuns; $i++) {
-        $rustService->getAnalytics($orders, $products);
+        $rustService->calculateAnalytics($orders, $products);
     }
     $rustAnaDuration = (microtime(true) - $rustStart) * 1000;
     $rustAnaAvg = $rustAnaDuration / $rustAnaRuns;
     echo "  [B] Rust Microservice (End-to-End via HTTP loopback):\n";
     echo "    Average round-trip latency: " . round($rustAnaAvg, 3) . " ms\n";
+}
+echo "\n";
+
+// 4. Multi-Scale Dataset Evaluation (Dataset Scalability Analysis)
+echo "--- 4. Multi-Scale Dataset Scalability Evaluation (N = 100, 500, 1000) ---\n";
+$scales = [100, 500, 1000];
+foreach ($scales as $n) {
+    $scaledProducts = [];
+    for ($idx = 1; $idx <= $n; $idx++) {
+        $scaledProducts[] = [
+            'id' => $idx,
+            'name' => "Thiết bị điện tử mẫu {$idx} " . ($idx % 2 === 0 ? "Pro Max" : "Ultra"),
+            'slug' => "thiet-bi-mau-{$idx}",
+            'price' => 10000000.0 + ($idx * 150000),
+            'category_id' => ($idx % 6) + 1,
+            'brand_id' => ($idx % 5) + 1,
+            'sales_count' => ($idx * 3) % 50,
+            'specs_array' => ['cpu' => 'M3 / Snapdragon 8 Gen 3', 'ram' => '16GB', 'storage' => '512GB']
+        ];
+    }
+
+    $t0 = microtime(true);
+    for ($k = 0; $k < 50; $k++) {
+        SearchService::fallbackSearch($scaledProducts, "Pro Max");
+    }
+    $searchLat = ((microtime(true) - $t0) * 1000) / 50;
+
+    $t1 = microtime(true);
+    for ($k = 0; $k < 50; $k++) {
+        RecommendationService::fallbackRecommendations($scaledProducts, 1, 4);
+    }
+    $recLat = ((microtime(true) - $t1) * 1000) / 50;
+
+    echo sprintf("  Dataset N = %-5d | Search: %6.2f ms | Cosine Rec: %6.2f ms\n", $n, $searchLat, $recLat);
 }
 echo "\n";
 

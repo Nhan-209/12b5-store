@@ -14,4 +14,9 @@ class SearchService {
         $allProducts = Product::all(100, 0);
         return $this->rustEngine->search($allProducts, $query, $filters);
     }
+
+    public static function fallbackSearch(array $products, string $query, array $filters = []): array {
+        $engine = new RustEngineService();
+        return $engine->fallbackPhpSearch($products, $query, $filters);
+    }
 }

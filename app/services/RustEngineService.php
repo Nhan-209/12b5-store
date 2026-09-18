@@ -246,7 +246,7 @@ class RustEngineService {
     /**
      * Fallback PHP Search Algorithm (Levenshtein + Token Overlap)
      */
-    private function fallbackPhpSearch(array $products, string $query, array $filters): array {
+    public function fallbackPhpSearch(array $products, string $query, array $filters = []): array {
         $q = mb_strtolower(trim($query), 'UTF-8');
         $queryTokens = array_filter(explode(' ', $q));
         $scored = [];
@@ -304,7 +304,7 @@ class RustEngineService {
     /**
      * Fallback PHP Cosine Similarity Recommendation Algorithm
      */
-    private function fallbackPhpRecommendations(array $products, int $targetId, int $limit): array {
+    public function fallbackPhpRecommendations(array $products, int $targetId, int $limit = 4): array {
         $target = null;
         foreach ($products as $p) {
             if ((int)$p['id'] === $targetId) {
@@ -382,9 +382,9 @@ class RustEngineService {
     }
 
     /**
-     * Fallback PHP Analytics (Revenue trend, Linear Regression, ABC classification)
+     * Fallback PHP Analytics Algorithm (Linear Regression & Pareto ABC Analysis)
      */
-    private function fallbackPhpAnalytics(array $orders, array $products): array {
+    public function fallbackPhpAnalytics(array $orders, array $products): array {
         $completedOrders = array_filter($orders, fn($o) => in_array($o['order_status'], ['completed', 'shipping', 'processing']));
         $totalRevenue = array_reduce($completedOrders, fn($sum, $o) => $sum + (float)$o['final_amount'], 0.0);
         $totalOrdersCount = count($orders);

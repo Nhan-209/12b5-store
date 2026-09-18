@@ -55,7 +55,7 @@ require __DIR__ . '/../layouts/header.php';
                             <input type="tel" name="customer_phone" class="form-control rounded-3" required value="<?= htmlspecialchars($user['phone'] ?? '') ?>" placeholder="0901234567">
                         </div>
                         <div class="col-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Địa chỉ Email nhận hóa đơn điện tử *</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Địa chỉ Email xác nhận đơn hàng *</label>
                             <input type="email" name="customer_email" class="form-control rounded-3" required value="<?= htmlspecialchars($user['email'] ?? '') ?>" placeholder="name@example.com">
                         </div>
                         <div class="col-12">
@@ -120,13 +120,13 @@ require __DIR__ . '/../layouts/header.php';
                             <div class="bank-copy-row">
                                 <span class="text-muted">Số tài khoản:</span>
                                 <div>
-                                    <strong class="font-monospace text-primary">0912345678</strong>
-                                    <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0912345678'); alert('Đã sao chép số tài khoản!');">Sao chép</button>
+                                    <strong class="font-monospace text-primary">0901234567</strong>
+                                    <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
                                 </div>
                             </div>
                             <div class="bank-copy-row">
                                 <span class="text-muted">Chủ tài khoản:</span>
-                                <strong class="text-dark">CONG TY TNHH THIET BI DIEN TU 12B5</strong>
+                                <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
                             </div>
                             <div class="bank-copy-row">
                                 <span class="text-muted">Số tiền thanh toán:</span>

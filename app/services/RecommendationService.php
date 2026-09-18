@@ -14,4 +14,9 @@ class RecommendationService {
         $allProducts = Product::all(100, 0);
         return $this->rustEngine->getRecommendations($allProducts, $productId, $limit);
     }
+
+    public static function fallbackRecommendations(array $allProducts, int $targetProductId, int $limit = 4): array {
+        $engine = new RustEngineService();
+        return $engine->fallbackPhpRecommendations($allProducts, $targetProductId, $limit);
+    }
 }

@@ -87,12 +87,17 @@ require __DIR__ . '/../layouts/header.php';
                                     <form action="/admin/orders/update-status" method="POST" class="d-inline-flex align-items-center gap-1">
                                         <?= \App\Core\Csrf::field() ?>
                                         <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                        <select name="status" class="form-select form-select-sm rounded-pill" style="width: 130px;">
+                                        <select name="status" class="form-select form-select-sm rounded-pill" style="width: 125px;" title="Trạng thái đơn hàng">
                                             <option value="pending" <?= $ord['order_status'] === 'pending' ? 'selected' : '' ?>>Chờ xử lý</option>
                                             <option value="processing" <?= $ord['order_status'] === 'processing' ? 'selected' : '' ?>>Đang đóng gói</option>
                                             <option value="shipping" <?= $ord['order_status'] === 'shipping' ? 'selected' : '' ?>>Đang giao</option>
                                             <option value="completed" <?= $ord['order_status'] === 'completed' ? 'selected' : '' ?>>Hoàn thành</option>
                                             <option value="cancelled" <?= $ord['order_status'] === 'cancelled' ? 'selected' : '' ?>>Hủy đơn</option>
+                                        </select>
+                                        <select name="payment_status" class="form-select form-select-sm rounded-pill" style="width: 105px;" title="Trạng thái thanh toán">
+                                            <option value="pending" <?= $ord['payment_status'] === 'pending' ? 'selected' : '' ?>>Chưa thu</option>
+                                            <option value="paid" <?= $ord['payment_status'] === 'paid' ? 'selected' : '' ?>>Đã thu</option>
+                                            <option value="failed" <?= $ord['payment_status'] === 'failed' ? 'selected' : '' ?>>Thất bại</option>
                                         </select>
                                         <button type="submit" class="btn btn-sm btn-outline-rose rounded-pill px-2" title="Lưu trạng thái">
                                             <i class="bi bi-check-lg"></i>

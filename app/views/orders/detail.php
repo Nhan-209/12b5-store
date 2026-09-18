@@ -117,7 +117,7 @@ require __DIR__ . '/../layouts/header.php';
                         <div class="fw-bold text-dark"><?= htmlspecialchars($order['customer_phone']) ?></div>
                     </div>
                     <div>
-                        <div class="text-muted">Email nhận hóa đơn VAT:</div>
+                        <div class="text-muted">Email nhận thông tin đơn hàng:</div>
                         <div class="text-dark"><?= htmlspecialchars($order['customer_email']) ?></div>
                     </div>
                     <div>

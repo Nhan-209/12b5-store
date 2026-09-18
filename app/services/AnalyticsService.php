@@ -16,4 +16,9 @@ class AnalyticsService {
         $products = Product::all(100, 0);
         return $this->rustEngine->calculateAnalytics($orders, $products);
     }
+
+    public static function fallbackAnalytics(array $orders, array $products): array {
+        $engine = new RustEngineService();
+        return $engine->fallbackPhpAnalytics($orders, $products);
+    }
 }

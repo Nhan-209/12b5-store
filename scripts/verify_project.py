@@ -275,6 +275,49 @@ with open(cart_view, "r", encoding="utf-8") as f:
     cart_view_content = f.read()
 check("Cart view quick coupon chips match valid seed coupons", "TECHSALE10" in cart_view_content and "WELCOME2026" in cart_view_content and "VIPMEMBER" in cart_view_content)
 
+# Check Service Fallback Delegators
+search_service_php = os.path.join(base_dir, "app", "services", "SearchService.php")
+with open(search_service_php, "r", encoding="utf-8") as f:
+    search_service_content = f.read()
+check("SearchService provides static fallbackSearch delegator", "function fallbackSearch" in search_service_content)
+
+rec_service_php = os.path.join(base_dir, "app", "services", "RecommendationService.php")
+with open(rec_service_php, "r", encoding="utf-8") as f:
+    rec_service_content = f.read()
+check("RecommendationService provides static fallbackRecommendations delegator", "function fallbackRecommendations" in rec_service_content)
+
+analytics_service_php = os.path.join(base_dir, "app", "services", "AnalyticsService.php")
+with open(analytics_service_php, "r", encoding="utf-8") as f:
+    analytics_service_content = f.read()
+check("AnalyticsService provides static fallbackAnalytics delegator", "function fallbackAnalytics" in analytics_service_content)
+
+# Check Product Soft Delete
+check("Product::delete performs soft delete (status = 0)", "UPDATE products SET status = 0 WHERE id = ?" in prod_content)
+
+# Check Admin and Checkout Input Whitelisting
+admin_ctrl_php = os.path.join(base_dir, "app", "controllers", "AdminController.php")
+with open(admin_ctrl_php, "r", encoding="utf-8") as f:
+    admin_ctrl_content = f.read()
+check("AdminController enforces order and payment status whitelisting", "allowedStatuses" in admin_ctrl_content and "allowedPaymentStatuses" in admin_ctrl_content)
+
+checkout_ctrl_php = os.path.join(base_dir, "app", "controllers", "CheckoutController.php")
+with open(checkout_ctrl_php, "r", encoding="utf-8") as f:
+    checkout_ctrl_content = f.read()
+check("CheckoutController enforces payment method whitelisting", "allowedPaymentMethods" in checkout_ctrl_content)
+
+# Check Exception Hiding & Error 500 Protection
+check("public/index.php hides raw exceptions and sets HTTP 500", "http_response_code(500)" in index_content and "error_log" in index_content)
+error_500_php = os.path.join(base_dir, "app", "views", "errors", "500.php")
+with open(error_500_php, "r", encoding="utf-8") as f:
+    error_500_content = f.read()
+check("app/views/errors/500.php is self-contained without crashing on DB outages", "500" in error_500_content and "Đã xảy ra sự cố hệ thống" in error_500_content and "navbar.php" not in error_500_content)
+
+# Check Admin Products View
+admin_prods_view = os.path.join(base_dir, "app", "views", "admin", "products.php")
+with open(admin_prods_view, "r", encoding="utf-8") as f:
+    admin_prods_content = f.read()
+check("Admin products view renders 'Đang kinh doanh' and uses POST delete with CSRF", "Đang kinh doanh" in admin_prods_content and "/admin/products/delete" in admin_prods_content and "Csrf::field()" in admin_prods_content)
+
 main_rs_path = os.path.join(base_dir, "rust-engine", "src", "main.rs")
 with open(main_rs_path, "r", encoding="utf-8") as f:
     main_rs_content = f.read()

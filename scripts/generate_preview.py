@@ -1435,7 +1435,7 @@ checkout_body = """
                         <input type="tel" class="form-control rounded-3" value="0987654321">
                     </div>
                     <div class="col-12">
-                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Email nhận hóa đơn VAT *</label>
+                        <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Địa chỉ Email xác nhận đơn hàng *</label>
                         <input type="email" class="form-control rounded-3" value="nguyenvana@gmail.com">
                     </div>
                     <div class="col-12">
@@ -1780,7 +1780,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">142</td>
                         <td>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đang kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
@@ -1816,7 +1816,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">89</td>
                         <td>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đang kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
@@ -1852,7 +1852,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">34</td>
                         <td>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đang kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
@@ -1888,7 +1888,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">67</td>
                         <td>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đang kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
@@ -1924,7 +1924,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">95</td>
                         <td>
-                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1">Tạm ẩn</span>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-2 py-1">Ngừng kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
@@ -1960,7 +1960,7 @@ admin_body = """
                         </td>
                         <td class="fw-semibold text-muted">78</td>
                         <td>
-                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Kinh doanh</span>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2 py-1">Đang kinh doanh</span>
                         </td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-1">
