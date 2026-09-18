@@ -1,47 +1,76 @@
-# 12B5 Store - Hệ Thống Thương Mại Điện Tử Thiết Bị Điện Tử
-## Đồ Án Tốt Nghiệp: Kiến Trúc Hybrid Microservices (PHP Web Core + Rust High-Performance Engine)
+# 12B5 Store - Website Thương Mại Điện Tử Thiết Bị Điện Tử
+## Đồ Án Tốt Nghiệp: PHP MVC Core + MySQL + Rust Calculation Service
 
 [![12B5 Store CI/CD](https://github.com/Nhan-209/12b5-store/actions/workflows/ci.yml/badge.svg)](https://github.com/Nhan-209/12b5-store/actions)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777bb4?logo=php&logoColor=white)](https://www.php.net/)
 [![Rust](https://img.shields.io/badge/Rust-2021%20Edition-black?logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Database](https://img.shields.io/badge/Database-MySQL%20(XAMPP)%20%2B%20SQLite%20Portable-blue)](https://www.mysql.com/)
+[![Database](https://img.shields.io/badge/Database-MySQL%20(Primary)%20%7C%20SQLite%20(Backup)-blue)](https://www.mysql.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## 📖 1. Giới Thiệu Dự Án
+## 1. Tổng Quan Đề Tài (Overview)
 
-**12B5 Store** là hệ thống thương mại điện tử chuyên biệt cho ngành hàng thiết bị điện tử và công nghệ cao (Smartphones, Laptops, Máy tính bảng, Thiết bị âm thanh, Đồng hồ thông minh và Linh kiện cao cấp).
-
-Dự án được xây dựng với kiến trúc **Hybrid Microservices**:
-1. **PHP Web Application (Core E-Commerce):** Xây dựng theo mô hình kiến trúc MVC sạch (Clean Code), xử lý điều phối logic nghiệp vụ, quản lý phiên làm việc, giỏ hàng, đặt hàng, tạo mã VietQR chuẩn NAPAS 247 và phân quyền tài khoản.
-2. **Rust High-Performance Engine (Microservice tại cổng 5000):** Tận dụng sức mạnh tính toán bare-metal và an toàn bộ nhớ của Rust để giải quyết các bài toán tải nặng:
-   - **Tìm kiếm mờ (Fuzzy Search):** Kết hợp khoảng cách Levenshtein và đối sánh token thông số kỹ thuật (độ trễ dưới 1ms).
-   - **Gợi ý thông minh (Smart Recommender):** Thuật toán Cosine Similarity trên không gian vector đa chiều (CPU, RAM, GPU, phân khúc giá).
-   - **Phân tích kinh doanh & Dự báo:** Phân tích tồn kho Pareto ABC (80/20) và dự báo xu hướng doanh thu bằng mô hình Hồi quy tuyến tính (Linear Regression).
-   - **Xử lý ảnh hàng loạt (Batch Image Processor Worker).**
-3. **Cơ chế Graceful Fallback:** Nếu dịch vụ Rust tạm dừng hoặc chưa khởi động, lớp `RustEngineService` tự động chuyển sang thuật toán dự phòng nội bộ bằng PHP, đảm bảo các chức năng tìm kiếm và gợi ý duy trì hoạt động ổn định.
-4. **Hỗ trợ Dual Database (MySQL + SQLite Portable):** Tự động chuyển sang SQLite nhúng (`database/electro.sqlite`) khi chạy demo trên máy tính trường học mà không cần cài đặt hay cấu hình MySQL Server!
-5. **DevOps & Tự động hóa CI/CD:** Toàn bộ quy trình kiểm thử đơn vị, kiểm tra cú pháp PHP và biên dịch chéo Rust nhị phân (Windows `rust_engine.exe` và Linux `rust_engine`) đều được tự động hóa hoàn toàn trên GitHub Actions.
+**12B5 Store** là hệ thống website thương mại điện tử chuyên doanh thiết bị điện tử và công nghệ cao (Smartphones, Laptops, Tablets, Âm thanh, Smartwatches, Phụ kiện), được thiết kế theo kiến trúc kết hợp:
+- **Web Application Core:** Xây dựng bằng PHP thuần theo mô hình MVC (Model - View - Controller), quản lý phiên làm việc (Session), phòng chống tấn công CSRF / Session Fixation, xử lý giỏ hàng, đặt hàng với Database Transaction và tạo mã VietQR động theo chuẩn NAPAS 247.
+- **Dịch vụ tính toán phụ trợ (Rust Microservice):** Vận hành độc lập tại cổng 5000, đảm nhận các tác vụ tính toán CPU-bound: tìm kiếm mờ (Fuzzy Search - Levenshtein & Token Matching), gợi ý sản phẩm tương đồng (Cosine Similarity trên vector đặc trưng), và phân tích kinh doanh (Hồi quy tuyến tính, phân tích tồn kho Pareto ABC).
+- **Cơ chế Graceful Fallback:** Khi dịch vụ Rust ngoại tuyến, PHP Web Server tự động chuyển sang thuật toán dự phòng nội bộ, đảm bảo hệ thống duy trì hoạt động liên tục.
 
 ---
 
-## 🚀 2. Hướng Dẫn Khởi Chạy Nhanh (1-Click Run)
+## 2. Yêu Cầu Hệ Thống (Requirements)
 
-### Trên Windows (Máy tính thuyết trình / Máy chấm thi):
-Chỉ cần nhấp đúp chuột vào file:
+- **Hệ điều hành:** Windows 10/11 64-bit hoặc Linux Ubuntu 22.04 LTS / macOS.
+- **PHP:** Phiên bản 8.2 trở lên (khuyến nghị PHP 8.3 với các extension: `pdo`, `pdo_mysql`, `pdo_sqlite`, `curl`, `openssl`, `mbstring`).
+- **Cơ sở dữ liệu:** MySQL 8.0 (hoặc MariaDB 10.4+) cho môi trường chính; SQLite 3 có sẵn cho môi trường di động.
+- **Trình biên dịch Rust (tùy chọn):** Rust 1.80+ (Toolchain 2021 edition) nếu muốn biên dịch từ mã nguồn `rust-engine`.
+
+---
+
+## 3. Cài Đặt & Vận Hành Môi Trường Chính: XAMPP (Primary Setup)
+
+Môi trường phát triển chính của đồ án sử dụng bộ công cụ **XAMPP** (Apache + PHP 8.3 + MySQL 8.0 + phpMyAdmin) chạy cục bộ.
+
+### Bước 1: Khởi động XAMPP
+1. Mở **XAMPP Control Panel**.
+2. Nhấn **Start** cho hai dịch vụ **Apache** và **MySQL**.
+
+### Bước 2: Tạo Cơ sở dữ liệu và nạp dữ liệu mẫu
+- **Cách 1 (Qua giao diện phpMyAdmin):**
+  1. Truy cập `http://localhost/phpmyadmin`.
+  2. Tạo database mới với tên: `12b5_store` (bảng mã `utf8mb4_unicode_ci`).
+  3. Chọn database `12b5_store`, vào tab **Import**:
+     - Chọn và nhập file: [`database/schema.sql`](database/schema.sql).
+     - Tiếp tục chọn và nhập file: [`database/seed.sql`](database/seed.sql).
+- **Cách 2 (Qua dòng lệnh CLI nhanh):**
+  Mở terminal tại thư mục gốc của đồ án và thực thi:
+  ```bash
+  php database/migrate.php --driver=mysql
+  ```
+
+### Bước 3: Cấu hình VirtualHost hoặc chạy máy chủ Web
+- Nếu cấu hình VirtualHost hoặc đặt thư mục trong `xampp/htdocs/12b5-store`, truy cập: `http://localhost/12b5-store/public/`.
+- Hoặc chạy nhanh PHP built-in server trỏ vào thư mục public:
+  ```bash
+  php -S localhost:8000 -t public
+  ```
+  Truy cập: `http://localhost:8000`.
+
+---
+
+## 4. Khởi Chạy Dự Phòng 1-Click Portable (Backup Setup)
+
+Nhằm phục vụ việc chấm thi hoặc trình diễn đồ án trên máy tính của Hội đồng mà không cần cài đặt XAMPP hay cấu hình MySQL:
+
+### Trên Windows:
+Nhấp đúp chuột vào file:
 ```cmd
 start.bat
 ```
-hoặc chạy bằng PowerShell:
+Hoặc qua PowerShell:
 ```powershell
 .\start.ps1
 ```
-Kịch bản sẽ tự động:
-1. Nhận diện PHP trong hệ thống hoặc thư mục XAMPP (`C:\xampp\php\php.exe`).
-2. Khởi tạo cơ sở dữ liệu SQLite portable.
-3. Kích hoạt Rust Engine microservice (hoặc chuyển sang chế độ PHP fallback an toàn).
-4. Khởi chạy Web Server tại `http://localhost:8000` và tự động mở trình duyệt web.
 
 ### Trên Linux / macOS:
 ```bash
@@ -49,97 +78,92 @@ chmod +x start.sh
 ./start.sh
 ```
 
----
-
-## 🐬 2.1. Hướng Dẫn Sử Dụng MySQL Trên XAMPP (Nếu bạn muốn dùng XAMPP)
-
-Hệ thống được thiết kế cơ chế **Dual Database thông minh (MySQL + SQLite)**:
-- Mặc định khi chạy `start.bat`, hệ thống tự động kiểm tra xem MySQL của XAMPP có đang bật hay không.
-- Nếu **MySQL đang bật**, web sẽ tự động kết nối và dùng MySQL (`12b5_store`).
-- Nếu **MySQL tắt** hoặc máy trường không có XAMPP, web sẽ tự động chuyển sang SQLite nhúng (`database/electro.sqlite`) mà không bị lỗi!
-
-### Các bước nạp CSDL vào MySQL XAMPP:
-1. Mở **XAMPP Control Panel**, nhấn **Start** cho cả **Apache** và **MySQL**.
-2. Mở trình duyệt truy cập: `http://localhost/phpmyadmin`
-3. Nhấn **New** (Mới) -> Nhập tên cơ sở dữ liệu: `12b5_store` (bảng mã `utf8mb4_unicode_ci`) -> Nhấn **Create** (Tạo).
-4. Chọn CSDL `12b5_store` vừa tạo -> Chọn tab **Import** (Nhập):
-   - Chọn tệp: [database/schema.sql](./database/schema.sql) -> Nhấn **Import** (Thực hiện).
-   - Tiếp tục chọn tệp: [database/seed.sql](./database/seed.sql) -> Nhấn **Import** (Thực hiện).
-5. **Cách 2 (Siêu tốc bằng dòng lệnh):**
-   Bạn chỉ cần mở Terminal/CMD tại thư mục dự án và gõ:
-   ```bash
-   php database/migrate.php --driver=mysql
-   ```
-   Lệnh này sẽ tự động tạo database `12b5_store`, tạo đủ các bảng và nạp toàn bộ sản phẩm mẫu!
+**Cơ chế hoạt động:**
+- Tự động nhận diện PHP trên máy hoặc trong `C:\xampp\php\php.exe`.
+- Tự động nạp CSDL SQLite di động độc lập (`database/electro.sqlite`) với đầy đủ ràng buộc khóa ngoại `PRAGMA foreign_keys = ON`.
+- Kiểm tra trạng thái Rust Engine; nếu chưa bật, tự động kích hoạt PHP Fallback Engine.
+- Khởi chạy Web Server tại `http://localhost:8000` và mở trình duyệt tự động.
 
 ---
 
-## 🔑 3. Tài Khoản Thử Nghiệm Sẵn Có (Môi Trường Đồ Án / Demo)
+## 5. Cơ Sở Dữ Liệu (Database Schema)
 
-| Vai trò | Email đăng nhập | Mật khẩu mặc định | Quyền hạn |
+Hệ thống được thiết kế theo chuẩn hóa 3NF gồm 10 bảng quan hệ:
+- `users`: Tài khoản quản trị viên và khách hàng, mật khẩu băm một chiều Bcrypt.
+- `categories`: Danh mục sản phẩm (seed data chuẩn: Smartphones, Laptops, Tablets, v.v.).
+- `brands`: Thương hiệu công nghệ (Apple, Samsung, Dell, Asus, Sony, v.v.).
+- `products`: Thông tin sản phẩm, giá bán, tồn kho, số lượt bán, trạng thái kinh doanh (hỗ trợ Soft Delete). Cột `specs` lưu định dạng JSON linh hoạt.
+- `carts` & `cart_items`: Quản lý giỏ hàng theo session khách hàng hoặc tài khoản.
+- `coupons`: Mã giảm giá (chiết khấu theo % hoặc số tiền, giới hạn lượt dùng và đơn tối thiểu).
+- `orders` & `order_items`: Đơn hàng và chi tiết các mặt hàng mua, lưu trữ lịch sử giá tại thời điểm đặt hàng.
+- `reviews`: Đánh giá xếp hạng 1-5 sao, xác thực điều kiện đã mua hàng thành công (`hasPurchased`).
+- `system_logs`: Nhật ký sự kiện hệ thống.
+
+---
+
+## 6. Kiến Trúc Hệ Thống (Architecture)
+
+```
+[Trình duyệt Khách hàng / Quản trị viên]
+                 │
+                 ▼ HTTP
+       [public/index.php]  (Front Controller & Router)
+                 │
+     ┌───────────┴───────────┐
+     ▼                       ▼
+[Controllers]           [Core / Security]
+(Home, Product, Cart,   (Csrf, Session Regenerate,
+ Checkout, Admin...)     Input Whitelist, PDO)
+     │                       │
+     ▼                       ▼
+ [Models]               [Services]
+ (Product, Order,       (SearchService, RecommendationService,
+  Cart, User...)         AnalyticsService, RustEngineService)
+     │                       │
+     ▼ (SQL / PDO)           ▼ (HTTP REST API / JSON Loopback)
+[MySQL 8.0 / SQLite 3]  [Rust Microservice Engine (Port 5000)]
+                             ├── GET  /api/health
+                             ├── POST /api/search (Levenshtein)
+                             ├── POST /api/recommendations (Cosine)
+                             ├── POST /api/analytics (Regression & ABC)
+                             └── POST /api/image/batch-process
+```
+
+---
+
+## 7. Kiểm Thử Tự Động & Đo Lường Hiệu Năng (Testing & Benchmark)
+
+### Chạy bộ kiểm thử tự động (Automated Test Suite):
+```bash
+php tests/run_tests.php
+```
+Bộ kiểm thử bao gồm 20 ca kiểm thử bao phủ toàn bộ luồng nghiệp vụ:
+- `CartTest.php`: Thêm, sửa, xóa giỏ hàng, áp mã coupon, kiểm tra giới hạn tồn kho.
+- `OrderTest.php`: Giao dịch tạo đơn hàng (ACID Transaction), trừ kho an toàn, rollback khi thiếu hàng.
+- `ProductTest.php`: Lọc phân trang, đọc thông số JSON, kiểm tra quyền đánh giá đã mua hàng.
+- `AuthTest.php`: Xác thực băm Bcrypt, bảo toàn tài khoản quản trị và tự động dọn dẹp dữ liệu test.
+- `RustEngineClientTest.php`: Kiểm tra kết nối dịch vụ Rust và cơ chế PHP fallback.
+
+### Đo lường hiệu năng (Benchmark Suite):
+```bash
+php scripts/benchmark.php
+```
+Kịch bản đo lường phân định rõ giữa **độ trễ thuật toán CPU thuần** và **độ trễ toàn trình qua HTTP loopback**.
+
+---
+
+## 8. Tài Khoản Thử Nghiệm (Demo Credentials)
+
+| Vai trò | Email đăng nhập | Mật khẩu mặc định | Ghi chú quyền hạn |
 |---|---|---|---|
-| **Quản trị viên (Admin)** | `admin@electro.vn` | `admin123` | Toàn quyền Dashboard, Quản lý SP, Đơn hàng, Users |
-| **Khách hàng (Customer)** | `customer@gmail.com` | `user123` | Mua hàng, Giỏ hàng, Đánh giá, Xem lịch sử đơn |
+| **Quản trị viên (Admin)** | `admin@electro.vn` | `admin123` | Quản lý sản phẩm, đơn hàng, người dùng, xem báo cáo ABC |
+| **Khách hàng (Customer)** | `customer@gmail.com` | `user123` | Mua hàng, xem lịch sử đơn, đánh giá sản phẩm |
 
-> **Lưu ý bảo mật:** Các thông tin đăng nhập trên được thiết lập công khai nhằm phục vụ công tác kiểm thử và chấm điểm đồ án tốt nghiệp trong môi trường nội bộ hoặc offline. Khi đưa vào vận hành thực tế trên Internet, quản trị viên cần đổi mật khẩu mặc định và thu hồi các tài khoản demo.
-
----
-
-## 📂 4. Cấu Trúc Thư Mục Dự Án
-
-```
-doantotnghiep/
-├── .github/workflows/
-│   └── ci.yml                   # Pipeline CI/CD GitHub Actions
-├── app/
-│   ├── config/database.php      # Cấu hình Dual Database & Rust Engine
-│   ├── controllers/             # Các lớp Controller MVC
-│   ├── models/                  # Các lớp Model (Product, Cart, Order, User...)
-│   ├── services/                # Các lớp Service (RustEngine, Search, Analytics)
-│   └── views/                   # Template giao diện theo từng phân hệ
-├── database/
-│   ├── schema.sql / seed.sql    # Dữ liệu mẫu MySQL
-│   ├── schema_sqlite.sql        # Cấu trúc SQLite Portable
-│   ├── seed_sqlite.sql          # Dữ liệu mẫu SQLite
-│   ├── electro.sqlite           # Tệp CSDL SQLite sẵn dùng
-│   └── migrate.php              # Kịch bản nạp CSDL tự động
-├── public/
-│   ├── index.php                # Front Controller & Routing Engine
-│   ├── css/style.css            # Giao diện Modern Tech Store
-│   └── js/app.js                # Xử lý AJAX Live Search & Giỏ hàng
-├── rust-engine/
-│   ├── Cargo.toml               # Cấu hình đóng gói & tối ưu hóa Rust
-│   └── src/
-│       ├── main.rs              # Máy chủ HTTP REST API
-│       ├── search.rs            # Thuật toán tìm kiếm Levenshtein
-│       ├── recommender.rs       # Thuật toán gợi ý Cosine Similarity
-│       ├── analytics.rs         # Thuật toán Hồi quy tuyến tính & ABC
-│       ├── image_processor.rs   # Xử lý ảnh hàng loạt
-│       ├── handlers.rs          # Bộ điều phối API endpoints
-│       └── models.rs            # Cấu trúc dữ liệu JSON Serde
-├── tests/
-│   ├── run_tests.php            # Test runner kiểm thử tự động (20/20 Test Cases)
-│   ├── CartTest.php             # Kiểm thử giỏ hàng & khuyến mãi (5 tests)
-│   ├── OrderTest.php            # Kiểm thử giao dịch đơn hàng & tồn kho (4 tests)
-│   ├── ProductTest.php          # Kiểm thử sản phẩm, bộ lọc & đánh giá đã mua (5 tests)
-│   ├── AuthTest.php             # Kiểm thử xác thực & băm mật khẩu Bcrypt (3 tests)
-│   └── RustEngineClientTest.php # Kiểm thử kết nối và thuật toán Rust (3 tests)
-├── scripts/
-│   ├── benchmark.php            # Kịch bản thực nghiệm đo lường hiệu năng PHP vs Rust
-│   ├── generate_docx.py         # Kịch bản biên dịch báo cáo sang Word (.docx)
-│   ├── generate_preview.py      # Kịch bản tạo các tệp giao diện mẫu tĩnh (preview)
-│   ├── verify_project.py        # Kịch bản kiểm tra toàn diện tính toàn vẹn hệ thống
-│   └── init_sqlite.py           # Khởi tạo dữ liệu SQLite từ Python
-├── start.bat / start.ps1        # Kịch bản khởi chạy 1-click trên Windows
-├── start.sh                     # Kịch bản khởi chạy trên Linux/macOS
-├── Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md   # Báo cáo đồ án 5 chương
-└── Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx # File Word hoàn chỉnh nộp trường
-```
+*Lưu ý: Các thông tin đăng nhập trên phục vụ kiểm thử và chấm điểm đồ án tốt nghiệp trong môi trường nội bộ. Khi triển khai production, cần thay đổi mật khẩu và thu hồi tài khoản mặc định.*
 
 ---
 
-## 📑 5. Báo Cáo Đồ Án Tốt Nghiệp
+## 9. Báo Cáo Đồ Án Tốt Nghiệp
 
-Báo cáo đồ án tốt nghiệp được biên soạn hoàn chỉnh theo chuẩn đào tạo, bao gồm 5 chương chi tiết:
-- **File Markdown:** [`Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md`](./Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md)
-- **File Microsoft Word (nộp chấm điểm):** [`Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx`](./Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx)
+- **Tài liệu Markdown:** [`Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md`](Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.md)
+- **Tài liệu Microsoft Word (.docx):** [`Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx`](Bao_cao_DATN_Website_Thuong_Mai_Dien_Tu_Thiet_Bi_Dien_Tu.docx)

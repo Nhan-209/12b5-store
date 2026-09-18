@@ -98,6 +98,9 @@ try {
         (new \App\Controllers\AdminController())->createProduct();
     } elseif (preg_match('#^/admin/products/edit/([0-9]+)$#', $path, $matches)) {
         (new \App\Controllers\AdminController())->editProduct((int)$matches[1]);
+    } elseif ($path === '/admin/products/delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        (new \App\Controllers\AdminController())->deleteProduct($id);
     } elseif (preg_match('#^/admin/products/delete/([0-9]+)$#', $path, $matches)) {
         (new \App\Controllers\AdminController())->deleteProduct((int)$matches[1]);
     } elseif ($path === '/admin/orders') {
@@ -114,9 +117,19 @@ try {
         (new \App\Controllers\ApiController())->rustStatus();
     } else {
         http_response_code(404);
-        echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>404 Not Found - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm'><h1>404</h1><p class='lead'>Không tìm thấy trang yêu cầu.</p><a href='/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
+        if (file_exists(__DIR__ . '/../app/views/errors/404.php')) {
+            require __DIR__ . '/../app/views/errors/404.php';
+        } else {
+            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>404 Not Found - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm'><h1>404</h1><p class='lead'>Không tìm thấy trang yêu cầu.</p><a href='/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
+        }
     }
 } catch (\Throwable $e) {
+    error_log($e->getMessage());
     http_response_code(500);
-    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light p-5'><div class='container'><div class='alert alert-danger shadow-sm rounded-4 p-4'><h4>Đã xảy ra lỗi hệ thống!</h4><p class='mb-0'>" . htmlspecialchars($e->getMessage()) . "</p></div><a href='/' class='btn btn-secondary mt-3'>Về trang chủ</a></div></body></html>";
+    $errorMessage = 'Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.';
+    if (file_exists(__DIR__ . '/../app/views/errors/500.php')) {
+        require __DIR__ . '/../app/views/errors/500.php';
+    } else {
+        echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light p-5'><div class='container'><div class='alert alert-danger shadow-sm rounded-4 p-4'><h4>Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.</h4></div><a href='/' class='btn btn-secondary mt-3'>Về trang chủ</a></div></body></html>";
+    }
 }

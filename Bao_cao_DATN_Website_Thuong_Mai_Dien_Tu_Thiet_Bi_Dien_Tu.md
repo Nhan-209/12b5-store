@@ -111,9 +111,9 @@ Xuất phát từ thực tiễn trên, đồ án lựa chọn đề tài: **“X
 - **Đối tượng người dùng:**
   - *Khách vãng lai (Guest):* Xem danh mục thiết bị, tìm kiếm nâng cao, lọc theo khoảng giá/thương hiệu, xem thông số kỹ thuật chi tiết, thêm vào giỏ hàng, đặt hàng không cần tài khoản hoặc đăng ký tài khoản mới.
   - *Khách hàng đã đăng nhập (Customer):* Quản lý thông tin giao hàng mặc định, xem lịch sử đơn hàng, theo dõi tiến độ xử lý và gửi đánh giá nhận xét sản phẩm.
-  - *Quản trị viên (Admin):* Quản lý vòng đời sản phẩm, cập nhật tồn kho, duyệt và cập nhật trạng thái đơn hàng, quản lý danh mục/hãng sản xuất và giám sát hiệu năng hệ thống qua Dashboard.
+  - *Quản trị viên (Admin):* Quản lý vòng đời sản phẩm, cập nhật tồn kho, duyệt và cập nhật trạng thái đơn hàng, theo dõi người dùng và giám sát hiệu năng hệ thống qua Dashboard. (Lưu ý: Danh mục và thương hiệu hiện được quản lý thông qua dữ liệu khởi tạo chuẩn seed data, chưa có giao diện CRUD riêng trong phiên bản hiện tại nhằm tập trung vào luồng nghiệp vụ thương mại cốt lõi).
 - **Danh mục sản phẩm thực tế:** 6 ngành hàng điện tử cốt lõi (Điện thoại thông minh, Laptop & Máy tính, Máy tính bảng, Tai nghe & Âm thanh, Đồng hồ thông minh, Phụ kiện & Linh kiện cao cấp) với dữ liệu mẫu chi tiết về cấu hình phần cứng.
-- **Thanh toán:** Tích hợp thanh toán khi nhận hàng (COD) và cơ chế tạo mã **VietQR** động theo chuẩn NAPAS 247 tương thích với mọi ứng dụng ngân hàng tại Việt Nam.
+- **Thanh toán:** Tích hợp thanh toán khi nhận hàng (COD) và cơ chế mô phỏng luồng chuyển khoản qua mã **VietQR** động theo chuẩn NAPAS 247 tương thích với mọi ứng dụng ngân hàng tại Việt Nam (chưa tích hợp webhook xác thực giao dịch ngân hàng tự động).
 
 ## 1.4. Phương pháp nghiên cứu và thực hiện
 
@@ -218,6 +218,7 @@ Trong đó:
   - Phân khúc giá chuẩn hóa theo hàm logarit cơ số 10: $Tier = \min(6.0, \max(1.0, \log_{10}(Price) / 1.5))$
   - Các thuộc tính thông số kỹ thuật (CPU, RAM, GPU, tấm nền màn hình).
 - Giá trị tương đồng nằm trong khoảng $[0, 1]$. Giá trị càng tiến gần tới $1.0$ thể hiện hai thiết bị có cấu hình và phân khúc càng tương đồng nhau.
+- **Giới hạn tập ứng viên gợi ý:** Phiên bản đồ án giới hạn tập ứng viên recommendation ở 100 sản phẩm để phù hợp quy mô dữ liệu thử nghiệm, đồng thời kiểm soát chi phí tuần tự hóa và truyền tải payload JSON giữa PHP Web Server và Rust Microservice.
 
 ### 2.7.2. Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Search kết hợp Levenshtein Distance và Token Matching)
 Người tiêu dùng khi tìm kiếm thiết bị điện tử thường gõ sai chính tả hoặc gõ tắt (ví dụ: gõ "iphne", "macbok", "smasung"). Hệ thống áp dụng thuật toán tìm kiếm mờ (Fuzzy Search) đa tầng kết hợp:
@@ -422,28 +423,45 @@ Giao diện được thiết kế theo phong cách công nghệ cao hiện đạ
 
 ## 4.1. Môi trường triển khai và vận hành
 
-| Thành phần | Công nghệ / Phiên bản | Mục đích sử dụng |
+Để đảm bảo tính khoa học, chuẩn mực học thuật và đồng thời thuận tiện tối đa khi trình diễn bảo vệ trước hội đồng, hệ thống được thiết kế hỗ trợ hai môi trường triển khai độc lập và nhất quán:
+
+1. **Môi trường phát triển chính (Primary Development Environment - XAMPP Stack):**
+   - **Gói phần mềm:** XAMPP for Windows (tích hợp Apache 2.4, PHP 8.3, MySQL 8.0, phpMyAdmin).
+   - **Hệ điều hành:** Windows 10 / Windows 11 64-bit.
+   - **Máy chủ Web & Cơ sở dữ liệu:** Apache HTTP Server lắng nghe cổng tiêu chuẩn kết hợp hệ quản trị cơ sở dữ liệu MySQL 8.0 qua tiện ích mở rộng PDO (`pdo_mysql`). Quản trị dữ liệu trực quan thông qua phpMyAdmin.
+   - **Mục đích:** Đóng vai trò môi trường chuẩn mực cho toàn bộ quá trình lập trình, thiết kế cơ sở dữ liệu quan hệ hoàn chỉnh (khóa chính, khóa ngoại, ràng buộc toàn vẹn dữ liệu) theo đúng quy cách chuẩn của đồ án tốt nghiệp ngành Công nghệ Thông tin.
+
+2. **Môi trường dự phòng phục vụ trình diễn và chấm thi (Secondary Portable Backup Environment):**
+   - **Máy chủ Web:** PHP Built-in Web Server tích hợp sẵn, khởi chạy tại địa chỉ `localhost:8000`.
+   - **Cơ sở dữ liệu:** SQLite 3 Portable file nhị phân độc lập (`database/electro.sqlite`), kích hoạt đầy đủ `PRAGMA foreign_keys = ON`.
+   - **Khởi chạy 1-click:** Kịch bản tự động hóa `start.bat` (Windows) hoặc `start.sh` (Linux/macOS) tự động khởi tạo cơ sở dữ liệu, kiểm tra môi trường và khởi chạy ứng dụng web ngay lập tức.
+   - **Khả năng chịu lỗi (Fault-Tolerance):** Nếu máy chấm thi không cài Rust hoặc dịch vụ Rust Engine chưa bật, hệ thống tự động kích hoạt chế độ **PHP Fallback Engine**, đảm bảo 100% chức năng (tìm kiếm mờ, gợi ý sản phẩm, phân tích kinh doanh) vẫn hoạt động trơn tru mà không xảy ra lỗi.
+   - **Mục đích:** Giúp giáo viên hướng dẫn, người chấm phản biện và Hội đồng chấm thi có thể cắm USB hoặc tải mã nguồn về và trải nghiệm trực tiếp mọi tính năng của website trong vòng 5 giây mà không cần cài đặt thêm phần mềm máy chủ bên thứ ba.
+
+| Thành phần | Môi trường phát triển chính (Primary) | Môi trường dự phòng / Demo (Backup) |
 |---|---|---|
-| **Hệ điều hành** | Windows 10/11 hoặc Linux Ubuntu 22.04 | Môi trường phát triển và máy chấm thi tại trường |
-| **Web Server** | PHP Built-in Web Server / Apache 2.4 | Tiếp nhận HTTP Request trên cổng 8000 |
-| **Ngôn ngữ Web** | PHP 8.2 / 8.3 | Xử lý logic MVC, quản lý phiên và điều phối dữ liệu |
-| **Ngôn ngữ Engine** | Rust 1.80+ (Toolchain 2021 edition) | Biên dịch dịch vụ tính toán hiệu năng cao độc lập |
-| **Cơ sở dữ liệu** | MySQL 8.0 & SQLite 3 Portable | Lưu trữ dữ liệu quan hệ với cơ chế chuyển đổi thông minh |
-| **CI/CD Platform** | GitHub Actions Cloud Runners | Tự động hóa build, test và cross-compile release |
-| **Thư viện Giao diện**| Bootstrap 5.3.3 & Bootstrap Icons | Xây dựng giao diện responsive tương thích mọi thiết bị |
+| **Hệ điều hành** | Windows 10/11 64-bit | Windows / Linux / macOS |
+| **Gói máy chủ** | XAMPP (Apache 2.4 + phpMyAdmin) | PHP Built-in Server (`localhost:8000`) |
+| **Phiên bản PHP** | PHP 8.3 (hỗ trợ đầy đủ PDO, OpenSSL, cURL) | PHP 8.2 / 8.3 |
+| **Cơ sở dữ liệu** | MySQL 8.0 (InnoDB, Foreign Keys, UTF8MB4) | SQLite 3 (`database/electro.sqlite`) |
+| **Engine tính toán**| Rust Engine Microservice (Port 5000) | Rust Engine hoặc PHP Fallback Engine tự động |
+| **Khởi chạy** | Apache + MySQL qua XAMPP Control Panel | Kịch bản 1-click `start.bat` / `start.sh` |
 
 ## 4.2. Quy trình cài đặt và cấu hình hệ thống
 
-### 4.2.1. Cấu hình cơ sở dữ liệu linh hoạt (Dual Database)
-Người dùng có thể khởi chạy hệ thống chỉ với 1 bước đơn giản thông qua file kịch bản tự động `start.bat` (trên Windows) hoặc `start.sh` (trên Linux/macOS):
-```bash
-# Khởi chạy trên Windows
-start.bat
+### 4.2.1. Cấu hình cơ sở dữ liệu linh hoạt (Dual Database Driver)
+Hệ thống sử dụng lớp kết nối `app/models/Database.php` với cấu hình tập trung trong `app/config/database.php`. Tùy theo tham số môi trường, hệ thống có thể kết nối tới MySQL hoặc SQLite:
 
-# Hoặc khởi chạy thủ công qua lệnh PHP
-php database/migrate.php --driver=sqlite
-php -S localhost:8000 -t public
-```
+- **Chạy với XAMPP & MySQL:**
+  1. Khởi động Apache và MySQL trên bảng điều khiển XAMPP Control Panel.
+  2. Tạo cơ sở dữ liệu `electro_store` trên phpMyAdmin.
+  3. Nhập cấu trúc bảng và dữ liệu mẫu từ `database/schema.sql` và `database/seed.sql`.
+  4. Ứng dụng web sẵn sàng phục vụ qua VirtualHost hoặc thư mục `htdocs`.
+
+- **Chạy nhanh bằng môi trường dự phòng Portable (1-Click Run):**
+  1. Nhấp đúp chuột vào file `start.bat` trên Windows (hoặc gõ `./start.sh` trên Linux/macOS).
+  2. File kịch bản sẽ tự động tạo cơ sở dữ liệu SQLite, nạp 12 sản phẩm điện tử mẫu, tài khoản demo và bật server tại `http://localhost:8000`.
+  3. Mở trình duyệt và trải nghiệm toàn bộ tính năng.
 
 ### 4.2.2. Xây dựng luồng CI/CD GitHub Actions kiểm thử và biên dịch đa nền tảng
 Quy trình CI/CD được định nghĩa trong `.github/workflows/ci.yml`:
@@ -463,12 +481,13 @@ Quy trình CI/CD được định nghĩa trong `.github/workflows/ci.yml`:
 - **Dashboard quản trị:** Hiển thị tức thời trạng thái kết nối tới Rust Engine, độ trễ xử lý (ms), tổng doanh thu thực tế, dự báo doanh thu ngày tiếp theo qua mô hình Hồi quy tuyến tính, bảng phân tích tồn kho Pareto ABC và danh sách đơn hàng mới nhất.
 - **Quản lý sản phẩm:** Thêm thiết bị mới với biểu mẫu thông số kỹ thuật hoàn chỉnh, cập nhật giá bán, số lượng tồn kho và chuyển trạng thái sang ngừng kinh doanh (soft delete an toàn bảo toàn dữ liệu đơn hàng).
 - **Quản lý đơn hàng:** Xem chi tiết người nhận, danh sách thiết bị đặt mua và cập nhật trạng thái đơn (Chờ xử lý $\rightarrow$ Đang đóng gói $\rightarrow$ Đang giao $\rightarrow$ Hoàn thành $\rightarrow$ Hủy đơn).
+- **Quản lý người dùng & Dữ liệu tham chiếu:** Theo dõi danh sách tài khoản thành viên. *Lưu ý về danh mục và thương hiệu:* Danh mục và thương hiệu hiện được quản lý thông qua dữ liệu khởi tạo (seed data), chưa có giao diện CRUD riêng trong phiên bản hiện tại nhằm tập trung tối đa vào luồng nghiệp vụ mua sắm, quản lý đơn hàng và tính toán hiệu năng cao.
 
 ### 4.3.3. Rust Microservice Engine
 Dịch vụ Rust vận hành độc lập, cung cấp 5 endpoints RESTful API chuẩn hóa:
 1. `GET /api/health`: Trả về trạng thái hoạt động, số luồng xử lý và thời gian hoạt động liên tục (uptime).
 2. `POST /api/search`: Tiếp nhận danh sách sản phẩm và từ khóa, trả về danh sách đã chấm điểm độ phù hợp theo khoảng cách Levenshtein.
-3. `POST /api/recommendations`: Nhận mã sản phẩm mục tiêu, trích xuất vector đặc trưng và tính toán độ tương đồng Cosine để trả về top 4 thiết bị tương đồng nhất.
+3. `POST /api/recommendations`: Nhận mã sản phẩm mục tiêu, trích xuất vector đặc trưng và tính toán độ tương đồng Cosine để trả về top 4 thiết bị tương đồng nhất (phiên bản đồ án giới hạn tập ứng viên recommendation ở 100 sản phẩm để phù hợp quy mô dữ liệu thử nghiệm và tối ưu độ trễ truyền tải payload JSON qua HTTP loopback).
 4. `POST /api/analytics`: Phân tích chuỗi thời gian doanh thu bằng Hồi quy tuyến tính và phân loại tồn kho ABC theo nguyên lý Pareto.
 5. `POST /api/image/batch-process`: Xử lý tính toán thông số nén ảnh và chuyển đổi định dạng hàng loạt.
 
@@ -513,35 +532,38 @@ Dịch vụ Rust vận hành độc lập, cung cấp 5 endpoints RESTful API ch
 ## 4.5. Đánh giá và so sánh thực nghiệm hiệu năng (Benchmark PHP Fallback vs Rust Engine)
 
 ### 4.5.1. Phương pháp luận và kịch bản thực nghiệm
-Để đánh giá khách quan và minh bạch sự chênh lệch hiệu năng giữa việc xử lý tính toán cục bộ bằng PHP thuần (PHP Fallback Engine) và việc ủy nhiệm tác vụ cho dịch vụ chuyên biệt (Rust High-Performance Engine), đồ án xây dựng kịch bản đo lường thực nghiệm độc lập thông qua script `scripts/benchmark.php`.
+Để đánh giá khoa học và minh bạch vai trò của dịch vụ tính toán chuyên biệt trong kiến trúc Hybrid, đồ án xây dựng kịch bản đo lường thực nghiệm độc lập thông qua công cụ `scripts/benchmark.php`. 
 
-Kịch bản thực nghiệm được thiết kế theo hai cấp độ:
-1. **Đo lường thuật toán vi mô (In-Memory Algorithmic Micro-Benchmark):** Đo lường trực tiếp thời gian CPU xử lý các phép toán tổ hợp, ma trận và khoảng cách chuỗi trên cùng một tập dữ liệu đầu vào (từ 50 đến 1.000 bản ghi thông số kỹ thuật thiết bị điện tử) với số lần lặp lại từ 200 đến 500 lần để tính giá trị trung bình.
-2. **Phân tích độ trễ luồng yêu cầu Web tổng thể (End-to-End Request Latency Breakdown):** Phân tích chi tiết các thành phần đóng góp vào tổng thời gian phản hồi của một yêu cầu HTTP thực tế đến người dùng.
+Về mặt kiến trúc, đồ án làm rõ rằng luồng xử lý không phải là "Rust truy cập trực tiếp cơ sở dữ liệu", mà là mô hình ủy nhiệm vi dịch vụ (Microservice Delegation):
+$$\text{PHP Web App} \xrightarrow[\text{JSON}]{\text{HTTP Loopback}} \text{Rust Engine} \xrightarrow[\text{JSON}]{\text{HTTP Loopback}} \text{PHP Web App}$$
 
-### 4.5.2. Kết quả đo lường vi mô các thuật toán cốt lõi
-Dữ liệu đo lường thực nghiệm từ script `scripts/benchmark.php` cho thấy sự phân hóa rõ rệt về đặc tính tính toán:
+Do đó, việc đánh giá hiệu năng bắt buộc phải phân định rạch ròi giữa hai khái niệm:
+1. **Độ trễ thuật toán vi mô thuần CPU (In-Memory Algorithmic Latency):** Thời gian CPU thuần túy để thực thi logic thuật toán (Levenshtein, Cosine Similarity, Hồi quy tuyến tính) trực tiếp trên bộ nhớ RAM.
+2. **Độ trễ toàn trình yêu cầu qua mạng nội bộ (End-to-End Request Latency):** Tổng thời gian từ khi PHP bắt đầu đóng gói payload mảng thành JSON, truyền tải qua giao diện Loopback `127.0.0.1:5000`, dịch vụ Rust giải tuần tự hóa (`serde_json`), thực thi thuật toán, đóng gói kết quả trả về và PHP giải mã JSON thành mảng.
+
+### 4.5.2. Kết quả đo lường vi mô và phân tích thuật toán
+Kết quả benchmark nội bộ thực hiện qua công cụ `scripts/benchmark.php` cho thấy Rust đặc biệt phù hợp cho các tác vụ tính toán CPU-bound nặng; hiệu năng thực tế phụ thuộc quy mô tập dữ liệu, cấu hình CPU, cờ tối ưu của trình biên dịch và chi phí overhead giao tiếp HTTP:
 - **Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Search - Levenshtein & Token Matching):**
-  - *Dịch vụ Rust Engine:* Do được biên dịch trực tiếp ra mã máy nhị phân bản địa (Native Machine Code) và tối ưu hóa cấp độ con trỏ mảng không có chi phí Garbage Collection, Rust hoàn tất việc đối sánh từ khóa và tính khoảng cách sửa đổi Levenshtein cho danh mục sản phẩm trong thời gian dưới mili-giây (~0.5 - 2.0 ms tùy kích thước tập dữ liệu).
-  - *PHP Fallback:* PHP xử lý theo mô hình thông dịch kịch bản; việc lặp qua các mảng liên kết lồng nhau và tính toán `levenshtein()` tốn trung bình ~10 - 25 ms.
+  - *Về mặt thuật toán thuần CPU:* Thuật toán viết bằng Rust được biên dịch mã máy bản địa (Native Machine Code) với cờ tối ưu hóa giải phóng hoàn toàn chi phí runtime garbage collection, cho tốc độ đối sánh ký tự và duyệt chuỗi rất nhanh. Trong khi đó, PHP Fallback chạy trên máy ảo Zend VM thông dịch mảng liên kết (hash table), có thời gian tính toán thuật toán cao hơn đáng kể.
+  - *Về mặt ứng dụng thực tế:* Với tập dữ liệu nhỏ dưới 100 sản phẩm, sự chênh lệch thời gian thuật toán là không đáng kể so với chi phí đóng gói JSON. Tuy nhiên, khi mở rộng tập dữ liệu lên hàng nghìn thiết bị và nhiều thuộc tính mờ phức tạp, thuật toán trên Rust thể hiện tính ổn định vượt trội và không gây nghẽn tiến trình web chính.
 - **Tính toán ma trận độ tương đồng Cosine (Cosine Similarity Vector Space):**
-  - *Dịch vụ Rust Engine:* Các phép nhân vô hướng vector và chuẩn hóa độ dài vector $\vec{A} \cdot \vec{B} / (\|\vec{A}\| \|\vec{B}\|)$ được trình biên dịch `rustc` tự động vector hóa (tận dụng chỉ lệnh SIMD của CPU trong bản build release). Thời gian tìm top 4 sản phẩm tương đồng nhất trong toàn bộ danh mục chỉ mất khoảng ~0.8 - 1.5 ms.
-  - *PHP Fallback:* Cần thực hiện các vòng lặp `foreach` trên các mảng thuộc tính đặc trưng, đạt độ trễ ~15 - 30 ms.
+  - *Về mặt thuật toán thuần CPU:* Các phép nhân vô hướng vector và chuẩn hóa độ dài vector $\vec{A} \cdot \vec{B} / (\|\vec{A}\| \|\vec{B}\|)$ được trình biên dịch `rustc` tự động tối ưu hóa tận dụng tập lệnh vector SIMD của vi xử lý. PHP Fallback phải dùng các vòng lặp lồng duyệt thuộc tính, tiêu tốn nhiều chu kỳ CPU hơn.
 - **Phân tích dữ liệu kinh doanh (Hồi quy tuyến tính & Phân loại Pareto ABC):**
-  - *Dịch vụ Rust Engine:* Thuật toán sắp xếp O(N log N) để tính tỷ trọng doanh thu tích lũy và công thức bình phương tối thiểu O(N) hoàn tất tức thì trong khoảng ~0.5 - 1.2 ms.
-  - *PHP Fallback:* Hoàn tất trong khoảng ~8 - 18 ms.
+  - *Về mặt thuật toán thuần CPU:* Các thao tác sắp xếp $O(N \log N)$ và tính toán bình phương tối thiểu $O(N)$ diễn ra với chi phí cấp phát bộ nhớ cực thấp trên Rust, trong khi PHP cần duy trì cấu trúc mảng zval tiêu tốn nhiều bộ nhớ RAM hơn.
 
 ### 4.5.3. Phân tích phân rã độ trễ yêu cầu Web thực tế (End-to-End Latency Breakdown)
-Trong môi trường thực tế của một website thương mại điện tử, tổng thời gian phản hồi (Client Response Time) từ góc nhìn của trình duyệt người dùng được cấu thành từ nhiều giai đoạn:
-1. **Truy vấn cơ sở dữ liệu (Database Query Latency - MySQL/SQLite):** ~5 - 15 ms cho việc truy vấn lấy danh sách sản phẩm và thông số kỹ thuật qua PDO Prepared Statements.
-2. **Giao tiếp liên tiến trình qua mạng nội bộ (Loopback IPC Overhead):** ~0.5 - 2 ms cho việc đóng gói JSON trong PHP qua `curl`, truyền qua giao diện Loopback `127.0.0.1:5000` và giải tuần tự hóa JSON trong Rust (`serde_json`).
-3. **Thời gian tính toán lõi của Rust Engine:** ~0.5 - 2 ms.
-4. **Dựng giao diện và xuất mã HTML (PHP View Rendering):** ~3 - 8 ms.
+Trong môi trường thực tế của một website thương mại điện tử, việc sử dụng Rust không nên được tuyên bố chung chung là "làm toàn bộ website nhanh hơn", mà cần được định vị chính xác về mặt kiến trúc phần mềm:
+> **"Rust được sử dụng để tối ưu hóa các tác vụ tính toán CPU-bound phức tạp, trong khi PHP đảm nhiệm trọn vẹn vai trò Web Application và xử lý các quy tắc nghiệp vụ thương mại điện tử."**
 
-Như vậy, tổng thời gian xử lý một yêu cầu web tìm kiếm hay gợi ý thông minh dao động trong khoảng lý tưởng từ **10 ms đến 30 ms**. Việc đưa Rust vào xử lý tính toán không nhằm triệt tiêu hoàn toàn độ trễ mạng hay độ trễ CSDL, mà giữ vai trò then chốt trong việc:
-- Giải phóng tiến trình Web PHP khỏi các vòng lặp tính toán nặng CPU, giúp PHP Web Server duy trì khả năng tiếp nhận các kết nối khác.
-- Đảm bảo độ trễ tính toán không bị bùng nổ theo cấp số nhân khi số lượng thuộc tính và sản phẩm tăng lên hàng nghìn bản ghi.
-- Giữ mức tiêu thụ bộ nhớ RAM của dịch vụ Rust cực kỳ khiêm tốn (~5 - 10 MB RAM), độc lập hoàn toàn với vòng đời của các tiến trình PHP.
+Khi đo lường độ trễ toàn trình (End-to-End Latency) qua HTTP Loopback:
+1. **Truy vấn cơ sở dữ liệu (Database Query Latency):** Thời gian truy vấn dữ liệu từ MySQL/SQLite qua PDO.
+2. **Chi phí tuần tự hóa và mạng cục bộ (Serialization & Loopback Overhead):** Chuyển đổi dữ liệu PHP sang JSON, truyền qua socket `127.0.0.1:5000` và Rust deserialize struct.
+3. **Thời gian tính toán lõi của Rust Engine:** Thời gian thực thi thuật toán nội tại của Rust.
+4. **Dựng giao diện và phản hồi (PHP View Rendering):** Thời gian PHP tạo mã HTML trả về trình duyệt.
+
+Lợi ích kiến trúc cốt lõi của giải pháp Hybrid này bao gồm:
+- **Giải phóng luồng máy chủ Web (Offloading CPU-bound tasks):** Tách biệt việc tính toán ma trận nặng ra khỏi tiến trình phục vụ web PHP, giữ cho PHP Web Server luôn sẵn sàng tiếp nhận lượng lớn kết nối đồng thời từ khách hàng khác.
+- **Khả năng chịu lỗi cao (Fault-Tolerance & Resilience):** Nhờ cơ chế Graceful Fallback tích hợp trong `RustEngineService`, nếu tiến trình Rust gặp sự cố hoặc ngoại tuyến, hệ thống tự động chuyển sang thuật toán dự phòng nội bộ của PHP, đảm bảo độ sẵn sàng dịch vụ liên tục mà người dùng không gặp trang trắng lỗi.
 
 ---
 
@@ -571,10 +593,12 @@ Những đóng góp chính của đề tài:
 
 ## 5.3. Hạn chế của hệ thống hiện tại
 
-Mặc dù đã đạt được những kết quả rất tích cực, hệ thống vẫn tồn tại một số hạn chế cần tiếp tục hoàn thiện:
-- Phương thức thanh toán trực tuyến mới dừng lại ở việc tạo mã VietQR tĩnh theo đơn hàng mà chưa kết nối Webhook ngân hàng thời gian thực (như SeAPay, PayOS hoặc Casso) để tự động đổi trạng thái "Đã thanh toán" mà không cần quản trị viên duyệt tay.
-- Chưa tích hợp dịch vụ tính phí vận chuyển thời gian thực từ các đơn vị giao vận (Giao Hàng Nhanh, Giao Hàng Tiết Kiệm, Viettel Post).
-- Dịch vụ Rust Engine hiện đang lưu dữ liệu trong bộ nhớ (In-memory computation) cho từng lượt yêu cầu thay vì duy trì một bộ nhớ đệm phân tán như Redis.
+Mặc dù đã đạt được những kết quả rất tích cực, hệ thống vẫn tồn tại một số hạn chế mang tính thực tiễn cần tiếp tục hoàn thiện:
+- **Phương thức thanh toán trực tuyến:** Đồ án mô phỏng luồng chuyển khoản ngân hàng bằng mã VietQR động chuẩn NAPAS 247; chưa tích hợp webhook xác thực biến động số dư ngân hàng thời gian thực (như SeAPay, PayOS hoặc Casso) để tự động cập nhật trạng thái "Đã thanh toán" mà vẫn cần nhân viên quản trị đối soát thủ công.
+- **Quy mô tập ứng viên gợi ý:** Phiên bản đồ án giới hạn tập ứng viên recommendation ở 100 sản phẩm để phù hợp quy mô dữ liệu thử nghiệm và tối ưu độ trễ đóng gói/truyền tải JSON qua HTTP loopback giữa PHP và Rust.
+- **Quản lý danh mục & thương hiệu:** Danh mục và thương hiệu hiện được quản lý thông qua dữ liệu khởi tạo (seed data), chưa có giao diện CRUD riêng trên trang quản trị viên trong phiên bản hiện tại nhằm tập trung nguồn lực vào luồng thương mại cốt lõi.
+- **Chi phí vận chuyển & Hóa đơn tự động:** Chưa tích hợp API tính cước vận chuyển thời gian thực từ các đối tác giao vận (GHN, GHTK, Viettel Post) và chưa triển khai dịch vụ gửi email tự động xác nhận đơn hàng hay hóa đơn điện tử VAT.
+- **Lưu trữ trạng thái tính toán:** Dịch vụ Rust Engine hiện đang tính toán trực tiếp trên dữ liệu nhận được trong từng lượt yêu cầu (Stateless In-Memory) thay vì duy trì bộ nhớ đệm phân tán (Redis/Memcached).
 
 ## 5.4. Hướng phát triển mở rộng trong tương lai
 

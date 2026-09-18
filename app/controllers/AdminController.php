@@ -163,15 +163,21 @@ class AdminController {
         require __DIR__ . '/../views/admin/product_form.php';
     }
 
-    public function deleteProduct(int $id): void {
+    public function deleteProduct(int $id = 0): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /admin/products');
             exit;
         }
         Csrf::check();
 
-        Product::delete($id);
-        $_SESSION['flash_success'] = 'Đã chuyển trạng thái sản phẩm sang Ngừng kinh doanh (Soft Delete an toàn).';
+        if ($id <= 0) {
+            $id = (int)($_POST['id'] ?? 0);
+        }
+
+        if ($id > 0) {
+            Product::delete($id);
+            $_SESSION['flash_success'] = 'Đã chuyển trạng thái sản phẩm sang Ngừng kinh doanh (Soft Delete an toàn).';
+        }
         header('Location: /admin/products');
         exit;
     }
@@ -188,6 +194,24 @@ class AdminController {
             $orderId = (int)($_POST['order_id'] ?? 0);
             $status = $_POST['status'] ?? 'pending';
             $paymentStatus = $_POST['payment_status'] ?? null;
+
+            $allowedStatuses = ['pending', 'processing', 'shipping', 'completed', 'cancelled'];
+            $allowedPaymentStatuses = ['pending', 'paid', 'failed'];
+
+            if (!in_array($status, $allowedStatuses, true)) {
+                $_SESSION['flash_error'] = 'Trạng thái đơn hàng không hợp lệ.';
+                header('Location: /admin/orders');
+                exit;
+            }
+
+            if ($paymentStatus !== null && $paymentStatus !== '' && !in_array($paymentStatus, $allowedPaymentStatuses, true)) {
+                $_SESSION['flash_error'] = 'Trạng thái thanh toán không hợp lệ.';
+                header('Location: /admin/orders');
+                exit;
+            }
+            if ($paymentStatus === '') {
+                $paymentStatus = null;
+            }
 
             if ($orderId > 0) {
                 Order::updateStatus($orderId, $status, $paymentStatus);

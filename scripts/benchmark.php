@@ -78,11 +78,24 @@ $phpFuzzyAvg = $phpFuzzyDuration / $iterations;
 $phpFuzzyOps = round($iterations / ($endTime - $startTime));
 $phpFuzzyMem = (memory_get_usage() - $startMem) / 1024;
 
-echo "  PHP Fallback Search:\n";
+echo "  [A] PHP Fallback Search (Pure CPU Algorithm In-Memory):\n";
 echo "    Total time ({$iterations} runs): " . round($phpFuzzyDuration, 2) . " ms\n";
-echo "    Average latency per query: " . round($phpFuzzyAvg, 3) . " ms\n";
+echo "    Average algorithm latency: " . round($phpFuzzyAvg, 3) . " ms\n";
 echo "    Throughput: {$phpFuzzyOps} ops/sec\n";
-echo "    Memory delta: " . round($phpFuzzyMem, 2) . " KB\n\n";
+echo "    Memory delta: " . round($phpFuzzyMem, 2) . " KB\n";
+
+if ($rustOnline) {
+    $rustSearchRuns = 50;
+    $rustStart = microtime(true);
+    for ($i = 0; $i < $rustSearchRuns; $i++) {
+        $rustService->searchProducts($query, $products);
+    }
+    $rustSearchDuration = (microtime(true) - $rustStart) * 1000;
+    $rustSearchAvg = $rustSearchDuration / $rustSearchRuns;
+    echo "  [B] Rust Microservice (End-to-End via HTTP loopback):\n";
+    echo "    Average round-trip latency: " . round($rustSearchAvg, 3) . " ms (gồm JSON serialize + HTTP loopback + Rust compute)\n";
+}
+echo "\n";
 
 // 2. Benchmark: Recommendation Engine (Cosine Similarity on Feature Vectors)
 echo "--- 2. Benchmarking Recommendation Engine (Cosine Similarity) ---\n";
@@ -98,10 +111,23 @@ $phpRecDuration = ($endTime - $startTime) * 1000;
 $phpRecAvg = $phpRecDuration / $recIterations;
 $phpRecOps = round($recIterations / ($endTime - $startTime));
 
-echo "  PHP Fallback Cosine Recommendation:\n";
+echo "  [A] PHP Fallback Cosine Recommendation (Pure CPU Algorithm):\n";
 echo "    Total time ({$recIterations} runs): " . round($phpRecDuration, 2) . " ms\n";
-echo "    Average latency per target item: " . round($phpRecAvg, 3) . " ms\n";
-echo "    Throughput: {$phpRecOps} ops/sec\n\n";
+echo "    Average algorithm latency: " . round($phpRecAvg, 3) . " ms\n";
+echo "    Throughput: {$phpRecOps} ops/sec\n";
+
+if ($rustOnline) {
+    $rustRecRuns = 50;
+    $rustStart = microtime(true);
+    for ($i = 0; $i < $rustRecRuns; $i++) {
+        $rustService->getRecommendations($targetId, $products, 4);
+    }
+    $rustRecDuration = (microtime(true) - $rustStart) * 1000;
+    $rustRecAvg = $rustRecDuration / $rustRecRuns;
+    echo "  [B] Rust Microservice (End-to-End via HTTP loopback):\n";
+    echo "    Average round-trip latency: " . round($rustRecAvg, 3) . " ms\n";
+}
+echo "\n";
 
 // 3. Benchmark: Analytics (Linear Regression & Pareto ABC Analysis)
 echo "--- 3. Benchmarking Business Analytics (Linear Regression & ABC) ---\n";
@@ -117,15 +143,34 @@ $phpAnalyticsDuration = ($endTime - $startTime) * 1000;
 $phpAnalyticsAvg = $phpAnalyticsDuration / $analyticsIterations;
 $phpAnalyticsOps = round($analyticsIterations / ($endTime - $startTime));
 
-echo "  PHP Fallback Analytics:\n";
+echo "  [A] PHP Fallback Analytics (Pure CPU Algorithm):\n";
 echo "    Total time ({$analyticsIterations} runs): " . round($phpAnalyticsDuration, 2) . " ms\n";
-echo "    Average latency per batch: " . round($phpAnalyticsAvg, 3) . " ms\n";
-echo "    Throughput: {$phpAnalyticsOps} ops/sec\n\n";
+echo "    Average algorithm latency: " . round($phpAnalyticsAvg, 3) . " ms\n";
+echo "    Throughput: {$phpAnalyticsOps} ops/sec\n";
+
+if ($rustOnline) {
+    $rustAnaRuns = 50;
+    $rustStart = microtime(true);
+    for ($i = 0; $i < $rustAnaRuns; $i++) {
+        $rustService->getAnalytics($orders, $products);
+    }
+    $rustAnaDuration = (microtime(true) - $rustStart) * 1000;
+    $rustAnaAvg = $rustAnaDuration / $rustAnaRuns;
+    echo "  [B] Rust Microservice (End-to-End via HTTP loopback):\n";
+    echo "    Average round-trip latency: " . round($rustAnaAvg, 3) . " ms\n";
+}
+echo "\n";
 
 echo "=================================================================\n";
-echo "  Benchmark completed successfully!\n";
-echo "  Observation: Native compiled algorithms (Rust bare-metal)\n";
-echo "  typically deliver orders of magnitude lower CPU latency for pure\n";
-echo "  combinatorial matrix computations, while PHP Fallback handles\n";
-echo "  resilience seamlessly when the microservice is offline.\n";
+echo "  Benchmark Summary & Architectural Analysis:\n";
+echo "  1. Algorithm Latency vs End-to-End Request Latency:\n";
+echo "     - Algorithm latency: thời gian tính toán thuần CPU trong bộ nhớ.\n";
+echo "       Thuật toán Rust biên dịch tối ưu (SIMD, zero-cost abstractions)\n";
+echo "       rất mạnh ở bài toán tổ hợp, ma trận và tập dữ liệu lớn.\n";
+echo "     - End-to-end latency: bao gồm đóng gói JSON từ PHP, gửi qua HTTP\n";
+echo "       loopback 127.0.0.1, Rust parse struct, xử lý và trả về JSON.\n";
+echo "  2. Thiết kế Hybrid Đồ án:\n";
+echo "     - Rust Microservice: Tối ưu cho tác vụ CPU-bound nặng.\n";
+echo "     - PHP Fallback: Đảm bảo khả năng chịu lỗi (fault-tolerance),\n";
+echo "       hệ thống vẫn phục vụ người dùng 100% khi service Rust offline.\n";
 echo "=================================================================\n";

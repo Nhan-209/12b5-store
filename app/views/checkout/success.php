@@ -40,7 +40,7 @@ require __DIR__ . '/../layouts/header.php';
                 <div class="d-inline-block px-4 py-2 rounded-pill fw-bold fs-4 text-danger font-monospace mb-3" style="background: var(--accent-rose-subtle); border: 1.5px dashed var(--accent-rose-border);">
                     <?= htmlspecialchars($order['order_code']) ?>
                 </div>
-                <p class="small text-muted mb-0">Hóa đơn điện tử VAT và thông tin bảo hành chính hãng đã được gửi tới email <strong><?= htmlspecialchars($order['customer_email']) ?></strong>.</p>
+                <p class="small text-muted mb-0">Thông tin đơn hàng đã được ghi nhận trên hệ thống. Nhân viên CSKH sẽ liên hệ xác nhận đơn hàng.</p>
             </div>
 
             <!-- VietQR Payment Code if Bank Transfer -->

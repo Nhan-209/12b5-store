@@ -43,6 +43,13 @@ class CheckoutController {
         $paymentMethod = $_POST['payment_method'] ?? 'cod';
         $notes = trim($_POST['notes'] ?? '');
 
+        $allowedPaymentMethods = ['cod', 'bank_transfer'];
+        if (!in_array($paymentMethod, $allowedPaymentMethods, true)) {
+            $_SESSION['flash_error'] = 'Phương thức thanh toán không hợp lệ.';
+            header('Location: /checkout');
+            exit;
+        }
+
         if (empty($name) || empty($email) || empty($phone) || empty($address)) {
             $_SESSION['flash_error'] = 'Vui lòng điền đầy đủ các thông tin bắt buộc.';
             header('Location: /checkout');

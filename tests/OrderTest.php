@@ -76,6 +76,14 @@ class OrderTest {
             'passed' => ($failRes['success'] === false)
         ];
 
+        // Cleanup test order and restore product stock to keep database pristine
+        if (!empty($res['order_id'])) {
+            $pdo = \App\Models\Database::getConnection();
+            $pdo->prepare("DELETE FROM order_items WHERE order_id = ?")->execute([$res['order_id']]);
+            $pdo->prepare("DELETE FROM orders WHERE id = ?")->execute([$res['order_id']]);
+            $pdo->prepare("UPDATE products SET stock = ? WHERE id = ?")->execute([$initialStock, 2]);
+        }
+
         return $results;
     }
 }

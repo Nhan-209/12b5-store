@@ -57,6 +57,17 @@ class ProductTest {
             'passed' => ($hasPurchasedValid === true && $hasPurchasedInvalid === false)
         ];
 
+        // Cleanup test review and restore product rating to keep database pristine
+        $pdo = \App\Models\Database::getConnection();
+        $pdo->prepare("DELETE FROM reviews WHERE user_name = 'Tester'")->execute();
+        $avgStmt = $pdo->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as cnt FROM reviews WHERE product_id = 1");
+        $avgStmt->execute();
+        $stats = $avgStmt->fetch();
+        $pdo->prepare("UPDATE products SET rating = ?, review_count = ? WHERE id = 1")->execute([
+            round((float)($stats['avg_rating'] ?? 0), 1),
+            (int)($stats['cnt'] ?? 0)
+        ]);
+
         return $results;
     }
 }
