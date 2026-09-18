@@ -85,6 +85,10 @@ class Cart {
             return ['success' => false, 'message' => 'Sản phẩm không tồn tại.'];
         }
 
+        if (isset($product['status']) && (int)$product['status'] === 0) {
+            return ['success' => false, 'message' => 'Sản phẩm này hiện đã ngừng kinh doanh.'];
+        }
+
         $currentQty = $_SESSION['cart'][$productId]['quantity'] ?? 0;
         $newQty = $currentQty + $quantity;
 
@@ -118,6 +122,10 @@ class Cart {
         $product = Product::findById($productId);
         if (!$product) {
             return ['success' => false, 'message' => 'Sản phẩm không tồn tại.'];
+        }
+
+        if (isset($product['status']) && (int)$product['status'] === 0) {
+            return ['success' => false, 'message' => 'Sản phẩm này hiện đã ngừng kinh doanh.'];
         }
 
         if ($quantity > (int)$product['stock']) {

@@ -127,18 +127,21 @@ require __DIR__ . '/../layouts/header.php';
                     <form action="/cart/coupon" method="POST">
                         <?= \App\Core\Csrf::field() ?>
                         <div class="input-group mb-2">
-                            <input type="text" name="coupon_code" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" placeholder="Nhập mã (TECH2026...)" value="<?= htmlspecialchars($cart['coupon']['code'] ?? '') ?>">
+                            <input type="text" name="coupon_code" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" placeholder="Nhập mã (WELCOME2026...)" value="<?= htmlspecialchars($cart['coupon']['code'] ?? '') ?>">
                             <button class="btn btn-rose btn-sm rounded-end-pill px-3" type="submit">Áp Dụng</button>
                         </div>
                     </form>
 
                     <!-- Quick Coupon Chips -->
                     <div class="d-flex flex-wrap gap-1 mt-2">
-                        <span class="badge bg-light text-danger border rounded-pill px-2 py-1 small cursor-pointer" onclick="document.querySelector('input[name=coupon_code]').value='TECH2026'">
-                            Mã: TECH2026 (-10%)
+                        <span class="badge bg-light text-danger border rounded-pill px-2 py-1 small cursor-pointer" onclick="document.querySelector('input[name=coupon_code]').value='TECHSALE10'">
+                            Mã: TECHSALE10 (-10%)
                         </span>
-                        <span class="badge bg-light text-primary border rounded-pill px-2 py-1 small cursor-pointer" onclick="document.querySelector('input[name=coupon_code]').value='VIP500'">
-                            Mã: VIP500 (-500k)
+                        <span class="badge bg-light text-success border rounded-pill px-2 py-1 small cursor-pointer" onclick="document.querySelector('input[name=coupon_code]').value='WELCOME2026'">
+                            Mã: WELCOME2026 (-500K)
+                        </span>
+                        <span class="badge bg-light text-primary border rounded-pill px-2 py-1 small cursor-pointer" onclick="document.querySelector('input[name=coupon_code]').value='VIPMEMBER'">
+                            Mã: VIPMEMBER (-1TR)
                         </span>
                     </div>
 

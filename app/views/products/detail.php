@@ -156,19 +156,31 @@ require __DIR__ . '/../layouts/header.php';
                             <input type="number" id="qtyInput" name="quantity" class="form-control text-center font-monospace fw-bold" value="1" min="1" max="<?= $product['stock'] ?>">
                             <button class="btn btn-outline-secondary rounded-end-pill" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value < <?= $product['stock'] ?>) input.value++;">+</button>
                         </div>
-                        <span class="small <?= $product['stock'] > 0 ? 'text-success' : 'text-danger' ?>">
-                            <i class="bi <?= $product['stock'] > 0 ? 'bi-check-circle-fill' : 'bi-x-circle-fill' ?> me-1"></i>
-                            <?= $product['stock'] > 0 ? 'Còn hàng tại 15 showroom (' . $product['stock'] . ' máy sẵn sàng)' : 'Tạm hết hàng' ?>
-                        </span>
+                        <?php if (isset($product['status']) && (int)$product['status'] === 0): ?>
+                            <span class="badge bg-secondary px-3 py-2 rounded-pill small">
+                                <i class="bi bi-slash-circle me-1"></i> Ngừng kinh doanh
+                            </span>
+                        <?php else: ?>
+                            <span class="small <?= $product['stock'] > 0 ? 'text-success' : 'text-danger' ?>">
+                                <i class="bi <?= $product['stock'] > 0 ? 'bi-check-circle-fill' : 'bi-x-circle-fill' ?> me-1"></i>
+                                <?= $product['stock'] > 0 ? 'Còn hàng tại 15 showroom (' . $product['stock'] . ' máy sẵn sàng)' : 'Tạm hết hàng' ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
 
                     <div class="d-flex gap-3">
-                        <button type="submit" class="btn btn-rose btn-lg px-4 flex-grow-1 fw-bold shadow-sm" <?= $product['stock'] <= 0 ? 'disabled' : '' ?>>
-                            <i class="bi bi-cart-plus me-2"></i> Thêm Vào Giỏ Hàng
-                        </button>
-                        <button type="button" class="btn btn-soft-slate btn-lg px-3 btn-ajax-add-cart" data-product-id="<?= $product['id'] ?>" title="Thêm nhanh tức thì">
-                            <i class="bi bi-lightning-charge text-danger"></i>
-                        </button>
+                        <?php if (isset($product['status']) && (int)$product['status'] === 0): ?>
+                            <button type="button" class="btn btn-secondary btn-lg px-4 flex-grow-1 fw-bold" disabled>
+                                <i class="bi bi-slash-circle me-2"></i> Sản Phẩm Ngừng Kinh Doanh
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" class="btn btn-rose btn-lg px-4 flex-grow-1 fw-bold shadow-sm" <?= $product['stock'] <= 0 ? 'disabled' : '' ?>>
+                                <i class="bi bi-cart-plus me-2"></i> Thêm Vào Giỏ Hàng
+                            </button>
+                            <button type="button" class="btn btn-soft-slate btn-lg px-3 btn-ajax-add-cart" data-product-id="<?= $product['id'] ?>" title="Thêm nhanh tức thì" <?= $product['stock'] <= 0 ? 'disabled' : '' ?>>
+                                <i class="bi bi-lightning-charge text-danger"></i>
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </form>
 

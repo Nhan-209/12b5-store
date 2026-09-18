@@ -252,10 +252,28 @@ with open(auth_php, "r", encoding="utf-8") as f:
     auth_content = f.read()
 check("AuthController prevents session fixation via session_regenerate_id(true)", "session_regenerate_id(true)" in auth_content)
 
+profile_view = os.path.join(base_dir, "app", "views", "auth", "profile.php")
+with open(profile_view, "r", encoding="utf-8") as f:
+    profile_content = f.read()
+check("Profile view enforces CSRF field in form", "Csrf::field()" in profile_content)
+
 prod_php = os.path.join(base_dir, "app", "models", "Product.php")
 with open(prod_php, "r", encoding="utf-8") as f:
     prod_content = f.read()
 check("Product model implements hasPurchased completed order check", "hasPurchased" in prod_content and "completed" in prod_content)
+check("Product::addReview recalculates average rating and review_count", "AVG(rating)" in prod_content and "review_count" in prod_content)
+
+cart_php = os.path.join(base_dir, "app", "models", "Cart.php")
+with open(cart_php, "r", encoding="utf-8") as f:
+    cart_content = f.read()
+check("Cart::addItem rejects discontinued soft-deleted products", "status" in cart_content and "ngừng kinh doanh" in cart_content)
+
+check("Order::createOrder rejects discontinued products and validates coupon limit", "ngừng kinh doanh" in order_content and "usage_limit" in order_content)
+
+cart_view = os.path.join(base_dir, "app", "views", "cart", "index.php")
+with open(cart_view, "r", encoding="utf-8") as f:
+    cart_view_content = f.read()
+check("Cart view quick coupon chips match valid seed coupons", "TECHSALE10" in cart_view_content and "WELCOME2026" in cart_view_content and "VIPMEMBER" in cart_view_content)
 
 main_rs_path = os.path.join(base_dir, "rust-engine", "src", "main.rs")
 with open(main_rs_path, "r", encoding="utf-8") as f:

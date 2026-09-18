@@ -11,17 +11,33 @@ class Order {
         try {
             $pdo->beginTransaction();
 
-            // 1. Double check stock for all items
+            // 1. Double check stock and active status for all items
             foreach ($cartItems as $item) {
-                $stmt = $pdo->prepare("SELECT stock, name FROM products WHERE id = ?");
+                $stmt = $pdo->prepare("SELECT stock, name, status FROM products WHERE id = ?");
                 $stmt->execute([$item['product_id']]);
                 $prod = $stmt->fetch();
 
-                if (!$prod || (int)$prod['stock'] < (int)$item['quantity']) {
+                if (!$prod) {
                     $pdo->rollBack();
                     return [
                         'success' => false,
-                        'message' => 'Sản phẩm "' . ($prod['name'] ?? 'ID ' . $item['product_id']) . '" không đủ số lượng tồn kho.'
+                        'message' => 'Sản phẩm ID ' . $item['product_id'] . ' không tồn tại.'
+                    ];
+                }
+
+                if (isset($prod['status']) && (int)$prod['status'] === 0) {
+                    $pdo->rollBack();
+                    return [
+                        'success' => false,
+                        'message' => 'Sản phẩm "' . $prod['name'] . '" đã ngừng kinh doanh.'
+                    ];
+                }
+
+                if ((int)$prod['stock'] < (int)$item['quantity']) {
+                    $pdo->rollBack();
+                    return [
+                        'success' => false,
+                        'message' => 'Sản phẩm "' . $prod['name'] . '" không đủ số lượng tồn kho.'
                     ];
                 }
             }
@@ -86,8 +102,15 @@ class Order {
 
             // 4. Increment coupon used_count if coupon was used
             if (!empty($orderData['coupon_code'])) {
-                $couponStmt = $pdo->prepare("UPDATE coupons SET used_count = used_count + 1 WHERE code = ?");
+                $couponStmt = $pdo->prepare("UPDATE coupons SET used_count = used_count + 1 WHERE code = ? AND (usage_limit IS NULL OR used_count < usage_limit)");
                 $couponStmt->execute([$orderData['coupon_code']]);
+                if ($couponStmt->rowCount() === 0) {
+                    $pdo->rollBack();
+                    return [
+                        'success' => false,
+                        'message' => 'Mã khuyến mãi "' . $orderData['coupon_code'] . '" đã vượt quá số lần sử dụng cho phép.'
+                    ];
+                }
             }
 
             $pdo->commit();

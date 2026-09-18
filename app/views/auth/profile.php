@@ -27,6 +27,7 @@ require __DIR__ . '/../layouts/header.php';
                 </div>
 
                 <form action="/profile" method="POST">
+                    <?= \App\Core\Csrf::field() ?>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Email đăng nhập (Cố định)</label>
                         <input type="email" class="form-control rounded-3" value="<?= htmlspecialchars($user['email']) ?>" readonly disabled style="background-color: var(--bg-canvas-alt);">

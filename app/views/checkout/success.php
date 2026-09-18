@@ -50,7 +50,7 @@ require __DIR__ . '/../layouts/header.php';
                         <i class="bi bi-patch-check-fill"></i> VietQR Napas 247 Chuẩn Quốc Gia
                     </div>
                     <h5 class="fw-bold text-dark mb-1"><i class="bi bi-qr-code me-2 text-danger"></i>Thanh Toán Chuyển Khoản Qua VietQR</h5>
-                    <p class="text-muted small mb-3">Mở ứng dụng Mobile Banking bất kỳ (MBBank, Vietcombank, Techcombank, Momo...) để quét mã thanh toán tự động 24/7:</p>
+                    <p class="text-muted small mb-3">Hiển thị mã VietQR để khách hàng quét và thực hiện chuyển khoản thuận tiện qua ứng dụng Mobile Banking bất kỳ:</p>
                     
                     <div class="vietqr-image-container mb-3">
                         <img src="<?= htmlspecialchars($qrUrl) ?>" alt="VietQR Payment" class="img-fluid rounded-3 shadow-xs" style="max-width: 260px;">
@@ -84,7 +84,7 @@ require __DIR__ . '/../layouts/header.php';
                             </div>
                         </div>
                     </div>
-                    <div class="small text-muted"><i class="bi bi-clock-history me-1 text-primary"></i> Giao dịch chuyển khoản được hệ thống tự động đối soát và cập nhật trong 1-3 phút.</div>
+                    <div class="small text-muted"><i class="bi bi-info-circle me-1 text-primary"></i> Vui lòng giữ đúng nội dung chuyển khoản để cửa hàng kiểm tra đối soát và tiến hành giao hàng nhanh chóng.</div>
                 </div>
             <?php endif; ?>
 

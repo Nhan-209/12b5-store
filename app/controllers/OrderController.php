@@ -36,7 +36,7 @@ class OrderController {
 
         if (!$isAuthorized) {
             $_SESSION['flash_error'] = 'Bạn không có quyền truy cập hoặc xem chi tiết đơn hàng này.';
-            header('Location: /orders');
+            header('Location: ' . (!empty($currentUser) ? '/orders' : '/'));
             exit;
         }
 

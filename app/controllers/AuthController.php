@@ -113,6 +113,7 @@ class AuthController {
 
     public function logout(): void {
         unset($_SESSION['user']);
+        session_regenerate_id(true);
         $_SESSION['flash_success'] = 'Đã đăng xuất tài khoản.';
         header('Location: /');
         exit;

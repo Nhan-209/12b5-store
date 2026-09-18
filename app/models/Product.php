@@ -255,7 +255,22 @@ class Product {
     public static function addReview(int $productId, ?int $userId, string $userName, int $rating, string $comment): bool {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("INSERT INTO reviews (product_id, user_id, user_name, rating, comment) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$productId, $userId, $userName, $rating, $comment]);
+        $success = $stmt->execute([$productId, $userId, $userName, $rating, $comment]);
+
+        if ($success) {
+            // Dynamically recalculate and update aggregate rating and review count
+            $statStmt = $pdo->prepare("SELECT AVG(rating) AS avg_rating, COUNT(*) AS total_count FROM reviews WHERE product_id = ?");
+            $statStmt->execute([$productId]);
+            $stats = $statStmt->fetch();
+            if ($stats) {
+                $avg = round((float)($stats['avg_rating'] ?? 5.0), 1);
+                $cnt = (int)($stats['total_count'] ?? 0);
+                $upStmt = $pdo->prepare("UPDATE products SET rating = ?, review_count = ? WHERE id = ?");
+                $upStmt->execute([$avg, $cnt, $productId]);
+            }
+        }
+
+        return $success;
     }
 
     private static function formatProduct(array $p): array {

@@ -125,8 +125,10 @@ doantotnghiep/
 │   ├── AuthTest.php             # Kiểm thử xác thực & băm mật khẩu Bcrypt (3 tests)
 │   └── RustEngineClientTest.php # Kiểm thử kết nối và thuật toán Rust (3 tests)
 ├── scripts/
+│   ├── benchmark.php            # Kịch bản thực nghiệm đo lường hiệu năng PHP vs Rust
 │   ├── generate_docx.py         # Kịch bản biên dịch báo cáo sang Word (.docx)
-│   ├── verify_project.py        # Kịch bản kiểm tra toàn diện 153 tiêu chí
+│   ├── generate_preview.py      # Kịch bản tạo các tệp giao diện mẫu tĩnh (preview)
+│   ├── verify_project.py        # Kịch bản kiểm tra toàn diện tính toàn vẹn hệ thống
 │   └── init_sqlite.py           # Khởi tạo dữ liệu SQLite từ Python
 ├── start.bat / start.ps1        # Kịch bản khởi chạy 1-click trên Windows
 ├── start.sh                     # Kịch bản khởi chạy trên Linux/macOS

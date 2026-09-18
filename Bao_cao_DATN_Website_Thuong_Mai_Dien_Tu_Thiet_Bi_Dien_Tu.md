@@ -290,9 +290,9 @@ Hệ thống đề xuất giải quyết toàn bộ các vướng mắc trên th
 | **F09** | Áp dụng mã giảm giá | Customer, Guest | Nhập mã coupon (giảm theo % hoặc số tiền cố định), kiểm tra giá trị đơn hàng tối thiểu và chiết khấu ngay. |
 | **F10** | Đặt hàng & Thanh toán | Customer, Guest | Nhập thông tin nhận hàng, chọn phương thức COD hoặc Chuyển khoản VietQR, thực thi giao dịch cơ sở dữ liệu an toàn. |
 | **F11** | Tạo mã VietQR động | Customer, Guest | Tự động tạo ảnh mã QR ngân hàng chuẩn NAPAS 247 có nhúng sẵn số tiền chính xác và mã đơn hàng. |
-| **F12** | Đánh giá & Nhận xét | Customer | Gửi đánh giá số sao (1-5 sao) và nhận xét trải nghiệm sau khi trải nghiệm sản phẩm. |
+| **F12** | Đánh giá & Nhận xét | Customer | Gửi đánh giá số sao (1-5 sao) và nhận xét trải nghiệm (chỉ khách hàng đã nhận hàng thành công mới được đánh giá để đảm bảo tính xác thực). |
 | **F13** | Theo dõi đơn hàng | Customer, Admin | Tra cứu hành trình đơn hàng qua timeline trực quan (Đã đặt, Đang đóng gói, Đang giao, Hoàn thành). |
-| **F14** | Quản trị thiết bị (CRUD) | Admin | Thêm mới, chỉnh sửa thông số kỹ thuật, cập nhật giá bán, số lượng tồn kho và xóa sản phẩm. |
+| **F14** | Quản trị thiết bị (CRUD) | Admin | Thêm mới, chỉnh sửa thông số kỹ thuật, cập nhật giá bán, số lượng tồn kho và chuyển trạng thái ngừng kinh doanh (soft delete an toàn bảo toàn khóa ngoại đơn hàng). |
 | **F15** | Quản trị đơn hàng | Admin | Xem danh sách đơn, xem chi tiết hàng hóa, cập nhật trạng thái đơn hàng và trạng thái thanh toán. |
 | **F16** | Dashboard & Báo cáo ABC | Admin | Xem tổng doanh thu, dự báo doanh thu ngày tiếp theo qua Hồi quy tuyến tính, phân tích tồn kho Pareto ABC. |
 
@@ -405,7 +405,7 @@ Cơ sở dữ liệu bao gồm 11 bảng chuẩn hóa:
 5. **`carts` & `cart_items` (Giỏ hàng):** Thiết kế lược đồ hỗ trợ lưu trữ trạng thái giỏ hàng theo phiên hoặc người dùng. Trong phiên bản hiện tại, nhằm tối ưu hóa độ trễ I/O cơ sở dữ liệu và tăng tốc độ phản hồi cho các thao tác thêm/sửa giỏ hàng, hệ thống lưu trữ giỏ hàng trong PHP Session (`$_SESSION['cart']`); hai bảng này được định nghĩa sẵn trong cấu trúc CSDL nhằm phục vụ khả năng mở rộng lưu trữ giỏ hàng đồng bộ đa thiết bị (Persistent Multi-Device Cart) trong tương lai.
 6. **`orders` (Đơn hàng):** `id`, `user_id`, `order_code` (Mã đơn duy nhất), `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `payment_method` ('cod', 'bank_transfer'), `payment_status` ('pending', 'paid'), `order_status` ('pending', 'processing', 'shipping', 'completed', 'cancelled'), `total_amount`, `discount_amount`, `final_amount`, `notes`, `created_at`.
 7. **`order_items` (Chi tiết đơn hàng):** `id`, `order_id`, `product_id`, `product_name`, `product_sku`, `unit_price`, `quantity`, `subtotal`. Đơn giá được lưu tĩnh tại thời điểm mua nhằm đảm bảo tính toàn vẹn của lịch sử kế toán.
-8. **`coupons` (Mã khuyến mãi):** `id`, `code`, `discount_type` ('fixed', 'percent'), `discount_value`, `min_order_value`, `expires_at`, `status`.
+8. **`coupons` (Mã khuyến mãi):** `id`, `code`, `discount_type` ('fixed', 'percent'), `discount_value`, `min_order_value`, `expires_at`, `usage_limit`, `used_count`, `status`.
 9. **`reviews` (Đánh giá người dùng):** `id`, `product_id`, `user_id`, `user_name`, `rating`, `comment`, `created_at`.
 10. **`system_logs` (Nhật ký hệ thống):** Lưu vết hiệu năng và lịch sử gọi dịch vụ.
 
@@ -456,12 +456,12 @@ Quy trình CI/CD được định nghĩa trong `.github/workflows/ci.yml`:
 - **Trang chủ:** Hiển thị banner công nghệ, lưới danh mục nhanh, danh sách thiết bị nổi bật và khu vực "Gợi ý thông minh dành cho bạn" được tính toán tức thì bởi Rust Engine.
 - **Trang danh mục & Tìm kiếm:** Tích hợp bộ lọc đa chiều (danh mục, hãng, khoảng giá) và thanh tìm kiếm từ khóa với thời gian phản hồi cực nhanh.
 - **Trang chi tiết sản phẩm:** Bảng thông số kỹ thuật chi tiết theo từng linh kiện (CPU, RAM, GPU, Màn hình, Pin), ảnh sản phẩm, kiểm tra số lượng tồn kho theo thời gian thực và danh sách sản phẩm tương đồng đề xuất.
-- **Giỏ hàng & Thanh toán:** Thêm/sửa/xóa sản phẩm bằng AJAX, áp dụng mã khuyến mãi (`WELCOME2026`, `TECHSALE10`), lựa chọn thanh toán COD hoặc hiển thị mã VietQR động để quét chuyển khoản tự động.
+- **Giỏ hàng & Thanh toán:** Thêm/sửa/xóa sản phẩm bằng AJAX, áp dụng mã khuyến mãi (`WELCOME2026`, `TECHSALE10`), lựa chọn thanh toán COD hoặc hiển thị mã VietQR động để quét chuyển khoản thuận tiện.
 - **Lịch sử đơn hàng:** Khách hàng theo dõi chi tiết các đơn đã đặt và tiến độ giao hàng qua timeline 4 bước trực quan.
 
 ### 4.3.2. Phân hệ quản trị (Admin)
 - **Dashboard quản trị:** Hiển thị tức thời trạng thái kết nối tới Rust Engine, độ trễ xử lý (ms), tổng doanh thu thực tế, dự báo doanh thu ngày tiếp theo qua mô hình Hồi quy tuyến tính, bảng phân tích tồn kho Pareto ABC và danh sách đơn hàng mới nhất.
-- **Quản lý sản phẩm:** Thêm thiết bị mới với biểu mẫu thông số kỹ thuật hoàn chỉnh, cập nhật giá bán, số lượng tồn kho và xóa sản phẩm.
+- **Quản lý sản phẩm:** Thêm thiết bị mới với biểu mẫu thông số kỹ thuật hoàn chỉnh, cập nhật giá bán, số lượng tồn kho và chuyển trạng thái sang ngừng kinh doanh (soft delete an toàn bảo toàn dữ liệu đơn hàng).
 - **Quản lý đơn hàng:** Xem chi tiết người nhận, danh sách thiết bị đặt mua và cập nhật trạng thái đơn (Chờ xử lý $\rightarrow$ Đang đóng gói $\rightarrow$ Đang giao $\rightarrow$ Hoàn thành $\rightarrow$ Hủy đơn).
 
 ### 4.3.3. Rust Microservice Engine
