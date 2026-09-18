@@ -138,7 +138,7 @@ require __DIR__ . '/../layouts/header.php';
                     </div>
                     <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-1">
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng củ sạc nhanh GaN 35W chính hãng trị giá <strong>690.000₫</strong></li>
-                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR tự động</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR thuận tiện</li>
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Trợ giá thu cũ đổi mới (Trade-in) lên đến <strong>2.500.000₫</strong></li>
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng gói bảo dưỡng, vệ sinh thiết bị định kỳ trọn đời máy</li>
                     </ul>
@@ -146,6 +146,7 @@ require __DIR__ . '/../layouts/header.php';
 
                 <!-- Stock & Add to Cart Form -->
                 <form action="/cart/add" method="POST" class="mb-4">
+                    <?= \App\Core\Csrf::field() ?>
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
 
                     <div class="d-flex align-items-center gap-3 mb-4">
@@ -275,29 +276,47 @@ require __DIR__ . '/../layouts/header.php';
             </div>
 
             <div class="col-md-8">
-                <!-- Write a review form -->
-                <h6 class="fw-bold mb-2 text-dark">Gửi Đánh Giá Của Bạn</h6>
-                <form action="/product/review" method="POST" class="row g-2">
-                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <div class="col-sm-6">
-                        <input type="text" name="user_name" class="form-control form-control-sm rounded-3" placeholder="Họ và tên của bạn *" required value="<?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?>">
+                <?php 
+                $isLoggedIn = !empty($_SESSION['user']['id']);
+                $hasPurchased = $isLoggedIn ? \App\Models\Product::hasPurchased((int)$_SESSION['user']['id'], (int)$product['id']) : false;
+                ?>
+
+                <?php if ($isLoggedIn && $hasPurchased): ?>
+                    <!-- Write a review form for verified buyer -->
+                    <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-shield-check text-success me-1"></i>Gửi Đánh Giá Của Bạn (Đã xác minh mua hàng)</h6>
+                    <form action="/product/review" method="POST" class="row g-2">
+                        <?= \App\Core\Csrf::field() ?>
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <div class="col-sm-6">
+                            <input type="text" name="user_name" class="form-control form-control-sm rounded-3" placeholder="Họ và tên của bạn *" required value="<?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <select name="rating" class="form-select form-select-sm rounded-3">
+                                <option value="5">⭐⭐⭐⭐⭐ (5 sao - Cực kỳ hài lòng)</option>
+                                <option value="4">⭐⭐⭐⭐ (4 sao - Hài lòng)</option>
+                                <option value="3">⭐⭐⭐ (3 sao - Bình thường)</option>
+                                <option value="2">⭐⭐ (2 sao - Chưa ưng ý)</option>
+                                <option value="1">⭐ (1 sao - Thất vọng)</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <textarea name="comment" class="form-control form-control-sm rounded-3" rows="3" placeholder="Chia sẻ cảm nhận thực tế về thiết bị, hiệu năng, đóng gói và thời gian giao hàng..." required></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-rose btn-sm px-4">Gửi Đánh Giá</button>
+                        </div>
+                    </form>
+                <?php elseif (!$isLoggedIn): ?>
+                    <div class="p-3 bg-light rounded-4 border text-center">
+                        <i class="bi bi-lock-fill text-muted fs-4 d-block mb-1"></i>
+                        <span class="text-muted small">Quý khách vui lòng <a href="/login" class="fw-bold text-danger">Đăng nhập</a> bằng tài khoản đã mua sản phẩm để viết đánh giá.</span>
                     </div>
-                    <div class="col-sm-6">
-                        <select name="rating" class="form-select form-select-sm rounded-3">
-                            <option value="5">⭐⭐⭐⭐⭐ (5 sao - Cực kỳ hài lòng)</option>
-                            <option value="4">⭐⭐⭐⭐ (4 sao - Hài lòng)</option>
-                            <option value="3">⭐⭐⭐ (3 sao - Bình thường)</option>
-                            <option value="2">⭐⭐ (2 sao - Chưa ưng ý)</option>
-                            <option value="1">⭐ (1 sao - Thất vọng)</option>
-                        </select>
+                <?php else: ?>
+                    <div class="p-3 bg-light rounded-4 border text-center">
+                        <i class="bi bi-bag-check text-muted fs-4 d-block mb-1"></i>
+                        <span class="text-muted small">Chức năng đánh giá chỉ dành cho khách hàng đã mua và hoàn tất đơn hàng cho thiết bị này tại 12B5 Store.</span>
                     </div>
-                    <div class="col-12">
-                        <textarea name="comment" class="form-control form-control-sm rounded-3" rows="3" placeholder="Chia sẻ cảm nhận thực tế về thiết bị, hiệu năng, đóng gói và thời gian giao hàng..." required></textarea>
-                    </div>
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-rose btn-sm px-4">Gửi Đánh Giá</button>
-                    </div>
-                </form>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -309,9 +328,15 @@ require __DIR__ . '/../layouts/header.php';
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <div class="d-flex align-items-center gap-2">
                                 <span class="fw-bold small text-dark"><?= htmlspecialchars($rev['user_name']) ?></span>
-                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill small" style="font-size: 0.68rem;">
-                                    <i class="bi bi-patch-check-fill"></i> Đã mua hàng tại 12B5 Store
-                                </span>
+                                <?php if (!empty($rev['is_verified_purchase'])): ?>
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill small" style="font-size: 0.68rem;">
+                                        <i class="bi bi-patch-check-fill"></i> Đã mua hàng tại 12B5 Store
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill small" style="font-size: 0.68rem;">
+                                        <i class="bi bi-person-check"></i> Khách hàng
+                                    </span>
+                                <?php endif; ?>
                             </div>
                             <span class="text-muted small" style="font-size: 0.75rem;"><?= htmlspecialchars($rev['created_at'] ?? 'Vừa xong') ?></span>
                         </div>

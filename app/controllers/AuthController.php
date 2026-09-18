@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Core\Csrf;
 
 class AuthController {
     public function login(): void {
@@ -11,6 +12,12 @@ class AuthController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validate()) {
+                $error = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
+                require __DIR__ . '/../views/auth/login.php';
+                return;
+            }
+
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
@@ -22,6 +29,8 @@ class AuthController {
 
             $user = User::verifyCredentials($email, $password);
             if ($user) {
+                // Mitigate session fixation by regenerating session ID upon login
+                session_regenerate_id(true);
                 $_SESSION['user'] = $user;
                 $_SESSION['flash_success'] = 'Đăng nhập thành công! Chào mừng ' . htmlspecialchars($user['name']);
 
@@ -48,6 +57,12 @@ class AuthController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validate()) {
+                $error = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
+                require __DIR__ . '/../views/auth/register.php';
+                return;
+            }
+
             $name = trim($_POST['name'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
@@ -113,6 +128,12 @@ class AuthController {
         $user = User::findById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validate()) {
+                $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn.';
+                header('Location: /profile');
+                exit;
+            }
+
             $name = trim($_POST['name'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
             $address = trim($_POST['address'] ?? '');

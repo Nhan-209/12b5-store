@@ -58,17 +58,22 @@ require __DIR__ . '/../layouts/header.php';
                             <td class="fw-semibold small text-muted"><?= $p['sales_count'] ?></td>
                             <td>
                                 <span class="badge <?= $p['status'] == 1 ? 'bg-success' : 'bg-secondary' ?> rounded-pill px-3 py-1">
-                                    <?= $p['status'] == 1 ? 'Kinh doanh' : 'Tạm ẩn' ?>
+                                    <?= $p['status'] == 1 ? 'Kinh doanh' : 'Ngừng kinh doanh' ?>
                                 </span>
                             </td>
                             <td class="text-end">
-                                <div class="d-inline-flex gap-1">
+                                <div class="d-inline-flex gap-1 align-items-center">
                                     <a href="/admin/products/edit/<?= $p['id'] ?>" class="btn btn-sm btn-outline-rose rounded-pill px-2" title="Chỉnh sửa">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a href="/admin/products/delete/<?= $p['id'] ?>" class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');" title="Xóa">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
+                                    <?php if ($p['status'] == 1): ?>
+                                        <form action="/admin/products/delete/<?= $p['id'] ?>" method="POST" class="d-inline m-0" onsubmit="return confirm('Bạn có chắc muốn chuyển sản phẩm sang trạng thái Ngừng kinh doanh?');">
+                                            <?= \App\Core\Csrf::field() ?>
+                                            <button type="submit" class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger border-0" title="Ngừng kinh doanh">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>

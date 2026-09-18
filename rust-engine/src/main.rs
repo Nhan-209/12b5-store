@@ -11,8 +11,9 @@ use std::time::Instant;
 use tiny_http::{Header, Response, Server, StatusCode};
 
 fn main() {
+    let host = std::env::var("RUST_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
     let port = std::env::var("RUST_PORT").unwrap_or_else(|_| "5000".to_string());
-    let addr = format!("0.0.0.0:{}", port);
+    let addr = format!("{}:{}", host, port);
 
     println!("=======================================================");
     println!("  ElectroStore - Rust High-Performance Engine v0.1.0");

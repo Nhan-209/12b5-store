@@ -82,6 +82,7 @@ require __DIR__ . '/../layouts/header.php';
                                         <td class="fw-semibold small text-dark"><?= $item['formatted_price'] ?></td>
                                         <td>
                                             <form action="/cart/update" method="POST" class="d-flex align-items-center">
+                                                <?= \App\Core\Csrf::field() ?>
                                                 <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
                                                 <div class="input-group input-group-sm">
                                                     <button class="btn btn-outline-secondary rounded-start-pill" type="submit" name="quantity" value="<?= $item['quantity'] - 1 ?>">-</button>
@@ -93,6 +94,7 @@ require __DIR__ . '/../layouts/header.php';
                                         <td class="fw-bold text-danger small"><?= $item['formatted_subtotal'] ?></td>
                                         <td class="text-end">
                                             <form action="/cart/remove" method="POST">
+                                                <?= \App\Core\Csrf::field() ?>
                                                 <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
                                                 <button type="submit" class="btn btn-sm text-danger p-0 border-0 bg-transparent" title="Xóa sản phẩm">
                                                     <i class="bi bi-trash3 fs-5"></i>
@@ -111,7 +113,7 @@ require __DIR__ . '/../layouts/header.php';
                             <i class="bi bi-shield-check text-success me-1"></i> Bảo hành chính hãng & Bao đổi trả 30 ngày
                         </div>
                         <div>
-                            <i class="bi bi-qr-code-scan text-primary me-1"></i> Hỗ trợ quét mã VietQR tự động
+                            <i class="bi bi-qr-code-scan text-primary me-1"></i> Hỗ trợ quét mã VietQR thuận tiện
                         </div>
                     </div>
                 </div>
@@ -123,6 +125,7 @@ require __DIR__ . '/../layouts/header.php';
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
                     <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-ticket-perforated-fill me-2 text-danger"></i>Mã Ưu Đãi / Khuyến Mãi</h6>
                     <form action="/cart/coupon" method="POST">
+                        <?= \App\Core\Csrf::field() ?>
                         <div class="input-group mb-2">
                             <input type="text" name="coupon_code" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" placeholder="Nhập mã (TECH2026...)" value="<?= htmlspecialchars($cart['coupon']['code'] ?? '') ?>">
                             <button class="btn btn-rose btn-sm rounded-end-pill px-3" type="submit">Áp Dụng</button>
@@ -143,6 +146,7 @@ require __DIR__ . '/../layouts/header.php';
                         <div class="alert alert-success d-flex justify-content-between align-items-center mt-3 mb-0 p-2 rounded-3 small">
                             <span><i class="bi bi-check-circle-fill me-1"></i> Đã áp dụng: <strong><?= htmlspecialchars($cart['coupon']['code']) ?></strong></span>
                             <form action="/cart/coupon" method="POST" class="d-inline">
+                                <?= \App\Core\Csrf::field() ?>
                                 <input type="hidden" name="coupon_code" value="">
                                 <button type="submit" class="btn btn-link btn-sm text-danger p-0" title="Bỏ mã"><i class="bi bi-x-circle-fill"></i></button>
                             </form>

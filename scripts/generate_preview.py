@@ -7,6 +7,7 @@ header_template = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="preview-demo-csrf-token">
     <title>{title} - 12B5 Store | Siêu Thị Thiết Bị Điện Tử & Công Nghệ Cao</title>
     
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
@@ -1180,7 +1181,7 @@ detail_body = """
                     </div>
                     <ul class="list-unstyled mb-0 small text-muted d-flex flex-column gap-1">
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Tặng túi chống sốc Tucano Milan chính hãng trị giá <strong>890.000₫</strong></li>
-                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR tự động</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Giảm thêm <strong>500.000₫</strong> khi thanh toán quét mã VietQR thuận tiện</li>
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Hỗ trợ thu cũ đổi mới (Trade-in) trợ giá lên tới <strong>2.500.000₫</strong></li>
                         <li><i class="bi bi-check2-circle text-success me-2"></i> Vệ sinh tra keo tản nhiệt và cài đặt phần mềm chuyên nghiệp miễn phí trọn đời</li>
                     </ul>
@@ -1336,7 +1337,7 @@ cart_body = """
 
                 <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 pt-3 border-top text-muted small">
                     <div><i class="bi bi-shield-check text-success me-1"></i> Bảo hành chính hãng & Bao đổi trả 30 ngày</div>
-                    <div><i class="bi bi-qr-code-scan text-primary me-1"></i> Hỗ trợ quét mã VietQR tự động</div>
+                    <div><i class="bi bi-qr-code-scan text-primary me-1"></i> Hỗ trợ quét mã VietQR thuận tiện</div>
                 </div>
             </div>
         </div>
@@ -1452,8 +1453,8 @@ checkout_body = """
                         <input class="form-check-input mt-0" type="radio" name="pay" checked>
                         <div class="p-2 rounded-3 bg-danger bg-opacity-10 text-danger fs-4"><i class="bi bi-qr-code-scan"></i></div>
                         <div>
-                            <div class="fw-bold small text-danger">Chuyển khoản VietQR NAPAS 247 (Khớp Lệnh Tự Động 100%)</div>
-                            <div class="text-muted small">Quét mã bằng app ngân hàng bất kỳ. Hệ thống xác nhận đơn ngay lập tức.</div>
+                            <div class="fw-bold small text-danger">Chuyển khoản VietQR NAPAS 247</div>
+                            <div class="text-muted small">Hiển thị mã VietQR để khách hàng quét và thực hiện chuyển khoản thuận tiện qua ứng dụng ngân hàng bất kỳ.</div>
                         </div>
                     </label>
 
@@ -1475,7 +1476,7 @@ checkout_body = """
                 <div class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold small mb-2">
                     <i class="bi bi-patch-check-fill"></i> VietQR Napas 247 Chuẩn Quốc Gia
                 </div>
-                <h6 class="fw-bold text-dark mb-1">Mã QR Thanh Toán Tự Động</h6>
+                <h6 class="fw-bold text-dark mb-1">Mã QR Thanh Toán Thuận Tiện</h6>
                 <p class="text-muted small mb-3">Mở app Mobile Banking bất kỳ để quét mã chuyển khoản:</p>
 
                 <div class="vietqr-image-container">
@@ -2316,8 +2317,8 @@ success_body = """
                 <div class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 fw-bold small mb-2">
                     <i class="bi bi-patch-check-fill"></i> VietQR Napas 247 Chuẩn Quốc Gia
                 </div>
-                <h5 class="fw-bold text-dark mb-1"><i class="bi bi-qr-code me-2 text-danger"></i>Mã QR Thanh Toán Tự Động</h5>
-                <p class="text-muted small mb-3">Mở ứng dụng Mobile Banking bất kỳ để quét mã thanh toán đối soát tự động:</p>
+                <h5 class="fw-bold text-dark mb-1"><i class="bi bi-qr-code me-2 text-danger"></i>Mã QR Thanh Toán Thuận Tiện</h5>
+                <p class="text-muted small mb-3">Mở ứng dụng Mobile Banking bất kỳ để quét mã chuyển khoản thuận tiện:</p>
 
                 <div class="vietqr-image-container mb-3">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021238540010A00000072701240006970422011001234567890208QRIBFTTA53037045408969800005802VN62210817DH2026091712B56304" alt="VietQR" class="img-fluid rounded-3 shadow-xs">
@@ -2351,7 +2352,7 @@ success_body = """
                         </div>
                     </div>
                 </div>
-                <div class="small text-muted"><i class="bi bi-clock-history me-1 text-primary"></i> Giao dịch chuyển khoản được hệ thống tự động đối soát và kích hoạt bảo hành điện tử.</div>
+                <div class="small text-muted"><i class="bi bi-clock-history me-1 text-primary"></i> Vui lòng giữ đúng cú pháp chuyển khoản để hệ thống ghi nhận đơn hàng thuận tiện nhất.</div>
             </div>
 
             <!-- Order Details Card -->

@@ -84,6 +84,12 @@ class Order {
                 }
             }
 
+            // 4. Increment coupon used_count if coupon was used
+            if (!empty($orderData['coupon_code'])) {
+                $couponStmt = $pdo->prepare("UPDATE coupons SET used_count = used_count + 1 WHERE code = ?");
+                $couponStmt->execute([$orderData['coupon_code']]);
+            }
+
             $pdo->commit();
 
             return [

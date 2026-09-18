@@ -18,7 +18,7 @@ pub fn handle_health(ctx: &ServerContext) -> String {
         service: "rust-engine-microservice".to_string(),
         version: "0.1.0".to_string(),
         uptime_seconds: uptime,
-        worker_threads: 4,
+        worker_threads: 1, // Native event loop execution model
     };
     serde_json::to_string(&resp).unwrap_or_else(|_| "{}".to_string())
 }

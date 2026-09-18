@@ -37,6 +37,7 @@ require __DIR__ . '/../layouts/header.php';
     <h3 class="fw-bold mb-4 text-dark"><i class="bi bi-credit-card-2-front me-2 text-danger"></i>Đặt Hàng & Thanh Toán Trực Tuyến</h3>
 
     <form action="/checkout/process" method="POST">
+        <?= \App\Core\Csrf::field() ?>
         <div class="row g-4 mb-5">
             <!-- Left Form Area -->
             <div class="col-lg-7">
@@ -90,8 +91,8 @@ require __DIR__ . '/../layouts/header.php';
                                 <i class="bi bi-qr-code-scan"></i>
                             </div>
                             <div>
-                                <div class="fw-bold small text-danger">Chuyển khoản Ngân hàng (Mã QR VietQR Tự Động)</div>
-                                <div class="text-muted small">Quét mã VietQR trên ứng dụng ngân hàng bất kỳ (MBBank, Vietcombank, Techcombank, Momo). Tự động khớp lệnh 24/7.</div>
+                                <div class="fw-bold small text-danger">Chuyển khoản Ngân hàng (Mã VietQR NAPAS 247)</div>
+                                <div class="text-muted small">Hiển thị mã VietQR để khách hàng quét và thực hiện chuyển khoản thuận tiện qua ứng dụng ngân hàng bất kỳ.</div>
                             </div>
                         </label>
                     </div>

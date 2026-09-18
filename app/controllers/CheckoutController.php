@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Core\Csrf;
 
 class CheckoutController {
     public function index(): void {
@@ -18,6 +19,12 @@ class CheckoutController {
 
     public function process(): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /checkout');
+            exit;
+        }
+
+        if (!Csrf::validate()) {
+            $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
             header('Location: /checkout');
             exit;
         }
@@ -52,7 +59,8 @@ class CheckoutController {
             'total_amount' => $cart['subtotal'],
             'discount_amount' => $cart['discount_amount'],
             'final_amount' => $cart['final_amount'],
-            'notes' => $notes
+            'notes' => $notes,
+            'coupon_code' => $cart['coupon']['code'] ?? null
         ];
 
         $res = Order::createOrder($orderData, $cart['items']);
@@ -65,6 +73,10 @@ class CheckoutController {
 
         // Clear cart after successful order
         Cart::clear();
+
+        // Store authorized order code and ID in session
+        $_SESSION['last_order_code'] = $res['order_code'];
+        $_SESSION['last_order_id'] = $res['order_id'] ?? null;
 
         header('Location: /checkout/success?code=' . urlencode($res['order_code']));
         exit;
@@ -79,6 +91,26 @@ class CheckoutController {
 
         $order = Order::findByCode($code);
         if (!$order) {
+            header('Location: /');
+            exit;
+        }
+
+        // Authorization check: User must be order owner or possess current session's last_order_code, or be an admin
+        $currentUserId = $_SESSION['user']['id'] ?? null;
+        $currentUserRole = $_SESSION['user']['role'] ?? '';
+        $lastOrderCode = $_SESSION['last_order_code'] ?? '';
+
+        $isAuthorized = false;
+        if ($currentUserRole === 'admin') {
+            $isAuthorized = true;
+        } elseif ($currentUserId !== null && !empty($order['user_id']) && (int)$order['user_id'] === (int)$currentUserId) {
+            $isAuthorized = true;
+        } elseif (!empty($lastOrderCode) && hash_equals($lastOrderCode, $order['order_code'])) {
+            $isAuthorized = true;
+        }
+
+        if (!$isAuthorized) {
+            $_SESSION['flash_error'] = 'Bạn không có quyền truy cập hoặc xem chi tiết đơn hàng này.';
             header('Location: /');
             exit;
         }

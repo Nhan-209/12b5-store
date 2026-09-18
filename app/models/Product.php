@@ -4,19 +4,24 @@ namespace App\Models;
 use PDO;
 
 class Product {
-    public static function all(int $limit = 50, int $offset = 0): array {
+    public static function all(int $limit = 50, int $offset = 0, ?int $status = 1): array {
         $pdo = Database::getConnection();
+        $whereClause = ($status !== null) ? "WHERE p.status = ?" : "";
         $stmt = $pdo->prepare("
             SELECT p.*, c.name as category_name, c.slug as category_slug, b.name as brand_name, b.slug as brand_slug
             FROM products p
             JOIN categories c ON p.category_id = c.id
             JOIN brands b ON p.brand_id = b.id
-            WHERE p.status = 1
+            {$whereClause}
             ORDER BY p.id DESC
             LIMIT ? OFFSET ?
         ");
-        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
-        $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+        $paramIndex = 1;
+        if ($status !== null) {
+            $stmt->bindValue($paramIndex++, $status, PDO::PARAM_INT);
+        }
+        $stmt->bindValue($paramIndex++, $limit, PDO::PARAM_INT);
+        $stmt->bindValue($paramIndex++, $offset, PDO::PARAM_INT);
         $stmt->execute();
         $products = $stmt->fetchAll();
         return array_map([self::class, 'formatProduct'], $products);
@@ -207,7 +212,8 @@ class Product {
 
     public static function delete(int $id): bool {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+        // Soft delete: deactivate product to preserve foreign key constraints with orders
+        $stmt = $pdo->prepare("UPDATE products SET status = 0 WHERE id = ?");
         return $stmt->execute([$id]);
     }
 
@@ -219,9 +225,31 @@ class Product {
 
     public static function getReviews(int $productId): array {
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM reviews WHERE product_id = ? ORDER BY created_at DESC");
+        $stmt = $pdo->prepare("
+            SELECT r.*,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM order_items oi
+                    JOIN orders o ON oi.order_id = o.id
+                    WHERE o.user_id = r.user_id AND oi.product_id = r.product_id AND o.order_status = 'completed'
+                ) THEN 1 ELSE 0 END AS is_verified_purchase
+            FROM reviews r
+            WHERE r.product_id = ?
+            ORDER BY r.created_at DESC
+        ");
         $stmt->execute([$productId]);
         return $stmt->fetchAll();
+    }
+
+    public static function hasPurchased(int $userId, int $productId): bool {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*) 
+            FROM order_items oi
+            JOIN orders o ON oi.order_id = o.id
+            WHERE o.user_id = ? AND oi.product_id = ? AND o.order_status = 'completed'
+        ");
+        $stmt->execute([$userId, $productId]);
+        return ((int)$stmt->fetchColumn()) > 0;
     }
 
     public static function addReview(int $productId, ?int $userId, string $userName, int $rating, string $comment): bool {

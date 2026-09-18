@@ -49,6 +49,14 @@ class ProductTest {
             'passed' => $reviewAdded && !empty($reviews) && $reviews[0]['rating'] == 5
         ];
 
+        // TC 5: Verify completed order purchase check for reviews
+        $hasPurchasedValid = Product::hasPurchased(2, 1);
+        $hasPurchasedInvalid = Product::hasPurchased(2, 9999);
+        $results[] = [
+            'name' => 'ProductTest: Verify completed order purchase check for reviews',
+            'passed' => ($hasPurchasedValid === true && $hasPurchasedInvalid === false)
+        ];
+
         return $results;
     }
 }

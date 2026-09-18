@@ -20,6 +20,7 @@ require __DIR__ . '/../layouts/header.php';
                 <?php endif; ?>
 
                 <form action="/login" method="POST">
+                    <?= \App\Core\Csrf::field() ?>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Địa chỉ Email *</label>
                         <input type="email" name="email" class="form-control rounded-3" required placeholder="admin@electro.vn hoặc customer@gmail.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
@@ -37,7 +38,7 @@ require __DIR__ . '/../layouts/header.php';
                     </button>
 
                     <div class="p-3 bg-light rounded-4 small text-muted mb-3 border" style="background: rgba(241, 245, 249, 0.7) !important;">
-                        <div class="fw-bold text-dark mb-1"><i class="bi bi-info-circle text-danger me-1"></i> Tài khoản trải nghiệm sẵn có:</div>
+                        <div class="fw-bold text-dark mb-1"><i class="bi bi-info-circle text-danger me-1"></i> Tài khoản trải nghiệm demo (chỉ phục vụ thử nghiệm/chấm điểm):</div>
                         <div>&bull; Admin: <code>admin@electro.vn</code> / <code>admin123</code></div>
                         <div>&bull; Khách: <code>customer@gmail.com</code> / <code>user123</code></div>
                     </div>

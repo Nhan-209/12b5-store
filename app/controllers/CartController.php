@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\Cart;
+use App\Core\Csrf;
 
 class CartController {
     public function index(): void {
@@ -10,6 +11,18 @@ class CartController {
     }
 
     public function add(): void {
+        if (!Csrf::validate()) {
+            if ($this->isAjax()) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'CSRF token không hợp lệ hoặc phiên đã hết hạn.']);
+                exit;
+            }
+            $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
+            header('Location: /cart');
+            exit;
+        }
+
         $productId = (int)($_POST['product_id'] ?? 0);
         $quantity = max(1, (int)($_POST['quantity'] ?? 1));
 
@@ -32,6 +45,18 @@ class CartController {
     }
 
     public function update(): void {
+        if (!Csrf::validate()) {
+            if ($this->isAjax()) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'CSRF token không hợp lệ hoặc phiên đã hết hạn.']);
+                exit;
+            }
+            $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
+            header('Location: /cart');
+            exit;
+        }
+
         $productId = (int)($_POST['product_id'] ?? 0);
         $quantity = (int)($_POST['quantity'] ?? 1);
 
@@ -48,6 +73,18 @@ class CartController {
     }
 
     public function remove(): void {
+        if (!Csrf::validate()) {
+            if ($this->isAjax()) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'CSRF token không hợp lệ hoặc phiên đã hết hạn.']);
+                exit;
+            }
+            $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
+            header('Location: /cart');
+            exit;
+        }
+
         $productId = (int)($_POST['product_id'] ?? 0);
         $res = Cart::removeItem($productId);
 
@@ -62,6 +99,18 @@ class CartController {
     }
 
     public function applyCoupon(): void {
+        if (!Csrf::validate()) {
+            if ($this->isAjax()) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'CSRF token không hợp lệ hoặc phiên đã hết hạn.']);
+                exit;
+            }
+            $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
+            header('Location: /cart');
+            exit;
+        }
+
         $code = trim($_POST['coupon_code'] ?? '');
         $res = Cart::applyCoupon($code);
 

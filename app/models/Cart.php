@@ -165,7 +165,17 @@ class Cart {
         $coupon = $stmt->fetch();
 
         if (!$coupon) {
-            return ['success' => false, 'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn.'];
+            return ['success' => false, 'message' => 'Mã giảm giá không tồn tại hoặc đã bị khóa.'];
+        }
+
+        // Check coupon expiration date
+        if (!empty($coupon['expires_at']) && strtotime($coupon['expires_at']) < time()) {
+            return ['success' => false, 'message' => 'Mã giảm giá này đã hết hạn sử dụng.'];
+        }
+
+        // Check coupon usage limit
+        if ($coupon['usage_limit'] !== null && (int)$coupon['used_count'] >= (int)$coupon['usage_limit']) {
+            return ['success' => false, 'message' => 'Mã giảm giá này đã vượt quá lượt sử dụng cho phép.'];
         }
 
         $cart = self::getCart();

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Services\SearchService;
 use App\Services\RecommendationService;
+use App\Core\Csrf;
 
 class ProductController {
     public function index(): void {
@@ -100,10 +101,30 @@ class ProductController {
             exit;
         }
 
+        if (!Csrf::validate()) {
+            $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
+            header('Location: /product/' . $product['slug'] . '#reviews');
+            exit;
+        }
+
+        if (empty($_SESSION['user']['id'])) {
+            $_SESSION['flash_error'] = 'Quý khách vui lòng đăng nhập tài khoản đã mua hàng để gửi đánh giá.';
+            header('Location: /login');
+            exit;
+        }
+
+        $userId = (int)$_SESSION['user']['id'];
+
+        // Strict verification: user must have bought this product in a completed order
+        if (!Product::hasPurchased($userId, $productId)) {
+            $_SESSION['flash_error'] = 'Chỉ những khách hàng đã mua và nhận hàng thành công đối với sản phẩm này mới có thể viết đánh giá.';
+            header('Location: /product/' . $product['slug'] . '#reviews');
+            exit;
+        }
+
         $rating = max(1, min(5, (int)($_POST['rating'] ?? 5)));
         $name = trim($_POST['user_name'] ?? '');
         $comment = trim($_POST['comment'] ?? '');
-        $userId = $_SESSION['user']['id'] ?? null;
 
         if (empty($name) && isset($_SESSION['user']['name'])) {
             $name = $_SESSION['user']['name'];
@@ -114,6 +135,7 @@ class ProductController {
 
         if (!empty($comment)) {
             Product::addReview($productId, $userId, $name, $rating, $comment);
+            $_SESSION['flash_success'] = 'Cảm ơn quý khách đã gửi nhận xét đánh giá sản phẩm!';
         }
 
         header('Location: /product/' . $product['slug'] . '#reviews');

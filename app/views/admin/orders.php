@@ -85,6 +85,7 @@ require __DIR__ . '/../layouts/header.php';
                                 </td>
                                 <td class="text-end">
                                     <form action="/admin/orders/update-status" method="POST" class="d-inline-flex align-items-center gap-1">
+                                        <?= \App\Core\Csrf::field() ?>
                                         <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
                                         <select name="status" class="form-select form-select-sm rounded-pill" style="width: 130px;">
                                             <option value="pending" <?= $ord['order_status'] === 'pending' ? 'selected' : '' ?>>Chờ xử lý</option>

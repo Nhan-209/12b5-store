@@ -23,10 +23,21 @@ class OrderController {
             exit;
         }
 
-        // Check ownership if not admin
+        // Check ownership: allow admin, owner user, or guest session who placed the order
         $currentUser = $_SESSION['user'] ?? null;
-        if (!$currentUser || ($currentUser['role'] !== 'admin' && (int)$order['user_id'] !== (int)$currentUser['id'])) {
-            // Allow if guest tracking by exact code
+        $lastOrderCode = $_SESSION['last_order_code'] ?? '';
+        $isAuthorized = false;
+
+        if ($currentUser && ($currentUser['role'] === 'admin' || (isset($order['user_id']) && (int)$order['user_id'] === (int)$currentUser['id']))) {
+            $isAuthorized = true;
+        } elseif (!empty($lastOrderCode) && hash_equals($lastOrderCode, $order['order_code'])) {
+            $isAuthorized = true;
+        }
+
+        if (!$isAuthorized) {
+            $_SESSION['flash_error'] = 'Bạn không có quyền truy cập hoặc xem chi tiết đơn hàng này.';
+            header('Location: /orders');
+            exit;
         }
 
         require __DIR__ . '/../views/orders/detail.php';

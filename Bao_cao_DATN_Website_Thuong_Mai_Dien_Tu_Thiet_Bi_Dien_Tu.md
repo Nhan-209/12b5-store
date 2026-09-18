@@ -40,7 +40,7 @@ Sau cùng, em xin gửi lời cảm ơn đến gia đình và các bạn cùng l
   - 2.6. Tự động hóa tích hợp và triển khai liên tục (CI/CD với GitHub Actions)
   - 2.7. Cơ sở lý thuyết các thuật toán thông minh trong TMĐT
     - 2.7.1. Thuật toán gợi ý Cosine Similarity trên không gian vector đặc trưng
-    - 2.7.2. Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Levenshtein & TF-IDF)
+    - 2.7.2. Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Search kết hợp Levenshtein Distance và Token Matching)
     - 2.7.3. Thuật toán hồi quy tuyến tính (Linear Regression) dự báo xu hướng doanh thu
     - 2.7.4. Phương pháp phân tích tồn kho ABC (Nguyên lý Pareto 80/20)
 - **CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG**
@@ -89,7 +89,7 @@ Khác với các mặt hàng tiêu dùng đơn giản (như thời trang, đồ 
 2. **Giá trị đơn hàng cao:** Đòi hỏi quy trình xác thực minh bạch, hỗ trợ tạo mã thanh toán chuyển khoản ngân hàng tự động (VietQR chuẩn NAPAS 247) và theo dõi trạng thái đơn hàng xuyên suốt.
 3. **Áp lực tính toán và xử lý dữ liệu lớn:** Khi danh mục sản phẩm và lượng truy cập tăng cao, các tác vụ tính toán nặng như: tìm kiếm mờ (fuzzy search) kết hợp nhiều tiêu chí lọc, gợi ý sản phẩm tương đồng dựa trên thông số kỹ thuật (Content-Based Recommendation), xử lý ảnh hàng loạt (batch image resizing/format conversion) và tổng hợp báo cáo kinh doanh (phân tích Pareto ABC, dự báo doanh thu) nếu chỉ chạy trên ngôn ngữ kịch bản thông thường như PHP thuần sẽ dễ dẫn đến hiện tượng quá tải CPU, phản hồi chậm và tiêu hao nhiều bộ nhớ RAM.
 
-Xuất phát từ thực tiễn trên, đồ án lựa chọn đề tài: **“Xây dựng Website Thương mại Điện tử Thiết bị Điện tử với Kiến trúc Hybrid PHP và Rust Engine Hiệu Năng Cao”**. Đề tài phát huy tối đa thế mạnh của **PHP** trong việc xây dựng ứng dụng web nhanh chóng, dễ bảo trì theo mô hình MVC, đồng thời tích hợp dịch vụ phụ trợ bằng **Rust** – một ngôn ngữ lập trình hệ thống hiện đại, an toàn bộ nhớ (memory-safe), tốc độ thực thi gần sát kim loại (bare-metal) và đa luồng mạnh mẽ – để giải quyết triệt để bài toán hiệu năng trong môi trường thương mại điện tử.
+Xuất phát từ thực tiễn trên, đồ án lựa chọn đề tài: **“Xây dựng Website Thương mại Điện tử Thiết bị Điện tử với Kiến trúc Hybrid PHP và Rust Engine Hiệu Năng Cao”**. Đề tài phát huy tối đa thế mạnh của **PHP** trong việc xây dựng ứng dụng web nhanh chóng, dễ bảo trì theo mô hình MVC, đồng thời tích hợp dịch vụ phụ trợ bằng **Rust** – một ngôn ngữ lập trình hệ thống hiện đại, an toàn bộ nhớ (memory-safe), tốc độ thực thi bare-metal – nhằm tối ưu hóa hiệu năng tính toán thuật toán trong môi trường thương mại điện tử.
 
 ## 1.2. Mục tiêu nghiên cứu
 
@@ -97,7 +97,7 @@ Xuất phát từ thực tiễn trên, đồ án lựa chọn đề tài: **“X
 - **Về mặt nghiệp vụ:** Xây dựng hoàn chỉnh một hệ thống website thương mại điện tử chuyên biệt cho thiết bị điện tử với đầy đủ luồng nghiệp vụ từ phía khách hàng (tìm kiếm, lọc thông số, xem chi tiết, giỏ hàng, áp mã giảm giá, thanh toán COD / VietQR, theo dõi đơn hàng) đến phân hệ quản trị viên (quản lý sản phẩm, tồn kho, đơn hàng, người dùng, xem báo cáo doanh thu).
 - **Về mặt công nghệ & kiến trúc:**
   - Thiết kế kiến trúc dạng **Hybrid Microservices**: Ứng dụng web PHP đóng vai trò Core Web Application, giao tiếp với dịch vụ **Rust Engine** qua giao thức HTTP RESTful API.
-  - Xây dựng cơ chế **Graceful Fallback**: Trong trường hợp dịch vụ Rust bảo trì hoặc ngoại tuyến, hệ thống PHP tự động kích hoạt thuật toán dự phòng nội bộ, đảm bảo tính liên tục 100% của hệ sinh thái web.
+  - Xây dựng cơ chế **Graceful Fallback**: Trong trường hợp dịch vụ Rust bảo trì hoặc ngoại tuyến, hệ thống PHP tự động kích hoạt thuật toán dự phòng nội bộ, đảm bảo tính liên tục và độ ổn định cao của hệ sinh thái web.
   - Hỗ trợ cơ sở dữ liệu linh hoạt (Dual Driver): Chạy tối ưu trên **MySQL** khi triển khai production và tự động fallback sang **SQLite** khi mang đồ án chạy trình diễn trên máy tính của trường hoặc máy chấm thi với cấu hình tối thiểu mà không cần cài đặt phức tạp.
 - **Về mặt kỹ thuật thông minh:**
   - Hiện thực hóa thuật toán tìm kiếm mờ (Fuzzy Search) kết hợp khoảng cách Levenshtein và đối sánh token đặc tả kỹ thuật.
@@ -150,10 +150,10 @@ Bootstrap 5.3 là thư viện giao diện nguồn mở hàng đầu thế giới
 - Tận dụng các thành phần giao diện chuyên nghiệp: Navbar, Modal, Dropdown, Accordion, Card, Toast và bộ icon vector sắc nét Bootstrap Icons.
 
 ### 2.1.3. PHP 8.x
-PHP (PHP: Hypertext Preprocessor) là ngôn ngữ lập trình kịch bản phía máy chủ mạnh mẽ và phổ biến nhất trong hệ sinh thái thương mại điện tử toàn cầu. Phiên bản PHP 8.x mang lại nhiều cải tiến mang tính đột phá:
+PHP (PHP: Hypertext Preprocessor) là ngôn ngữ lập trình kịch bản phía máy chủ mạnh mẽ và phổ biến nhất trong hệ sinh thái thương mại điện tử toàn cầu. Phiên bản PHP 8.x mang lại nhiều cải tiến quan trọng về hiệu năng và cú pháp:
 - Cơ chế biên dịch thời gian thực JIT (Just-In-Time Compilation) giúp tăng hiệu suất xử lý mã lệnh.
 - Hệ thống kiểu dữ liệu nghiêm ngặt (Type Hinting, Union Types, Return Types), biểu thức `match`, hàm xử lý chuỗi hiện đại (`str_starts_with`, `str_contains`).
-- Cơ chế quản lý phiên làm việc (`$_SESSION`) an toàn và tích hợp sẵn chuẩn mã hóa băm mật khẩu `PASSWORD_DEFAULT` (sử dụng thuật toán Bcrypt) với chi phí mã hóa (cost) cao, bảo vệ tuyệt đối thông tin người dùng trước các cuộc tấn công tra từ điển (Rainbow Tables).
+- Cơ chế quản lý phiên làm việc (`$_SESSION`) an toàn và tích hợp sẵn chuẩn mã hóa băm mật khẩu `PASSWORD_DEFAULT` (sử dụng thuật toán Bcrypt) với chi phí mã hóa (cost) cao, bảo vệ an toàn thông tin người dùng trước các cuộc tấn công tra từ điển (Rainbow Tables).
 
 ## 2.2. Mô hình kiến trúc phần mềm MVC (Model - View - Controller)
 
@@ -167,7 +167,7 @@ Hệ thống được tổ chức nhất quán theo mẫu kiến trúc kinh đi�
 ### 2.3.1. PDO (PHP Data Objects)
 PDO là lớp giao tiếp cơ sở dữ liệu hướng đối tượng trừu tượng hóa có sẵn trong nhân PHP. Đồ án sử dụng PDO làm cầu nối thống nhất với các ưu điểm quyết định:
 - **Tính di động (Portability):** Cung cấp chung một tập hàm API truy vấn (`prepare`, `execute`, `fetch`, `fetchAll`, `beginTransaction`, `commit`) cho nhiều hệ quản trị cơ sở dữ liệu khác nhau.
-- **Bảo mật tuyệt đối trước SQL Injection:** Toàn bộ tham số người dùng nhập vào đều được truyền qua cơ chế Tham số hóa (Prepared Statements) và ràng buộc giá trị (Parameterized Binding), triệt tiêu hoàn toàn nguy cơ chèn mã độc vào câu lệnh SQL.
+- **Phòng chống tấn công SQL Injection:** Toàn bộ tham số người dùng nhập vào đều được thực thi qua cơ chế Tham số hóa (Prepared Statements) và ràng buộc giá trị (`bindValue` / `execute([$param])`), kết hợp cấu hình `PDO::ATTR_EMULATE_PREPARES => false` nhằm ngăn chặn nguy cơ chèn mã độc vào câu lệnh SQL.
 
 ### 2.3.2. Cơ chế linh hoạt Dual Database (MySQL + SQLite Fallback)
 Một cải tiến kiến trúc sáng giá trong đồ án này là khả năng vận hành **Dual Database Driver**:
@@ -181,7 +181,7 @@ Rust là ngôn ngữ lập trình hệ thống được phát triển bởi Mozi
 Các đặc tính cốt lõi của Rust được ứng dụng trong đồ án:
 - **An toàn bộ nhớ không cần bộ thu gom rác (Memory Safety without Garbage Collector):** Nhờ hệ thống quyền sở hữu (Ownership System) và quy tắc vay mượn (Borrow Checker) được kiểm tra ngay tại thời điểm biên dịch, Rust đảm bảo không xảy ra hiện tượng rò rỉ bộ nhớ (memory leaks), truy cập con trỏ null (null pointer dereferences) hay xung đột truy cập vùng nhớ (data races).
 - **Tốc độ thực thi bare-metal:** Rust biên dịch trực tiếp ra mã máy nhị phân bản địa (Native Machine Code), đạt hiệu năng tương đương với C/C++ nhưng độ an toàn vượt trội.
-- **Đa luồng không sợ hãi (Fearless Concurrency):** Rust cho phép triển khai các tác vụ tính toán song song trên nhiều nhân CPU mà không lo ngại xảy ra xung đột dữ liệu giữa các luồng.
+- **Khả năng xử lý tác vụ hiệu năng cao:** Rust cung cấp hệ sinh thái tính toán hiệu năng cao với chi phí tài nguyên cực thấp, thích hợp để xây dựng các microservice chuyên trách các thuật toán phức tạp.
 
 Trong đề tài này, **Rust** không thay thế PHP trong việc render HTML hay quản lý phiên người dùng, mà đóng vai trò một **High-Performance Engine** chuyên trách tiếp nhận và xử lý các bài toán tiêu hao năng lực tính toán lớn.
 
@@ -219,8 +219,12 @@ Trong đó:
   - Các thuộc tính thông số kỹ thuật (CPU, RAM, GPU, tấm nền màn hình).
 - Giá trị tương đồng nằm trong khoảng $[0, 1]$. Giá trị càng tiến gần tới $1.0$ thể hiện hai thiết bị có cấu hình và phân khúc càng tương đồng nhau.
 
-### 2.7.2. Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Levenshtein & TF-IDF)
-Người tiêu dùng khi tìm kiếm thiết bị điện tử thường gõ sai chính tả hoặc gõ tắt (ví dụ: gõ "iphne", "macbok", "smasung"). Hệ thống áp dụng thuật toán tính khoảng cách chỉnh sửa **Levenshtein Distance** để tìm số phép biến đổi tối thiểu (thêm, xóa, thay thế một ký tự) để biến chuỗi $s_1$ thành chuỗi $s_2$:
+### 2.7.2. Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Search kết hợp Levenshtein Distance và Token Matching)
+Người tiêu dùng khi tìm kiếm thiết bị điện tử thường gõ sai chính tả hoặc gõ tắt (ví dụ: gõ "iphne", "macbok", "smasung"). Hệ thống áp dụng thuật toán tìm kiếm mờ (Fuzzy Search) đa tầng kết hợp:
+1. **Đối sánh cụm từ chính xác (Exact phrase matching):** Ưu tiên cao nhất khi cụm từ người dùng khớp trọn vẹn với tên hoặc mã SKU của thiết bị.
+2. **Đối sánh từ tố (Token Matching & Overlap):** Chuỗi truy vấn và tên thiết bị được chuẩn hóa (chuyển chữ thường, loại bỏ ký tự đặc biệt) và phân tách thành các token. Hệ thống tính tỷ lệ giao thoa giữa các tập token để nhận diện sản phẩm dù thứ tự các từ có bị đảo lộn.
+3. **Kiểm tra chuỗi con (Substring Containment):** Xác định sự xuất hiện của các token truy vấn trong tên hoặc mô tả ngắn của thiết bị.
+4. **Khoảng cách chỉnh sửa Levenshtein (Levenshtein Distance):** Đối với các từ khóa bị gõ sai ký tự, hệ thống tính toán số phép biến đổi tối thiểu (thêm, xóa, thay thế một ký tự) để biến chuỗi $s_1$ thành chuỗi $s_2$:
 
 $$\operatorname{lev}(s_1, s_2) = \begin{cases} 
 |s_1| & \text{nếu } |s_2| = 0, \\
@@ -233,7 +237,7 @@ $$\operatorname{lev}(s_1, s_2) = \begin{cases}
 \end{cases} & \text{trường hợp khác.}
 \end{cases}$$
 
-Kết hợp với kỹ thuật đối sánh token đặc tả kỹ thuật, hệ thống tính toán điểm tương thích tổng hợp và sắp xếp kết quả trả về tức thì dưới 1 mili-giây.
+Điểm tương thích tổng hợp (`match_score`) được tính toán dựa trên trọng số tích hợp giữa độ trùng khớp token và khoảng cách Levenshtein, cho phép sắp xếp danh sách kết quả trả về với độ chính xác cao và độ trễ phản hồi thấp.
 
 ### 2.7.3. Thuật toán hồi quy tuyến tính (Linear Regression) dự báo xu hướng doanh thu
 Tại Dashboard quản trị, để hỗ trợ chủ cửa hàng dự đoán quy mô doanh số trong những ngày tiếp theo dựa trên chuỗi dữ liệu lịch sử các đơn hàng thành công, hệ thống áp dụng mô hình Hồi quy tuyến tính đơn biến:
@@ -296,8 +300,8 @@ Hệ thống đề xuất giải quyết toàn bộ các vướng mắc trên th
 
 | Mã | Nhóm yêu cầu | Nội dung tiêu chuẩn |
 |---|---|---|
-| **NF01** | **Hiệu năng & Độ trễ** | Thời gian phản hồi các tác vụ tính toán tìm kiếm và gợi ý của Rust Engine đạt dưới 2 mili-giây (ms); thời gian tải trang trung bình dưới 500ms. |
-| **NF02** | **An toàn & Bảo mật** | Mật khẩu được mã hóa băm một chiều qua Bcrypt; ngăn chặn 100% SQL Injection nhờ PDO Prepared Statement; bảo vệ chống XSS bằng hàm xử lý ký tự đặc biệt `htmlspecialchars()`. |
+| **NF01** | **Hiệu năng & Độ trễ** | Thời gian phản hồi các tác vụ tính toán tìm kiếm và gợi ý của Rust Engine đạt mức thấp dưới vài mili-giây; thời gian tải trang trung bình dưới 500ms. |
+| **NF02** | **An toàn & Bảo mật** | Mật khẩu được mã hóa băm một chiều qua Bcrypt; phòng vệ trước SQL Injection nhờ Prepared Statements và tắt giả lập câu lệnh PDO; bảo vệ chống XSS bằng `htmlspecialchars()`; trang bị lớp bảo vệ chống tấn công CSRF cho tất cả biểu mẫu POST và chống Session Fixation bằng `session_regenerate_id(true)`. |
 | **NF03** | **Toàn vẹn dữ liệu** | Sử dụng Database Transactions (ACID) khi tạo đơn hàng, đảm bảo việc trừ tồn kho và tạo chi tiết đơn hàng diễn ra đồng thời, tự động rollback nếu có sự cố. |
 | **NF04** | **Tính sẵn sàng cao** | Áp dụng cơ chế Graceful Fallback: nếu dịch vụ Rust tạm dừng, hệ thống PHP tự kích hoạt module tính toán dự phòng nội bộ, không làm gián đoạn người dùng. |
 | **NF05** | **Tính di động (Portability)** | Hỗ trợ Dual Database Driver: chạy trên MySQL hoặc SQLite nhúng độc lập, tương thích trên cả môi trường Windows và Linux. |
@@ -341,7 +345,7 @@ Biểu đồ mô tả sự phối hợp giữa Client (Trình duyệt), PHP Cont
 1. Client gửi yêu cầu tìm kiếm `GET /products?q=MacBook` đến `ProductController`.
 2. `ProductController` gọi `RustEngineService->search($products, $query)`.
 3. `RustEngineService` gửi yêu cầu HTTP POST đến `http://127.0.0.1:5000/api/search`.
-4. Rust Engine phân tích đa luồng, tính điểm Levenshtein và đối sánh token, trả về danh sách sản phẩm kèm điểm số tương thích `match_score` chỉ sau 0.8ms.
+4. Rust Engine xử lý tính toán native trên bộ nhớ, tính điểm Levenshtein và đối sánh token, trả về danh sách sản phẩm kèm điểm số tương thích `match_score` với độ trễ phản hồi thấp.
 5. PHP Controller tiếp nhận kết quả JSON, render dữ liệu ra View và phản hồi về Client.
 
 ## 3.4. Thiết kế kiến trúc tổng thể Hybrid Microservices
@@ -398,7 +402,7 @@ Cơ sở dữ liệu bao gồm 11 bảng chuẩn hóa:
 2. **`categories` (Danh mục ngành hàng):** `id`, `name`, `slug`, `icon`, `description`.
 3. **`brands` (Thương hiệu sản xuất):** `id`, `name`, `slug`, `logo`.
 4. **`products` (Thiết bị điện tử):** `id`, `category_id`, `brand_id`, `name`, `slug`, `sku` (Unique), `price`, `original_price`, `stock`, `featured`, `status`, `thumbnail`, `short_description`, `description`, `specs` (Lưu trữ JSON các thông số phần cứng), `rating`, `review_count`, `sales_count`.
-5. **`carts` & `cart_items` (Giỏ hàng):** Lưu trữ trạng thái lựa chọn hàng hóa theo phiên làm việc.
+5. **`carts` & `cart_items` (Giỏ hàng):** Thiết kế lược đồ hỗ trợ lưu trữ trạng thái giỏ hàng theo phiên hoặc người dùng. Trong phiên bản hiện tại, nhằm tối ưu hóa độ trễ I/O cơ sở dữ liệu và tăng tốc độ phản hồi cho các thao tác thêm/sửa giỏ hàng, hệ thống lưu trữ giỏ hàng trong PHP Session (`$_SESSION['cart']`); hai bảng này được định nghĩa sẵn trong cấu trúc CSDL nhằm phục vụ khả năng mở rộng lưu trữ giỏ hàng đồng bộ đa thiết bị (Persistent Multi-Device Cart) trong tương lai.
 6. **`orders` (Đơn hàng):** `id`, `user_id`, `order_code` (Mã đơn duy nhất), `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `payment_method` ('cod', 'bank_transfer'), `payment_status` ('pending', 'paid'), `order_status` ('pending', 'processing', 'shipping', 'completed', 'cancelled'), `total_amount`, `discount_amount`, `final_amount`, `notes`, `created_at`.
 7. **`order_items` (Chi tiết đơn hàng):** `id`, `order_id`, `product_id`, `product_name`, `product_sku`, `unit_price`, `quantity`, `subtotal`. Đơn giá được lưu tĩnh tại thời điểm mua nhằm đảm bảo tính toàn vẹn của lịch sử kế toán.
 8. **`coupons` (Mã khuyến mãi):** `id`, `code`, `discount_type` ('fixed', 'percent'), `discount_value`, `min_order_value`, `expires_at`, `status`.
@@ -470,20 +474,29 @@ Dịch vụ Rust vận hành độc lập, cung cấp 5 endpoints RESTful API ch
 
 ## 4.4. Kiểm thử hệ thống (Kế hoạch kiểm thử & Ma trận 20 Test Cases)
 
-Quá trình kiểm thử được thực hiện theo phương pháp kiểm thử chức năng (Functional Testing) kết hợp kiểm thử tích hợp (Integration Testing) và kiểm thử đơn vị (Unit Testing) tự động:
+Để đảm bảo chất lượng phần mềm và độ tin cậy của toàn bộ các luồng nghiệp vụ, đồ án áp dụng chiến lược kiểm thử đa tầng kết hợp giữa kiểm thử tự động hóa mã nguồn và kiểm thử chấp nhận chức năng tổng thể:
+
+1. **Bộ kiểm thử tự động hóa mã nguồn (Automated Test Suite):** Hệ thống xây dựng 20 ca kiểm thử đơn vị và tích hợp tự động (`tests/run_tests.php`) chạy độc lập qua CLI và được tích hợp trong pipeline GitHub Actions CI/CD. Bộ kiểm thử bao gồm 5 nhóm kiểm thử chuyên biệt:
+   - `CartTest.php` (5 test cases): Kiểm thử toàn diện logic giỏ hàng (thêm sản phẩm, cập nhật số lượng, xóa khỏi giỏ, áp dụng mã giảm giá hợp lệ, từ chối mã giảm giá hết hạn hoặc đã đạt giới hạn sử dụng `used_count >= usage_limit`).
+   - `OrderTest.php` (4 test cases): Kiểm thử tính toàn vẹn của giao dịch đặt hàng (transaction tạo đơn thành công, trừ tồn kho an toàn `WHERE stock >= ?`, tự động rollback bảo toàn dữ liệu khi tồn kho không đủ, chuyển đổi trạng thái đơn hàng).
+   - `ProductTest.php` (5 test cases): Kiểm thử truy vấn và phân quyền đánh giá (lấy danh sách phân trang, lọc theo danh mục & thương hiệu, lọc theo khoảng giá, xác thực tồn kho, kiểm tra điều kiện chỉ khách hàng đã hoàn thành mua hàng mới được phép gửi đánh giá `hasPurchased`).
+   - `AuthTest.php` (3 test cases): Kiểm thử xác thực và an toàn mật khẩu (băm mật khẩu bằng Bcrypt `password_hash`, xác thực đăng nhập thành công với thông tin chính xác, từ chối đăng nhập khi sai mật khẩu).
+   - `RustEngineClientTest.php` (3 test cases): Kiểm thử tính sẵn sàng và khả năng chịu lỗi (kiểm tra trạng thái kết nối `isAvailable`, tự động chuyển mạch sang tìm kiếm dự phòng khi Rust Engine ngoại tuyến, chuyển mạch sang gợi ý tương đồng dự phòng khi Rust Engine ngoại tuyến).
+
+2. **Ma trận kiểm thử chức năng tổng thể (End-to-End Acceptance Test Matrix):** Kiểm thử luồng tương tác thực tế của người dùng trên giao diện và đối soát dữ liệu với cơ sở dữ liệu:
 
 | Mã TC | Phân hệ | Tình huống kiểm thử | Dữ liệu đầu vào | Kết quả kỳ vọng | Kết quả thực tế |
 |---|---|---|---|---|---|
 | **TC01** | Xác thực | Đăng ký tài khoản mới hợp lệ | Nhập đầy đủ họ tên, email mới, mật khẩu | Tạo tài khoản thành công, mật khẩu được băm Bcrypt | **Đạt** |
 | **TC02** | Xác thực | Đăng ký với email đã tồn tại | Nhập email trùng với tài khoản sẵn có | Báo lỗi email đã được sử dụng, từ chối tạo trùng | **Đạt** |
-| **TC03** | Xác thực | Đăng nhập tài khoản đúng | Email và mật khẩu chính xác | Đăng nhập thành công, tạo session | **Đạt** |
+| **TC03** | Xác thực | Đăng nhập tài khoản đúng | Email và mật khẩu chính xác | Đăng nhập thành công, tạo session mới chống fixation | **Đạt** |
 | **TC04** | Xác thực | Đăng nhập sai mật khẩu | Nhập sai mật khẩu | Báo lỗi thông tin đăng nhập không hợp lệ | **Đạt** |
 | **TC05** | Tìm kiếm | Tìm kiếm tên thiết bị chính xác | Từ khóa "iPhone 16" | Trả về sản phẩm iPhone 16 với điểm tương thích cao nhất | **Đạt** |
 | **TC06** | Tìm kiếm | Tìm kiếm sai chính tả (Fuzzy) | Từ khóa "iphne pro" | Rust Engine tự động sửa lỗi và trả về iPhone Pro | **Đạt** |
 | **TC07** | Tìm kiếm | Tìm kiếm theo thông số phần cứng | Từ khóa "RTX 4070" | Trả về Laptop Gaming ASUS ROG Zephyrus G16 | **Đạt** |
 | **TC08** | Lọc dữ liệu| Lọc sản phẩm theo thương hiệu | Chọn hãng "Apple" | Chỉ hiển thị các thiết bị do Apple sản xuất | **Đạt** |
 | **TC09** | Lọc dữ liệu| Lọc theo khoảng giá | Nhập giá từ 20.000.000 đến 35.000.000 | Chỉ hiển thị các thiết bị nằm trong khoảng giá | **Đạt** |
-| **TC10** | Giỏ hàng | Thêm sản phẩm vào giỏ hàng | Sản phẩm còn tồn kho | Sản phẩm xuất hiện trong giỏ, cập nhật số lượng badge | **Đạt** |
+| **TC10** | Giỏ hàng | Thêm sản phẩm vào giỏ hàng | Sản phẩm còn tồn kho, kèm CSRF token | Sản phẩm xuất hiện trong giỏ, cập nhật số lượng badge | **Đạt** |
 | **TC11** | Giỏ hàng | Thêm sản phẩm vượt quá tồn kho | Nhập số lượng 99999 | Từ chối thêm, hiển thị thông báo vượt tồn kho | **Đạt** |
 | **TC12** | Giỏ hàng | Cập nhật số lượng sản phẩm | Tăng/giảm số lượng trong giỏ | Thành tiền và tổng phụ tự động cập nhật chính xác | **Đạt** |
 | **TC13** | Khuyến mãi | Áp dụng mã giảm giá hợp lệ | Nhập mã "WELCOME2026" cho đơn > 10 triệu | Giảm trực tiếp 500.000đ vào tổng thanh toán | **Đạt** |
@@ -493,23 +506,42 @@ Quá trình kiểm thử được thực hiện theo phương pháp kiểm thử
 | **TC17** | Phân quyền | Khách thường truy cập `/admin` | Truy cập đường dẫn quản trị | Chặn truy cập, chuyển hướng về trang đăng nhập | **Đạt** |
 | **TC18** | Quản trị | Thêm thiết bị điện tử mới | Nhập tên, giá, hãng, danh mục, specs | Thiết bị xuất hiện ngay trên trang danh mục | **Đạt** |
 | **TC19** | Quản trị | Cập nhật trạng thái đơn hàng | Đổi trạng thái sang "shipping" | Cập nhật cơ sở dữ liệu, timeline hiển thị đang giao | **Đạt** |
-| **TC20** | Độ bền | Tắt dịch vụ Rust Engine | Gửi yêu cầu tìm kiếm khi Rust offline | Tự động chuyển sang PHP Fallback, kết quả vẫn chính xác | **Đạt** |
+| **TC20** | Chịu lỗi | Tắt dịch vụ Rust Engine | Gửi yêu cầu tìm kiếm khi Rust offline | Tự động chuyển sang PHP Fallback, kết quả vẫn chính xác | **Đạt** |
 
-*Toàn bộ 20/20 Test Cases đều đạt kết quả mong đợi.*
+*Toàn bộ 20/20 Test Cases chức năng và 20/20 ca kiểm thử tự động hóa đều đạt kết quả mong đợi (100% Pass).*
 
-## 4.5. Đánh giá và so sánh thực nghiệm hiệu năng (Benchmark PHP vs Rust Engine)
+## 4.5. Đánh giá và so sánh thực nghiệm hiệu năng (Benchmark PHP Fallback vs Rust Engine)
 
-Thực nghiệm đo lường hiệu năng được tiến hành với tập dữ liệu 1.000 bản ghi sản phẩm điện tử có đầy đủ thông số kỹ thuật phức tạp, thực hiện 500 lượt truy vấn lặp lại:
+### 4.5.1. Phương pháp luận và kịch bản thực nghiệm
+Để đánh giá khách quan và minh bạch sự chênh lệch hiệu năng giữa việc xử lý tính toán cục bộ bằng PHP thuần (PHP Fallback Engine) và việc ủy nhiệm tác vụ cho dịch vụ chuyên biệt (Rust High-Performance Engine), đồ án xây dựng kịch bản đo lường thực nghiệm độc lập thông qua script `scripts/benchmark.php`.
 
-| Chỉ số đo lường | Thuật toán PHP Thuần | Dịch vụ Rust Engine | Tỷ lệ cải thiện |
-|---|---|---|---|
-| **Thời gian tìm kiếm Fuzzy (Levenshtein)** | 14.8 ms | **0.82 ms** | **Nhanh hơn ~18 lần** |
-| **Tính độ tương đồng Cosine (Gợi ý)** | 22.4 ms | **1.15 ms** | **Nhanh hơn ~19.5 lần** |
-| **Dự báo Hồi quy & Phân tích ABC** | 18.6 ms | **0.94 ms** | **Nhanh hơn ~19.8 lần** |
-| **Mức tiêu hao bộ nhớ RAM** | ~38 MB (PHP Process) | **~4.2 MB (Rust Binary)** | **Tiết kiệm ~89% RAM** |
-| **Thông lượng xử lý tối đa (RPS)** | ~180 requests/sec | **~3.400 requests/sec** | **Cao hơn ~18.8 lần** |
+Kịch bản thực nghiệm được thiết kế theo hai cấp độ:
+1. **Đo lường thuật toán vi mô (In-Memory Algorithmic Micro-Benchmark):** Đo lường trực tiếp thời gian CPU xử lý các phép toán tổ hợp, ma trận và khoảng cách chuỗi trên cùng một tập dữ liệu đầu vào (từ 50 đến 1.000 bản ghi thông số kỹ thuật thiết bị điện tử) với số lần lặp lại từ 200 đến 500 lần để tính giá trị trung bình.
+2. **Phân tích độ trễ luồng yêu cầu Web tổng thể (End-to-End Request Latency Breakdown):** Phân tích chi tiết các thành phần đóng góp vào tổng thời gian phản hồi của một yêu cầu HTTP thực tế đến người dùng.
 
-Kết quả thực nghiệm chứng minh rằng kiến trúc Hybrid đem lại sự đột phá vượt trội về tốc độ xử lý và khả năng chịu tải, đồng thời giảm thiểu áp lực tài nguyên phần cứng.
+### 4.5.2. Kết quả đo lường vi mô các thuật toán cốt lõi
+Dữ liệu đo lường thực nghiệm từ script `scripts/benchmark.php` cho thấy sự phân hóa rõ rệt về đặc tính tính toán:
+- **Thuật toán tìm kiếm xấp xỉ chuỗi (Fuzzy Search - Levenshtein & Token Matching):**
+  - *Dịch vụ Rust Engine:* Do được biên dịch trực tiếp ra mã máy nhị phân bản địa (Native Machine Code) và tối ưu hóa cấp độ con trỏ mảng không có chi phí Garbage Collection, Rust hoàn tất việc đối sánh từ khóa và tính khoảng cách sửa đổi Levenshtein cho danh mục sản phẩm trong thời gian dưới mili-giây (~0.5 - 2.0 ms tùy kích thước tập dữ liệu).
+  - *PHP Fallback:* PHP xử lý theo mô hình thông dịch kịch bản; việc lặp qua các mảng liên kết lồng nhau và tính toán `levenshtein()` tốn trung bình ~10 - 25 ms.
+- **Tính toán ma trận độ tương đồng Cosine (Cosine Similarity Vector Space):**
+  - *Dịch vụ Rust Engine:* Các phép nhân vô hướng vector và chuẩn hóa độ dài vector $\vec{A} \cdot \vec{B} / (\|\vec{A}\| \|\vec{B}\|)$ được trình biên dịch `rustc` tự động vector hóa (tận dụng chỉ lệnh SIMD của CPU trong bản build release). Thời gian tìm top 4 sản phẩm tương đồng nhất trong toàn bộ danh mục chỉ mất khoảng ~0.8 - 1.5 ms.
+  - *PHP Fallback:* Cần thực hiện các vòng lặp `foreach` trên các mảng thuộc tính đặc trưng, đạt độ trễ ~15 - 30 ms.
+- **Phân tích dữ liệu kinh doanh (Hồi quy tuyến tính & Phân loại Pareto ABC):**
+  - *Dịch vụ Rust Engine:* Thuật toán sắp xếp O(N log N) để tính tỷ trọng doanh thu tích lũy và công thức bình phương tối thiểu O(N) hoàn tất tức thì trong khoảng ~0.5 - 1.2 ms.
+  - *PHP Fallback:* Hoàn tất trong khoảng ~8 - 18 ms.
+
+### 4.5.3. Phân tích phân rã độ trễ yêu cầu Web thực tế (End-to-End Latency Breakdown)
+Trong môi trường thực tế của một website thương mại điện tử, tổng thời gian phản hồi (Client Response Time) từ góc nhìn của trình duyệt người dùng được cấu thành từ nhiều giai đoạn:
+1. **Truy vấn cơ sở dữ liệu (Database Query Latency - MySQL/SQLite):** ~5 - 15 ms cho việc truy vấn lấy danh sách sản phẩm và thông số kỹ thuật qua PDO Prepared Statements.
+2. **Giao tiếp liên tiến trình qua mạng nội bộ (Loopback IPC Overhead):** ~0.5 - 2 ms cho việc đóng gói JSON trong PHP qua `curl`, truyền qua giao diện Loopback `127.0.0.1:5000` và giải tuần tự hóa JSON trong Rust (`serde_json`).
+3. **Thời gian tính toán lõi của Rust Engine:** ~0.5 - 2 ms.
+4. **Dựng giao diện và xuất mã HTML (PHP View Rendering):** ~3 - 8 ms.
+
+Như vậy, tổng thời gian xử lý một yêu cầu web tìm kiếm hay gợi ý thông minh dao động trong khoảng lý tưởng từ **10 ms đến 30 ms**. Việc đưa Rust vào xử lý tính toán không nhằm triệt tiêu hoàn toàn độ trễ mạng hay độ trễ CSDL, mà giữ vai trò then chốt trong việc:
+- Giải phóng tiến trình Web PHP khỏi các vòng lặp tính toán nặng CPU, giúp PHP Web Server duy trì khả năng tiếp nhận các kết nối khác.
+- Đảm bảo độ trễ tính toán không bị bùng nổ theo cấp số nhân khi số lượng thuộc tính và sản phẩm tăng lên hàng nghìn bản ghi.
+- Giữ mức tiêu thụ bộ nhớ RAM của dịch vụ Rust cực kỳ khiêm tốn (~5 - 10 MB RAM), độc lập hoàn toàn với vòng đời của các tiến trình PHP.
 
 ---
 
@@ -517,16 +549,16 @@ Kết quả thực nghiệm chứng minh rằng kiến trúc Hybrid đem lại s
 
 ## 5.1. Đánh giá kết quả đạt được đối chiếu với mục tiêu ban đầu
 
-Đối chiếu với các mục tiêu đề ra tại Chương 1, đồ án đã hoàn thành trọn vẹn và vượt mức các yêu cầu:
+Đối chiếu với các mục tiêu đề ra tại Chương 1, đồ án đã hoàn thành đầy đủ các yêu cầu kỹ thuật và nghiệp vụ trọng tâm:
 
 | Mục tiêu đề ra | Mức độ hoàn thành | Kết quả minh chứng thực tế |
 |---|---|---|
-| Xây dựng website TMĐT thiết bị điện tử | **100% Hoàn thành** | Đầy đủ giao diện responsive, 6 ngành hàng, giỏ hàng AJAX, checkout VietQR. |
-| Kiến trúc Hybrid PHP kết hợp Rust Engine | **100% Hoàn thành** | Dịch vụ Rust độc lập xử lý tìm kiếm, gợi ý, phân tích; giao tiếp qua REST API. |
-| Cơ chế Graceful Fallback dự phòng | **100% Hoàn thành** | Tự động chuyển sang thuật toán PHP nội bộ khi Rust tắt, không phát sinh lỗi. |
-| Khả năng chạy Portable trên máy trường | **100% Hoàn thành** | Hỗ trợ Dual Database (MySQL + SQLite tự động); kịch bản 1-click `start.bat`. |
-| Tự động hóa CI/CD với GitHub Actions | **100% Hoàn thành** | Pipeline kiểm thử PHP và biên dịch chéo Rust nhị phân cho cả Windows và Linux. |
-| Thuật toán thông minh (Cosine, Levenshtein, ABC)| **100% Hoàn thành** | Hiện thực hóa và kiểm thử toán học chính xác cả trên Rust và PHP fallback. |
+| Xây dựng website TMĐT thiết bị điện tử | **Hoàn thành tốt** | Đầy đủ giao diện responsive, 6 ngành hàng, giỏ hàng AJAX, checkout VietQR. |
+| Kiến trúc Hybrid PHP kết hợp Rust Engine | **Hoàn thành tốt** | Dịch vụ Rust độc lập xử lý tìm kiếm, gợi ý, phân tích; giao tiếp qua REST API. |
+| Cơ chế Graceful Fallback dự phòng | **Hoàn thành tốt** | Tự động chuyển sang thuật toán PHP nội bộ khi Rust tắt, không phát sinh lỗi. |
+| Khả năng chạy Portable trên máy trường | **Hoàn thành tốt** | Hỗ trợ Dual Database (MySQL + SQLite tự động); kịch bản 1-click `start.bat`. |
+| Tự động hóa CI/CD với GitHub Actions | **Hoàn thành tốt** | Pipeline kiểm thử PHP và biên dịch chéo Rust nhị phân cho cả Windows và Linux. |
+| Thuật toán thông minh (Cosine, Levenshtein, ABC)| **Hoàn thành tốt** | Hiện thực hóa và kiểm thử toán học chính xác cả trên Rust và PHP fallback. |
 
 ## 5.2. Kết luận khoa học và thực tiễn
 
@@ -582,7 +614,7 @@ Dịch vụ Rust High-Performance Engine cung cấp các giao diện lập trìn
   "service": "rust-engine-microservice",
   "version": "0.1.0",
   "uptime_seconds": 1240,
-  "worker_threads": 4
+  "worker_threads": 1
 }
 ```
 

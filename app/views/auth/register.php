@@ -20,6 +20,7 @@ require __DIR__ . '/../layouts/header.php';
                 <?php endif; ?>
 
                 <form action="/register" method="POST">
+                    <?= \App\Core\Csrf::field() ?>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Họ và tên *</label>

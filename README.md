@@ -20,7 +20,7 @@ Dự án được xây dựng với kiến trúc **Hybrid Microservices**:
    - **Gợi ý thông minh (Smart Recommender):** Thuật toán Cosine Similarity trên không gian vector đa chiều (CPU, RAM, GPU, phân khúc giá).
    - **Phân tích kinh doanh & Dự báo:** Phân tích tồn kho Pareto ABC (80/20) và dự báo xu hướng doanh thu bằng mô hình Hồi quy tuyến tính (Linear Regression).
    - **Xử lý ảnh hàng loạt (Batch Image Processor Worker).**
-3. **Cơ chế Graceful Fallback:** Nếu dịch vụ Rust tạm dừng hoặc chưa khởi động, lớp `RustEngineService` tự động kích hoạt thuật toán dự phòng nội bộ bằng PHP, đảm bảo tính liên tục 100% của website.
+3. **Cơ chế Graceful Fallback:** Nếu dịch vụ Rust tạm dừng hoặc chưa khởi động, lớp `RustEngineService` tự động chuyển sang thuật toán dự phòng nội bộ bằng PHP, đảm bảo các chức năng tìm kiếm và gợi ý duy trì hoạt động ổn định.
 4. **Hỗ trợ Dual Database (MySQL + SQLite Portable):** Tự động chuyển sang SQLite nhúng (`database/electro.sqlite`) khi chạy demo trên máy tính trường học mà không cần cài đặt hay cấu hình MySQL Server!
 5. **DevOps & Tự động hóa CI/CD:** Toàn bộ quy trình kiểm thử đơn vị, kiểm tra cú pháp PHP và biên dịch chéo Rust nhị phân (Windows `rust_engine.exe` và Linux `rust_engine`) đều được tự động hóa hoàn toàn trên GitHub Actions.
 
@@ -63,8 +63,8 @@ Hệ thống được thiết kế cơ chế **Dual Database thông minh (MySQL 
 2. Mở trình duyệt truy cập: `http://localhost/phpmyadmin`
 3. Nhấn **New** (Mới) -> Nhập tên cơ sở dữ liệu: `12b5_store` (bảng mã `utf8mb4_unicode_ci`) -> Nhấn **Create** (Tạo).
 4. Chọn CSDL `12b5_store` vừa tạo -> Chọn tab **Import** (Nhập):
-   - Chọn tệp: [database/schema.sql](file:///d:/laptrinh/duan/doantotnghiep/database/schema.sql) -> Nhấn **Import** (Thực hiện).
-   - Tiếp tục chọn tệp: [database/seed.sql](file:///d:/laptrinh/duan/doantotnghiep/database/seed.sql) -> Nhấn **Import** (Thực hiện).
+   - Chọn tệp: [database/schema.sql](./database/schema.sql) -> Nhấn **Import** (Thực hiện).
+   - Tiếp tục chọn tệp: [database/seed.sql](./database/seed.sql) -> Nhấn **Import** (Thực hiện).
 5. **Cách 2 (Siêu tốc bằng dòng lệnh):**
    Bạn chỉ cần mở Terminal/CMD tại thư mục dự án và gõ:
    ```bash
@@ -74,12 +74,14 @@ Hệ thống được thiết kế cơ chế **Dual Database thông minh (MySQL 
 
 ---
 
-## 🔑 3. Tài Khoản Thử Nghiệm Sẵn Có
+## 🔑 3. Tài Khoản Thử Nghiệm Sẵn Có (Môi Trường Đồ Án / Demo)
 
 | Vai trò | Email đăng nhập | Mật khẩu mặc định | Quyền hạn |
 |---|---|---|---|
 | **Quản trị viên (Admin)** | `admin@electro.vn` | `admin123` | Toàn quyền Dashboard, Quản lý SP, Đơn hàng, Users |
 | **Khách hàng (Customer)** | `customer@gmail.com` | `user123` | Mua hàng, Giỏ hàng, Đánh giá, Xem lịch sử đơn |
+
+> **Lưu ý bảo mật:** Các thông tin đăng nhập trên được thiết lập công khai nhằm phục vụ công tác kiểm thử và chấm điểm đồ án tốt nghiệp trong môi trường nội bộ hoặc offline. Khi đưa vào vận hành thực tế trên Internet, quản trị viên cần đổi mật khẩu mặc định và thu hồi các tài khoản demo.
 
 ---
 
@@ -116,10 +118,12 @@ doantotnghiep/
 │       ├── handlers.rs          # Bộ điều phối API endpoints
 │       └── models.rs            # Cấu trúc dữ liệu JSON Serde
 ├── tests/
-│   ├── run_tests.php            # Test runner kiểm thử tự động
-│   ├── CartTest.php             # Kiểm thử giỏ hàng & khuyến mãi
-│   ├── OrderTest.php            # Kiểm thử giao dịch đơn hàng & tồn kho
-│   └── RustEngineClientTest.php # Kiểm thử kết nối và thuật toán Rust
+│   ├── run_tests.php            # Test runner kiểm thử tự động (20/20 Test Cases)
+│   ├── CartTest.php             # Kiểm thử giỏ hàng & khuyến mãi (5 tests)
+│   ├── OrderTest.php            # Kiểm thử giao dịch đơn hàng & tồn kho (4 tests)
+│   ├── ProductTest.php          # Kiểm thử sản phẩm, bộ lọc & đánh giá đã mua (5 tests)
+│   ├── AuthTest.php             # Kiểm thử xác thực & băm mật khẩu Bcrypt (3 tests)
+│   └── RustEngineClientTest.php # Kiểm thử kết nối và thuật toán Rust (3 tests)
 ├── scripts/
 │   ├── generate_docx.py         # Kịch bản biên dịch báo cáo sang Word (.docx)
 │   ├── verify_project.py        # Kịch bản kiểm tra toàn diện 153 tiêu chí

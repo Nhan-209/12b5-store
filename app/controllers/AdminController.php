@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\AnalyticsService;
 use App\Services\RustEngineService;
+use App\Core\Csrf;
 
 class AdminController {
     public function __construct() {
@@ -37,7 +38,7 @@ class AdminController {
     }
 
     public function products(): void {
-        $products = Product::all(100, 0);
+        $products = Product::all(100, 0, null);
         $categories = Category::all();
         $brands = Brand::all();
         require __DIR__ . '/../views/admin/products.php';
@@ -45,6 +46,8 @@ class AdminController {
 
     public function createProduct(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::check();
+
             $name = trim($_POST['name'] ?? '');
             $slug = trim($_POST['slug'] ?? '');
             $sku = trim($_POST['sku'] ?? '');
@@ -109,6 +112,8 @@ class AdminController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::check();
+
             $name = trim($_POST['name'] ?? '');
             $slug = trim($_POST['slug'] ?? '');
             $sku = trim($_POST['sku'] ?? '');
@@ -159,8 +164,14 @@ class AdminController {
     }
 
     public function deleteProduct(int $id): void {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /admin/products');
+            exit;
+        }
+        Csrf::check();
+
         Product::delete($id);
-        $_SESSION['flash_success'] = 'Đã xóa sản phẩm.';
+        $_SESSION['flash_success'] = 'Đã chuyển trạng thái sản phẩm sang Ngừng kinh doanh (Soft Delete an toàn).';
         header('Location: /admin/products');
         exit;
     }
@@ -172,13 +183,16 @@ class AdminController {
     }
 
     public function updateOrderStatus(): void {
-        $orderId = (int)($_POST['order_id'] ?? 0);
-        $status = $_POST['status'] ?? 'pending';
-        $paymentStatus = $_POST['payment_status'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Csrf::check();
+            $orderId = (int)($_POST['order_id'] ?? 0);
+            $status = $_POST['status'] ?? 'pending';
+            $paymentStatus = $_POST['payment_status'] ?? null;
 
-        if ($orderId > 0) {
-            Order::updateStatus($orderId, $status, $paymentStatus);
-            $_SESSION['flash_success'] = 'Cập nhật trạng thái đơn hàng thành công!';
+            if ($orderId > 0) {
+                Order::updateStatus($orderId, $status, $paymentStatus);
+                $_SESSION['flash_success'] = 'Cập nhật trạng thái đơn hàng thành công!';
+            }
         }
 
         header('Location: /admin/orders');

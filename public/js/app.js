@@ -71,15 +71,20 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Đang thêm...';
             btn.disabled = true;
 
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
             const formData = new FormData();
             formData.append('product_id', productId);
             formData.append('quantity', quantity);
+            if (csrfToken) {
+                formData.append('csrf_token', csrfToken);
+            }
 
             fetch('/cart/add', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
                 }
             })
             .then(res => res.json())

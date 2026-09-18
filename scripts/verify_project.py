@@ -26,6 +26,7 @@ print("[CHECK 1] Verifying Core Directory Structure...")
 expected_dirs = [
     ".github/workflows",
     "app/config",
+    "app/core",
     "app/controllers",
     "app/models",
     "app/services",
@@ -55,6 +56,7 @@ print("\n[CHECK 2] Verifying Key Deliverables...")
 expected_files = [
     ".github/workflows/ci.yml",
     "app/config/database.php",
+    "app/core/Csrf.php",
     "app/models/Database.php",
     "app/models/Product.php",
     "app/models/Category.php",
@@ -238,6 +240,27 @@ ci_yml = os.path.join(base_dir, ".github", "workflows", "ci.yml")
 with open(ci_yml, "r", encoding="utf-8") as f:
     ci_content = f.read()
 check("ci.yml lints tests directory as well as app public database", "find app public database tests" in ci_content)
+
+# Check CSRF Protection & Security Hardening
+csrf_php = os.path.join(base_dir, "app", "core", "Csrf.php")
+with open(csrf_php, "r", encoding="utf-8") as f:
+    csrf_content = f.read()
+check("Csrf.php provides token generation and hash_equals validation", "hash_equals" in csrf_content and "random_bytes" in csrf_content)
+
+auth_php = os.path.join(base_dir, "app", "controllers", "AuthController.php")
+with open(auth_php, "r", encoding="utf-8") as f:
+    auth_content = f.read()
+check("AuthController prevents session fixation via session_regenerate_id(true)", "session_regenerate_id(true)" in auth_content)
+
+prod_php = os.path.join(base_dir, "app", "models", "Product.php")
+with open(prod_php, "r", encoding="utf-8") as f:
+    prod_content = f.read()
+check("Product model implements hasPurchased completed order check", "hasPurchased" in prod_content and "completed" in prod_content)
+
+main_rs_path = os.path.join(base_dir, "rust-engine", "src", "main.rs")
+with open(main_rs_path, "r", encoding="utf-8") as f:
+    main_rs_content = f.read()
+check("Rust Engine binds securely to 127.0.0.1 loopback by default", '127.0.0.1' in main_rs_content)
 
 # 6. Check Graduation Thesis Report & Word Document
 print("\n[CHECK 6] Verifying Graduation Thesis Document...")
