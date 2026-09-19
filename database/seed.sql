@@ -4,7 +4,7 @@ USE `12b5_store`;
 -- Default Users: admin (admin@electro.vn / admin123) and customer (customer@gmail.com / user123)
 -- Password hashes generated using standard BCRYPT
 INSERT INTO `users` (`id`, `name`, `email`, `password_hash`, `phone`, `address`, `role`) VALUES
-(1, 'Quản Trị Viên', 'admin@electro.vn', '$2y$10$7rLSvRVyTQORapkDOqmkhetjF6H9lJHngr4hJMSM2lHObJbW5EQh6', '0901234567', 'Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội', 'admin'),
+(1, 'Quản Trị Viên', 'admin@electro.vn', '$2y$10$7rLSvRVyTQORapkDOqmkhetjF6H9lJHngr4hJMSM2lHObJbW5EQh6', '0828618539', 'Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội', 'admin'),
 (2, 'Nguyễn Văn A', 'customer@gmail.com', '$2y$10$J0pK/1DAyYxzDi5diGbfeCyyHJovwvHmjfqa06eq6ytcn7eTkNdD2', '0987654321', '123 Cầu Giấy, Hà Nội', 'customer'),
 (3, 'Trần Thị Mai', 'mai.tran@gmail.com', '$2y$10$w8T0M47c92rW2u8g8XzTceEcm74UvG3pL.d0rN/PqXm4a0mXbYJ0e', '0987654321', 'Số 45 Lê Lợi, Quận Hải Châu, Đà Nẵng', 'customer');
 

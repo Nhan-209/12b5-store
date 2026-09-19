@@ -64,13 +64,13 @@ require __DIR__ . '/../layouts/header.php';
                         <div class="bank-copy-row">
                             <span class="text-muted">Số tài khoản:</span>
                             <div>
-                                <strong class="font-monospace text-primary">0901234567</strong>
-                                <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
+                                <strong class="font-monospace text-primary">0828618539</strong>
+                                <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0828618539'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
                             </div>
                         </div>
                         <div class="bank-copy-row">
                             <span class="text-muted">Chủ tài khoản:</span>
-                            <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
+                            <strong class="text-dark">PHAM CHI NHAN</strong>
                         </div>
                         <div class="bank-copy-row">
                             <span class="text-muted">Số tiền thanh toán:</span>

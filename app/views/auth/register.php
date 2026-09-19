@@ -28,7 +28,7 @@ require __DIR__ . '/../layouts/header.php';
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Số điện thoại</label>
-                            <input type="tel" name="phone" class="form-control rounded-3" placeholder="0901234567" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
+                            <input type="tel" name="phone" class="form-control rounded-3" placeholder="0828618539" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Email đăng nhập *</label>

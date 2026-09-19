@@ -126,11 +126,11 @@ class CheckoutController {
         $qrUrl = null;
         if ($order['payment_method'] === 'bank_transfer') {
             $bankId = 'MB'; // MBBank
-            $accountNo = '0901234567';
+            $accountNo = '0828618539';
             $template = 'compact2';
             $amount = (int)$order['final_amount'];
             $description = urlencode($order['order_code']);
-            $qrUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName=CONG%20TY%20CONG%20NGHE%2012B5%20STORE";
+            $qrUrl = "https://img.vietqr.io/image/{$bankId}-{$accountNo}-{$template}.png?amount={$amount}&addInfo={$description}&accountName=PHAM%20CHI%20NHAN";
         }
 
         require __DIR__ . '/../views/checkout/success.php';

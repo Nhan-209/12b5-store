@@ -52,7 +52,7 @@ require __DIR__ . '/../layouts/header.php';
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Số điện thoại liên hệ *</label>
-                            <input type="tel" name="customer_phone" class="form-control rounded-3" required value="<?= htmlspecialchars($user['phone'] ?? '') ?>" placeholder="0901234567">
+                            <input type="tel" name="customer_phone" class="form-control rounded-3" required value="<?= htmlspecialchars($user['phone'] ?? '') ?>" placeholder="0828618539">
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Địa chỉ Email xác nhận đơn hàng *</label>
@@ -120,17 +120,17 @@ require __DIR__ . '/../layouts/header.php';
                             <div class="bank-copy-row">
                                 <span class="text-muted">Số tài khoản:</span>
                                 <div>
-                                    <strong class="font-monospace text-primary">0901234567</strong>
-                                    <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0901234567'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
+                                    <strong class="font-monospace text-primary">0828618539</strong>
+                                    <button type="button" class="btn-copy-code ms-1" onclick="navigator.clipboard.writeText('0828618539'); alert('Đã sao chép số tài khoản MBBank!');">Sao chép</button>
                                 </div>
                             </div>
                             <div class="bank-copy-row">
                                 <span class="text-muted">Chủ tài khoản:</span>
-                                <strong class="text-dark">CONG TY CONG NGHE 12B5 STORE</strong>
+                                <strong class="text-dark">PHAM CHI NHAN</strong>
                             </div>
                             <div class="bank-copy-row">
                                 <span class="text-muted">Số tiền thanh toán:</span>
-                                <strong class="text-danger fw-bold"><?= $cart['formatted_final_total'] ?></strong>
+                                <strong class="text-danger fw-bold"><?= $cart['formatted_final_amount'] ?></strong>
                             </div>
                             <div class="bank-copy-row">
                                 <span class="text-muted">Nội dung chuyển khoản:</span>
@@ -204,7 +204,7 @@ require __DIR__ . '/../layouts/header.php';
 
                     <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-baseline">
                         <span class="fw-bold text-dark fs-6">Tổng thanh toán:</span>
-                        <span class="fs-3 fw-extrabold text-danger"><?= $cart['formatted_final_total'] ?></span>
+                        <span class="fs-3 fw-extrabold text-danger"><?= $cart['formatted_final_amount'] ?></span>
                     </div>
 
                     <button type="submit" class="btn btn-rose w-100 py-3 fw-bold shadow-sm mb-3">
