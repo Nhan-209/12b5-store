@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             debounceTimer = setTimeout(() => {
-                fetch(`/api/live-search?q=${encodeURIComponent(query)}`)
+                fetch(`${BASE_URL}/api/live-search?q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.results && data.results.length > 0) {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>`;
                             data.results.forEach(item => {
                                 html += `
-                                    <a href="/product/${item.slug}" class="search-item">
+                                    <a href="${BASE_URL}/product/${item.slug}" class="search-item">
                                         <div class="flex-grow-1">
                                             <div class="fw-semibold text-truncate" style="max-width: 380px;">${item.name}</div>
                                             <div class="text-primary fw-bold small">${item.price}</div>
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('csrf_token', csrfToken);
             }
 
-            fetch('/cart/add', {
+            fetch(`${BASE_URL}/cart/add`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -87,23 +87,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     'X-CSRF-TOKEN': csrfToken
                 }
             })
-            .then(res => res.json())
-            .then(data => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
+                .then(res => res.json())
+                .then(data => {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
 
-                if (data.success) {
-                    showToast(data.message, 'success');
-                    updateCartBadge(data.cart.total_items);
-                } else {
-                    showToast(data.message, 'danger');
-                }
-            })
-            .catch(() => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-                showToast('Không thể thêm sản phẩm vào giỏ. Vui lòng thử lại.', 'danger');
-            });
+                    if (data.success) {
+                        showToast(data.message, 'success');
+                        updateCartBadge(data.cart.total_items);
+                    } else {
+                        showToast(data.message, 'danger');
+                    }
+                })
+                .catch(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                    showToast('Không thể thêm sản phẩm vào giỏ. Vui lòng thử lại.', 'danger');
+                });
         });
     });
 
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Query Rust microservice health on header
     const rustStatusBadge = document.getElementById('rustEngineBadge');
     if (rustStatusBadge) {
-        fetch('/api/rust-status')
+        fetch(`${BASE_URL}/api/rust-status`)
             .then(res => res.json())
             .then(data => {
                 if (data.available) {

@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- CSRF Token Meta for AJAX Requests -->
     <meta name="csrf-token" content="<?= \App\Core\Csrf::token() ?>">
+    <!-- BASE_URL for JavaScript -->
+    <script>
+        const BASE_URL = "<?= BASE_URL ?>";
+    </script>
 </head>
 <body>
 <?php require __DIR__ . '/navbar.php'; ?>
