@@ -234,7 +234,8 @@ $$
 |s_2| & \text{nếu } |s_1| = 0, \\[4pt]
 \mathrm{lev}(\mathrm{tail}(s_1), \mathrm{tail}(s_2))
 & \text{nếu } s_1[0] = s_2[0], \\[4pt]
-1 + \min\left\{
+1 + \min
+\left\{
 \begin{array}{l}
 \mathrm{lev}(\mathrm{tail}(s_1), s_2), \\
 \mathrm{lev}(s_1, \mathrm{tail}(s_2)), \\
