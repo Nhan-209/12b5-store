@@ -1,0 +1,19 @@
+<?php
+// Configuration file for 12B5 Store
+// Copy this file to config.php and customize for your environment
+
+// BASE_URL Configuration
+// Uncomment and set this if automatic detection doesn't work
+// For XAMPP, if your project is at http://localhost/12b5-store/public/
+// Uncomment the line below:
+// define('BASE_URL', '/12b5-store/public');
+
+// For production or other environments, set accordingly:
+// define('BASE_URL', ''); // For root domain: http://example.com
+// define('BASE_URL', '/subfolder'); // For subfolder: http://example.com/subfolder
+
+// Database configuration
+define('DB_HOST', 'localhost');
+define('DB_NAME', '12b5_store');
+define('DB_USER', 'root');
+define('DB_PASS', '');
