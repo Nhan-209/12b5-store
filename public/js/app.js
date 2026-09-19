@@ -79,7 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('csrf_token', csrfToken);
             }
 
-            fetch(`${BASE_URL}/cart/add`, {
+            const cartAddUrl = `${BASE_URL}/cart/add`;
+            console.log('Adding to cart. URL:', cartAddUrl, 'Product ID:', productId, 'Quantity:', quantity);
+
+            fetch(cartAddUrl, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -87,8 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     'X-CSRF-TOKEN': csrfToken
                 }
             })
-                .then(res => res.json())
+                .then(res => {
+                    console.log('Response status:', res.status);
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
                 .then(data => {
+                    console.log('Response data:', data);
                     btn.innerHTML = originalHtml;
                     btn.disabled = false;
 
@@ -99,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         showToast(data.message, 'danger');
                     }
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.error('Error adding to cart:', error);
                     btn.innerHTML = originalHtml;
                     btn.disabled = false;
                     showToast('Không thể thêm sản phẩm vào giỏ. Vui lòng thử lại.', 'danger');

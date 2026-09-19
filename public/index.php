@@ -10,7 +10,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Set BASE_URL for XAMPP compatibility
 $scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '');
-define('BASE_URL', $scriptDir === '/' || $scriptDir === '\\' ? '' : rtrim($scriptDir, '/'));
+$basePath = ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : rtrim($scriptDir, '/');
+// Ensure BASE_URL always starts with / if not empty
+if ($basePath && !str_starts_with($basePath, '/')) {
+    $basePath = '/' . $basePath;
+}
+define('BASE_URL', $basePath);
+
+// Debug: Uncomment to see BASE_URL value
+// error_log('BASE_URL: ' . BASE_URL);
 
 // Simple PSR-4 style autoloader with Linux case-insensitivity tolerance
 spl_autoload_register(function ($class) {

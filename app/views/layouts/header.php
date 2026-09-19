@@ -21,6 +21,7 @@
     <!-- BASE_URL for JavaScript -->
     <script>
         const BASE_URL = "<?= BASE_URL ?>";
+        console.log('BASE_URL set to:', BASE_URL);
     </script>
 </head>
 <body>
