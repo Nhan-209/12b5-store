@@ -235,13 +235,11 @@ $$
 \mathrm{lev}(\mathrm{tail}(s_1), \mathrm{tail}(s_2))
 & \text{nếu } s_1[0] = s_2[0], \\[4pt]
 1 + \min
-\left\{
-\begin{array}{l}
+\begin{cases}
 \mathrm{lev}(\mathrm{tail}(s_1), s_2), \\
 \mathrm{lev}(s_1, \mathrm{tail}(s_2)), \\
 \mathrm{lev}(\mathrm{tail}(s_1), \mathrm{tail}(s_2))
-\end{array}
-\right.
+\end{cases}
 & \text{trường hợp khác.}
 \end{cases}
 $$
