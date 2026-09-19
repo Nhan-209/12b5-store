@@ -19,7 +19,7 @@ require __DIR__ . '/../layouts/header.php';
                     <div class="alert alert-danger small py-2 mb-3"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form action="/register" method="POST">
+                <form action="<?= BASE_URL ?>/register" method="POST">
                     <?= \App\Core\Csrf::field() ?>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
@@ -53,7 +53,7 @@ require __DIR__ . '/../layouts/header.php';
                     </button>
 
                     <div class="text-center small text-muted">
-                        Đã có tài khoản? <a href="/login" class="text-danger fw-semibold text-decoration-none">Đăng nhập ngay</a>
+                        Đã có tài khoản? <a href="<?= BASE_URL ?>/login" class="text-danger fw-semibold text-decoration-none">Đăng nhập ngay</a>
                     </div>
                 </form>
             </div>

@@ -13,7 +13,7 @@ require __DIR__ . '/../layouts/header.php';
             <span class="text-muted small">Cập nhật trạng thái đóng gói, tiến độ vận chuyển và đối soát VietQR</span>
         </div>
         <div>
-            <a href="/admin" class="btn btn-soft-slate btn-sm">
+            <a href="<?= BASE_URL ?>/admin" class="btn btn-soft-slate btn-sm">
                 <i class="bi bi-speedometer2 me-1"></i> Về Dashboard
             </a>
         </div>
@@ -21,12 +21,12 @@ require __DIR__ . '/../layouts/header.php';
 
     <!-- Status filter tabs -->
     <div class="d-flex gap-2 mb-4 overflow-x-auto pb-2">
-        <a href="/admin/orders" class="btn btn-sm rounded-pill px-3 <?= empty($status) ? 'btn-rose' : 'btn-soft-slate' ?>">Tất cả</a>
-        <a href="/admin/orders?status=pending" class="btn btn-sm rounded-pill px-3 <?= $status === 'pending' ? 'btn-rose' : 'btn-soft-slate' ?>">Chờ xử lý</a>
-        <a href="/admin/orders?status=processing" class="btn btn-sm rounded-pill px-3 <?= $status === 'processing' ? 'btn-rose' : 'btn-soft-slate' ?>">Đang đóng gói</a>
-        <a href="/admin/orders?status=shipping" class="btn btn-sm rounded-pill px-3 <?= $status === 'shipping' ? 'btn-rose' : 'btn-soft-slate' ?>">Đang giao</a>
-        <a href="/admin/orders?status=completed" class="btn btn-sm rounded-pill px-3 <?= $status === 'completed' ? 'btn-rose' : 'btn-soft-slate' ?>">Hoàn thành</a>
-        <a href="/admin/orders?status=cancelled" class="btn btn-sm rounded-pill px-3 <?= $status === 'cancelled' ? 'btn-rose' : 'btn-soft-slate' ?>">Đã hủy</a>
+        <a href="<?= BASE_URL ?>/admin/orders" class="btn btn-sm rounded-pill px-3 <?= empty($status) ? 'btn-rose' : 'btn-soft-slate' ?>">Tất cả</a>
+        <a href="<?= BASE_URL ?>/admin/orders?status=pending" class="btn btn-sm rounded-pill px-3 <?= $status === 'pending' ? 'btn-rose' : 'btn-soft-slate' ?>">Chờ xử lý</a>
+        <a href="<?= BASE_URL ?>/admin/orders?status=processing" class="btn btn-sm rounded-pill px-3 <?= $status === 'processing' ? 'btn-rose' : 'btn-soft-slate' ?>">Đang đóng gói</a>
+        <a href="<?= BASE_URL ?>/admin/orders?status=shipping" class="btn btn-sm rounded-pill px-3 <?= $status === 'shipping' ? 'btn-rose' : 'btn-soft-slate' ?>">Đang giao</a>
+        <a href="<?= BASE_URL ?>/admin/orders?status=completed" class="btn btn-sm rounded-pill px-3 <?= $status === 'completed' ? 'btn-rose' : 'btn-soft-slate' ?>">Hoàn thành</a>
+        <a href="<?= BASE_URL ?>/admin/orders?status=cancelled" class="btn btn-sm rounded-pill px-3 <?= $status === 'cancelled' ? 'btn-rose' : 'btn-soft-slate' ?>">Đã hủy</a>
     </div>
 
     <div class="card card-glass border-0 shadow-card rounded-4 p-4 mb-5">
@@ -51,7 +51,7 @@ require __DIR__ . '/../layouts/header.php';
                         <?php foreach ($orders as $ord): ?>
                             <tr>
                                 <td class="fw-bold font-monospace">
-                                    <a href="/order/<?= urlencode($ord['order_code']) ?>" class="text-danger text-decoration-none">
+                                    <a href="<?= BASE_URL ?>/order/<?= urlencode($ord['order_code']) ?>" class="text-danger text-decoration-none">
                                         <?= htmlspecialchars($ord['order_code']) ?>
                                     </a>
                                 </td>
@@ -84,7 +84,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <span class="badge <?= $statusBadge ?> text-uppercase rounded-pill px-3 py-1"><?= htmlspecialchars($ord['order_status']) ?></span>
                                 </td>
                                 <td class="text-end">
-                                    <form action="/admin/orders/update-status" method="POST" class="d-inline-flex align-items-center gap-1">
+                                    <form action="<?= BASE_URL ?>/admin/orders/update-status" method="POST" class="d-inline-flex align-items-center gap-1">
                                         <?= \App\Core\Csrf::field() ?>
                                         <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
                                         <select name="status" class="form-select form-select-sm rounded-pill" style="width: 125px;" title="Trạng thái đơn hàng">

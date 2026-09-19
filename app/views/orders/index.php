@@ -7,7 +7,7 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
             <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
         </ol>
     </nav>
@@ -17,7 +17,7 @@ require __DIR__ . '/../layouts/header.php';
             <h3 class="fw-bold mb-1 text-dark"><i class="bi bi-box-seam me-2 text-danger"></i>Lịch Sử Đơn Hàng Của Bạn</h3>
             <span class="text-muted small">Tra cứu tiến độ xử lý và hành trình giao hàng thiết bị công nghệ</span>
         </div>
-        <a href="/products" class="btn btn-soft-slate btn-sm"><i class="bi bi-cart-plus me-1"></i> Mua thêm thiết bị</a>
+        <a href="<?= BASE_URL ?>/products" class="btn btn-soft-slate btn-sm"><i class="bi bi-cart-plus me-1"></i> Mua thêm thiết bị</a>
     </div>
 
     <?php if (empty($orders)): ?>
@@ -30,7 +30,7 @@ require __DIR__ . '/../layouts/header.php';
             <h4 class="fw-bold text-dark">Bạn chưa có đơn hàng nào!</h4>
             <p class="text-muted small mb-4">Các đơn hàng sau khi mua sẽ xuất hiện tại đây để bạn thuận tiện theo dõi tiến độ vận chuyển và bảo hành.</p>
             <div>
-                <a href="/products" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm">Khám Phá Thiết Bị Mới</a>
+                <a href="<?= BASE_URL ?>/products" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm">Khám Phá Thiết Bị Mới</a>
             </div>
         </div>
     <?php else: ?>
@@ -51,7 +51,7 @@ require __DIR__ . '/../layouts/header.php';
                         <?php foreach ($orders as $ord): ?>
                             <tr>
                                 <td class="fw-bold font-monospace">
-                                    <a href="/order/<?= urlencode($ord['order_code']) ?>" class="text-danger text-decoration-none">
+                                    <a href="<?= BASE_URL ?>/order/<?= urlencode($ord['order_code']) ?>" class="text-danger text-decoration-none">
                                         <?= htmlspecialchars($ord['order_code']) ?>
                                     </a>
                                 </td>
@@ -75,7 +75,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <span class="badge <?= $statusBadge ?> text-uppercase rounded-pill px-3 py-1"><?= htmlspecialchars($ord['order_status']) ?></span>
                                 </td>
                                 <td class="text-end">
-                                    <a href="/order/<?= urlencode($ord['order_code']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3 py-1">
+                                    <a href="<?= BASE_URL ?>/order/<?= urlencode($ord['order_code']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3 py-1">
                                         Chi tiết <i class="bi bi-chevron-right ms-1 small"></i>
                                     </a>
                                 </td>

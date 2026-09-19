@@ -11,10 +11,10 @@ require __DIR__ . '/../layouts/header.php';
             Rất tiếc, thiết bị điện tử bạn đang tìm kiếm có thể đã được cập nhật đường dẫn mới, hết hàng hoặc tạm thời ngừng kinh doanh.
         </p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="/" class="btn btn-soft-slate px-4 py-2 fw-medium">
+            <a href="<?= BASE_URL ?>/" class="btn btn-soft-slate px-4 py-2 fw-medium">
                 <i class="bi bi-house-door me-1"></i> Trang Chủ
             </a>
-            <a href="/products" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm">
+            <a href="<?= BASE_URL ?>/products" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm">
                 <i class="bi bi-grid me-1"></i> Khám Phá Sản Phẩm
             </a>
         </div>

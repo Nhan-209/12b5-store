@@ -13,7 +13,7 @@ require __DIR__ . '/../layouts/header.php';
             <span class="text-muted small">Danh sách tài khoản khách hàng và phân quyền quản trị viên 12B5 Store</span>
         </div>
         <div>
-            <a href="/admin" class="btn btn-soft-slate btn-sm">
+            <a href="<?= BASE_URL ?>/admin" class="btn btn-soft-slate btn-sm">
                 <i class="bi bi-speedometer2 me-1"></i> Về Dashboard
             </a>
         </div>

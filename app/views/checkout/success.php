@@ -142,8 +142,8 @@ require __DIR__ . '/../layouts/header.php';
             </div>
 
             <div class="d-flex justify-content-center gap-3">
-                <a href="/" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm"><i class="bi bi-house me-1"></i> Về Trang Chủ</a>
-                <a href="/orders" class="btn btn-soft-slate px-4 py-2"><i class="bi bi-clock-history me-1"></i> Xem Lịch Sử Đơn</a>
+                <a href="<?= BASE_URL ?>/" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm"><i class="bi bi-house me-1"></i> Về Trang Chủ</a>
+                <a href="<?= BASE_URL ?>/orders" class="btn btn-soft-slate px-4 py-2"><i class="bi bi-clock-history me-1"></i> Xem Lịch Sử Đơn</a>
             </div>
         </div>
     </div>

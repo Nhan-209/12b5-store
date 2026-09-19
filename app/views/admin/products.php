@@ -13,10 +13,10 @@ require __DIR__ . '/../layouts/header.php';
             <span class="text-muted small">Danh mục thiết bị điện tử, kiểm soát tồn kho và thông số phần cứng</span>
         </div>
         <div class="d-flex gap-2">
-            <a href="/admin/products/create" class="btn btn-rose btn-sm fw-semibold shadow-sm">
+            <a href="<?= BASE_URL ?>/admin/products/create" class="btn btn-rose btn-sm fw-semibold shadow-sm">
                 <i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới
             </a>
-            <a href="/admin" class="btn btn-soft-slate btn-sm">
+            <a href="<?= BASE_URL ?>/admin" class="btn btn-soft-slate btn-sm">
                 <i class="bi bi-speedometer2 me-1"></i> Về Dashboard
             </a>
         </div>
@@ -63,11 +63,11 @@ require __DIR__ . '/../layouts/header.php';
                             </td>
                             <td class="text-end">
                                 <div class="d-inline-flex gap-1 align-items-center">
-                                    <a href="/admin/products/edit/<?= $p['id'] ?>" class="btn btn-sm btn-outline-rose rounded-pill px-2" title="Chỉnh sửa">
+                                    <a href="<?= BASE_URL ?>/admin/products/edit/<?= $p['id'] ?>" class="btn btn-sm btn-outline-rose rounded-pill px-2" title="Chỉnh sửa">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <?php if ($p['status'] == 1): ?>
-                                        <form action="/admin/products/delete" method="POST" class="d-inline m-0" onsubmit="return confirm('Bạn có chắc muốn chuyển sản phẩm sang trạng thái Ngừng kinh doanh?');">
+                                        <form action="<?= BASE_URL ?>/admin/products/delete" method="POST" class="d-inline m-0" onsubmit="return confirm('Bạn có chắc muốn chuyển sản phẩm sang trạng thái Ngừng kinh doanh?');">
                                             <?= \App\Core\Csrf::field() ?>
                                             <input type="hidden" name="id" value="<?= $p['id'] ?>">
                                             <button type="submit" class="btn btn-sm btn-soft-slate rounded-pill px-2 text-danger border-0" title="Ngừng kinh doanh">

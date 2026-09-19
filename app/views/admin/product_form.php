@@ -14,7 +14,7 @@ $specs = $isEdit ? ($product['specs_array'] ?? []) : [];
             </div>
             <span class="text-muted small">Cập nhật thông tin chi tiết, giá bán và thông số phần cứng thiết bị</span>
         </div>
-        <a href="/admin/products" class="btn btn-soft-slate btn-sm">
+        <a href="<?= BASE_URL ?>/admin/products" class="btn btn-soft-slate btn-sm">
             <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách
         </a>
     </div>
@@ -126,7 +126,7 @@ $specs = $isEdit ? ($product['specs_array'] ?? []) : [];
             <button type="submit" class="btn btn-rose px-4 py-2 fw-bold shadow-sm">
                 <i class="bi bi-floppy me-1"></i> Lưu Thiết Bị
             </button>
-            <a href="/admin/products" class="btn btn-soft-slate px-4 py-2 ms-2">Hủy bỏ</a>
+            <a href="<?= BASE_URL ?>/admin/products" class="btn btn-soft-slate px-4 py-2 ms-2">Hủy bỏ</a>
         </form>
     </div>
 </div>

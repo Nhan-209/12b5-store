@@ -7,8 +7,8 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="/cart" class="text-decoration-none">Giỏ hàng</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/cart" class="text-decoration-none">Giỏ hàng</a></li>
             <li class="breadcrumb-item active" aria-current="page">Thanh toán đơn hàng</li>
         </ol>
     </nav>
@@ -36,7 +36,7 @@ require __DIR__ . '/../layouts/header.php';
 
     <h3 class="fw-bold mb-4 text-dark"><i class="bi bi-credit-card-2-front me-2 text-danger"></i>Đặt Hàng & Thanh Toán Trực Tuyến</h3>
 
-    <form action="/checkout/process" method="POST">
+    <form action="<?= BASE_URL ?>/checkout/process" method="POST">
         <?= \App\Core\Csrf::field() ?>
         <div class="row g-4 mb-5">
             <!-- Left Form Area -->

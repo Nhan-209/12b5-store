@@ -7,7 +7,7 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
             <li class="breadcrumb-item active" aria-current="page">Giỏ hàng của bạn</li>
         </ol>
     </nav>
@@ -32,7 +32,7 @@ require __DIR__ . '/../layouts/header.php';
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-cart3 me-2 text-danger"></i>Giỏ Hàng Công Nghệ (<?= $cart['total_items'] ?> thiết bị)</h3>
-        <a href="/products" class="btn btn-soft-slate btn-sm"><i class="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm</a>
+        <a href="<?= BASE_URL ?>/products" class="btn btn-soft-slate btn-sm"><i class="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm</a>
     </div>
 
     <?php if (empty($cart['items'])): ?>
@@ -43,7 +43,7 @@ require __DIR__ . '/../layouts/header.php';
             <h4 class="fw-bold text-dark">Giỏ hàng của bạn đang trống!</h4>
             <p class="text-muted small mb-4">Khám phá ngay hàng trăm thiết bị công nghệ chính hãng đỉnh cao với mức giá ưu đãi tại 12B5 Store.</p>
             <div>
-                <a href="/products" class="btn btn-rose px-4 py-2 fw-semibold">Khám Phá Sản Phẩm Ngay</a>
+                <a href="<?= BASE_URL ?>/products" class="btn btn-rose px-4 py-2 fw-semibold">Khám Phá Sản Phẩm Ngay</a>
             </div>
         </div>
     <?php else: ?>
@@ -72,7 +72,7 @@ require __DIR__ . '/../layouts/header.php';
                                                     <i class="bi <?= htmlspecialchars($item['device_icon'] ?? 'bi-laptop') ?> fs-4 text-primary" style="display: none;"></i>
                                                 </div>
                                                 <div>
-                                                    <a href="/product/<?= urlencode($item['slug']) ?>" class="text-dark text-decoration-none fw-bold small line-clamp-1" title="<?= htmlspecialchars($item['name']) ?>">
+                                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($item['slug']) ?>" class="text-dark text-decoration-none fw-bold small line-clamp-1" title="<?= htmlspecialchars($item['name']) ?>">
                                                         <?= htmlspecialchars($item['name']) ?>
                                                     </a>
                                                     <div class="text-muted small">SKU: <span class="font-monospace"><?= htmlspecialchars($item['sku']) ?></span> &bull; <span class="text-success"><i class="bi bi-check2"></i> Còn hàng</span></div>
@@ -81,7 +81,7 @@ require __DIR__ . '/../layouts/header.php';
                                         </td>
                                         <td class="fw-semibold small text-dark"><?= $item['formatted_price'] ?></td>
                                         <td>
-                                            <form action="/cart/update" method="POST" class="d-flex align-items-center">
+                                            <form action="<?= BASE_URL ?>/cart/update" method="POST" class="d-flex align-items-center">
                                                 <?= \App\Core\Csrf::field() ?>
                                                 <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
                                                 <div class="input-group input-group-sm">
@@ -93,7 +93,7 @@ require __DIR__ . '/../layouts/header.php';
                                         </td>
                                         <td class="fw-bold text-danger small"><?= $item['formatted_subtotal'] ?></td>
                                         <td class="text-end">
-                                            <form action="/cart/remove" method="POST">
+                                            <form action="<?= BASE_URL ?>/cart/remove" method="POST">
                                                 <?= \App\Core\Csrf::field() ?>
                                                 <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
                                                 <button type="submit" class="btn btn-sm text-danger p-0 border-0 bg-transparent" title="Xóa sản phẩm">
@@ -124,7 +124,7 @@ require __DIR__ . '/../layouts/header.php';
                 <!-- Coupon Code Card -->
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4" style="border: 1px solid var(--border-color) !important;">
                     <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-ticket-perforated-fill me-2 text-danger"></i>Mã Ưu Đãi / Khuyến Mãi</h6>
-                    <form action="/cart/coupon" method="POST">
+                    <form action="<?= BASE_URL ?>/cart/coupon" method="POST">
                         <?= \App\Core\Csrf::field() ?>
                         <div class="input-group mb-2">
                             <input type="text" name="coupon_code" class="form-control form-control-sm rounded-start-pill text-uppercase font-monospace" placeholder="Nhập mã (WELCOME2026...)" value="<?= htmlspecialchars($cart['coupon']['code'] ?? '') ?>">
@@ -148,7 +148,7 @@ require __DIR__ . '/../layouts/header.php';
                     <?php if (!empty($cart['coupon'])): ?>
                         <div class="alert alert-success d-flex justify-content-between align-items-center mt-3 mb-0 p-2 rounded-3 small">
                             <span><i class="bi bi-check-circle-fill me-1"></i> Đã áp dụng: <strong><?= htmlspecialchars($cart['coupon']['code']) ?></strong></span>
-                            <form action="/cart/coupon" method="POST" class="d-inline">
+                            <form action="<?= BASE_URL ?>/cart/coupon" method="POST" class="d-inline">
                                 <?= \App\Core\Csrf::field() ?>
                                 <input type="hidden" name="coupon_code" value="">
                                 <button type="submit" class="btn btn-link btn-sm text-danger p-0" title="Bỏ mã"><i class="bi bi-x-circle-fill"></i></button>
@@ -183,7 +183,7 @@ require __DIR__ . '/../layouts/header.php';
                         <span class="fs-4 fw-extrabold text-danger"><?= $cart['formatted_final_amount'] ?></span>
                     </div>
 
-                    <a href="/checkout" class="btn btn-rose w-100 py-2 fw-bold shadow-sm mb-2">
+                    <a href="<?= BASE_URL ?>/checkout" class="btn btn-rose w-100 py-2 fw-bold shadow-sm mb-2">
                         Tiến Hành Đặt Hàng & Thanh Toán <i class="bi bi-arrow-right ms-1"></i>
                     </a>
 

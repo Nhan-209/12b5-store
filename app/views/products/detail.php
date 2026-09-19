@@ -7,9 +7,9 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="/products" class="text-decoration-none">Sản phẩm</a></li>
-            <li class="breadcrumb-item"><a href="/products?category=<?= urlencode($product['category_slug']) ?>" class="text-decoration-none"><?= htmlspecialchars($product['category_name']) ?></a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/products" class="text-decoration-none">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/products?category=<?= urlencode($product['category_slug']) ?>" class="text-decoration-none"><?= htmlspecialchars($product['category_name']) ?></a></li>
             <li class="breadcrumb-item active" aria-current="page"><?= htmlspecialchars($product['name']) ?></li>
         </ol>
     </nav>
@@ -145,7 +145,7 @@ require __DIR__ . '/../layouts/header.php';
                 </div>
 
                 <!-- Stock & Add to Cart Form -->
-                <form action="/cart/add" method="POST" class="mb-4">
+                <form action="<?= BASE_URL ?>/cart/add" method="POST" class="mb-4">
                     <?= \App\Core\Csrf::field() ?>
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
 
@@ -238,7 +238,7 @@ require __DIR__ . '/../layouts/header.php';
                         <i class="bi bi-cpu-fill"></i> Vector Cosine Similarity: <?= $engineInfo['engine'] === 'rust' ? 'Rust High-Speed Microservice' : 'PHP Core Engine' ?> (<?= $engineInfo['latency_ms'] ?>ms)
                     </span>
                 </div>
-                <a href="/products?category=<?= urlencode($product['category_slug']) ?>" class="btn btn-outline-rose btn-sm">Xem thêm cùng loại &rarr;</a>
+                <a href="<?= BASE_URL ?>/products?category=<?= urlencode($product['category_slug']) ?>" class="btn btn-outline-rose btn-sm">Xem thêm cùng loại &rarr;</a>
             </div>
 
             <div class="row g-3">
@@ -256,13 +256,13 @@ require __DIR__ . '/../layouts/header.php';
                                     <?= htmlspecialchars($relProd['brand_name'] ?? 'Chính Hãng') ?>
                                 </span>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="/product/<?= urlencode($relProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($relProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
                                         <?= htmlspecialchars($relProd['name']) ?>
                                     </a>
                                 </h6>
                                 <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                                     <div class="price-current fs-6"><?= $relProd['formatted_price'] ?></div>
-                                    <a href="/product/<?= urlencode($relProd['slug']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($relProd['slug']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3">Chi tiết</a>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +296,7 @@ require __DIR__ . '/../layouts/header.php';
                 <?php if ($isLoggedIn && $hasPurchased): ?>
                     <!-- Write a review form for verified buyer -->
                     <h6 class="fw-bold mb-2 text-dark"><i class="bi bi-shield-check text-success me-1"></i>Gửi Đánh Giá Của Bạn (Đã xác minh mua hàng)</h6>
-                    <form action="/product/review" method="POST" class="row g-2">
+                    <form action="<?= BASE_URL ?>/product/review" method="POST" class="row g-2">
                         <?= \App\Core\Csrf::field() ?>
                         <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                         <div class="col-sm-6">
@@ -321,7 +321,7 @@ require __DIR__ . '/../layouts/header.php';
                 <?php elseif (!$isLoggedIn): ?>
                     <div class="p-3 bg-light rounded-4 border text-center">
                         <i class="bi bi-lock-fill text-muted fs-4 d-block mb-1"></i>
-                        <span class="text-muted small">Quý khách vui lòng <a href="/login" class="fw-bold text-danger">Đăng nhập</a> bằng tài khoản đã mua sản phẩm để viết đánh giá.</span>
+                        <span class="text-muted small">Quý khách vui lòng <a href="<?= BASE_URL ?>/login" class="fw-bold text-danger">Đăng nhập</a> bằng tài khoản đã mua sản phẩm để viết đánh giá.</span>
                     </div>
                 <?php else: ?>
                     <div class="p-3 bg-light rounded-4 border text-center">

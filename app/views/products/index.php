@@ -7,8 +7,8 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="/products" class="text-decoration-none">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/products" class="text-decoration-none">Sản phẩm</a></li>
             <?php if ($selectedCategory): ?>
                 <li class="breadcrumb-item active"><?= htmlspecialchars($selectedCategory['name']) ?></li>
             <?php elseif ($selectedBrand): ?>
@@ -25,10 +25,10 @@ require __DIR__ . '/../layouts/header.php';
             <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); border: 1px solid var(--border-color) !important;">
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                     <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel-fill me-2 text-danger"></i>Bộ Lọc Tìm Kiếm</h5>
-                    <a href="/products" class="text-danger small fw-semibold text-decoration-none">Xóa tất cả</a>
+                    <a href="<?= BASE_URL ?>/products" class="text-danger small fw-semibold text-decoration-none">Xóa tất cả</a>
                 </div>
 
-                <form action="/products" method="GET">
+                <form action="<?= BASE_URL ?>/products" method="GET">
                     <?php if (!empty($searchQuery)): ?>
                         <input type="hidden" name="q" value="<?= htmlspecialchars($searchQuery) ?>">
                     <?php endif; ?>
@@ -114,7 +114,7 @@ require __DIR__ . '/../layouts/header.php';
                     <!-- Sort dropdown -->
                     <div class="d-flex align-items-center gap-2">
                         <span class="small text-muted text-nowrap fw-semibold">Sắp xếp theo:</span>
-                        <form action="/products" method="GET" class="d-inline">
+                        <form action="<?= BASE_URL ?>/products" method="GET" class="d-inline">
                             <?php if (!empty($searchQuery)): ?><input type="hidden" name="q" value="<?= htmlspecialchars($searchQuery) ?>"><?php endif; ?>
                             <?php if (!empty($categorySlug)): ?><input type="hidden" name="category" value="<?= htmlspecialchars($categorySlug) ?>"><?php endif; ?>
                             <?php if (!empty($brandSlug)): ?><input type="hidden" name="brand" value="<?= htmlspecialchars($brandSlug) ?>"><?php endif; ?>
@@ -138,7 +138,7 @@ require __DIR__ . '/../layouts/header.php';
                     <h4 class="fw-bold">Không tìm thấy sản phẩm phù hợp!</h4>
                     <p class="text-muted small mb-4">Hãy thử tìm kiếm với từ khóa khác hoặc xóa bớt tiêu chí lọc danh mục / khoảng giá.</p>
                     <div>
-                        <a href="/products" class="btn btn-rose px-4 py-2">Xem Tất Cả Sản Phẩm</a>
+                        <a href="<?= BASE_URL ?>/products" class="btn btn-rose px-4 py-2">Xem Tất Cả Sản Phẩm</a>
                     </div>
                 </div>
             <?php else: ?>
@@ -170,7 +170,7 @@ require __DIR__ . '/../layouts/header.php';
                                     </div>
 
                                     <h6 class="fw-bold mb-2">
-                                        <a href="/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                        <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
                                             <?= htmlspecialchars($product['name']) ?>
                                         </a>
                                     </h6>

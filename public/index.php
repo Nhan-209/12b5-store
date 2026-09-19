@@ -8,6 +8,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Set BASE_URL for XAMPP compatibility
+$scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '');
+define('BASE_URL', $scriptDir === '/' || $scriptDir === '\\' ? '' : rtrim($scriptDir, '/'));
+
 // Simple PSR-4 style autoloader with Linux case-insensitivity tolerance
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';

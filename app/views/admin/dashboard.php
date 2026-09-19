@@ -14,13 +14,13 @@ require __DIR__ . '/../layouts/header.php';
             <span class="text-muted small">Trung tâm quản lý bán hàng, theo dõi đơn hàng, tồn kho và phân tích doanh thu cửa hàng</span>
         </div>
         <div class="d-flex flex-wrap gap-2">
-            <a href="/admin/products/create" class="btn btn-rose btn-sm">
+            <a href="<?= BASE_URL ?>/admin/products/create" class="btn btn-rose btn-sm">
                 <i class="bi bi-plus-lg me-1"></i> Thêm Thiết Bị Mới
             </a>
-            <a href="/admin/orders" class="btn btn-soft-slate btn-sm">
+            <a href="<?= BASE_URL ?>/admin/orders" class="btn btn-soft-slate btn-sm">
                 <i class="bi bi-receipt me-1"></i> Quản Lý Đơn Hàng
             </a>
-            <a href="/admin/users" class="btn btn-soft-slate btn-sm">
+            <a href="<?= BASE_URL ?>/admin/users" class="btn btn-soft-slate btn-sm">
                 <i class="bi bi-people me-1"></i> Quản Lý Người Dùng
             </a>
         </div>
@@ -169,7 +169,7 @@ require __DIR__ . '/../layouts/header.php';
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100" style="border: 1px solid var(--border-color) !important;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history me-2 text-primary"></i>Đơn Hàng Gần Đây</h5>
-                    <a href="/admin/orders" class="btn btn-soft-slate btn-sm">Xem tất cả &rarr;</a>
+                    <a href="<?= BASE_URL ?>/admin/orders" class="btn btn-soft-slate btn-sm">Xem tất cả &rarr;</a>
                 </div>
 
                 <div class="table-responsive">

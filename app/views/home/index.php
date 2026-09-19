@@ -20,15 +20,15 @@ require __DIR__ . '/../layouts/header.php';
                     Trải nghiệm hệ sinh thái công nghệ đỉnh cao: Laptop cao cấp, Smartphone Flagship, Âm thanh Hi-Res và Phụ kiện chính hãng 100%. Miễn phí giao hàng hỏa tốc 2H, bảo hành chính hãng lên tới 24 tháng và ưu đãi trả góp 0% lãi suất.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="/products" class="btn btn-rose btn-lg px-4 shadow-sm">
+                    <a href="<?= BASE_URL ?>/products" class="btn btn-rose btn-lg px-4 shadow-sm">
                         <i class="bi bi-bag-check-fill me-2"></i> Khám Phá Bộ Sưu Tập
                     </a>
                     <?php if (!empty($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
-                        <a href="/admin" class="btn btn-soft-slate btn-lg px-4">
+                        <a href="<?= BASE_URL ?>/admin" class="btn btn-soft-slate btn-lg px-4">
                             <i class="bi bi-speedometer2 me-2 text-danger"></i> Bảng Quản Trị Admin
                         </a>
                     <?php else: ?>
-                        <a href="/products?category=laptop-may-tinh" class="btn btn-soft-slate btn-lg px-4">
+                        <a href="<?= BASE_URL ?>/products?category=laptop-may-tinh" class="btn btn-soft-slate btn-lg px-4">
                             <i class="bi bi-laptop me-2"></i> Xem Laptop M3 & RTX
                         </a>
                     <?php endif; ?>
@@ -69,7 +69,7 @@ require __DIR__ . '/../layouts/header.php';
                         <div><i class="bi bi-gift me-1 text-danger"></i> Tặng túi Tucano</div>
                     </div>
 
-                    <a href="/product/macbook-pro-14-m3-pro-512gb" class="btn btn-rose w-100 fw-bold py-2">
+                    <a href="<?= BASE_URL ?>/product/macbook-pro-14-m3-pro-512gb" class="btn btn-rose w-100 fw-bold py-2">
                         Xem Chi Tiết Cấu Hình <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -137,13 +137,13 @@ require __DIR__ . '/../layouts/header.php';
                 <h3 class="fw-bold mb-1">Danh Mục Thiết Bị Điện Tử</h3>
                 <p class="text-muted small mb-0">Hệ sinh thái thiết bị di động, điện toán và công nghệ cá nhân</p>
             </div>
-            <a href="/products" class="btn btn-outline-rose btn-sm">Xem tất cả danh mục <i class="bi bi-arrow-right ms-1"></i></a>
+            <a href="<?= BASE_URL ?>/products" class="btn btn-outline-rose btn-sm">Xem tất cả danh mục <i class="bi bi-arrow-right ms-1"></i></a>
         </div>
 
         <div class="row g-3">
             <?php foreach ($categories as $cat): ?>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a href="/products?category=<?= urlencode($cat['slug']) ?>" class="category-box">
+                    <a href="<?= BASE_URL ?>/products?category=<?= urlencode($cat['slug']) ?>" class="category-box">
                         <div class="category-icon-wrapper">
                             <i class="bi <?= htmlspecialchars($cat['icon']) ?>"></i>
                         </div>
@@ -166,10 +166,10 @@ require __DIR__ . '/../layouts/header.php';
                 <p class="text-muted small mb-0 mt-1">Các mẫu flagship, ultrabook và phụ kiện bán chạy nhất tại 12B5 Store</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="/products?sort=best_seller" class="btn btn-soft-slate btn-sm">
+                <a href="<?= BASE_URL ?>/products?sort=best_seller" class="btn btn-soft-slate btn-sm">
                     <i class="bi bi-fire text-danger me-1"></i> Bán Chạy Nhất
                 </a>
-                <a href="/products?sort=price_asc" class="btn btn-soft-slate btn-sm">
+                <a href="<?= BASE_URL ?>/products?sort=price_asc" class="btn btn-soft-slate btn-sm">
                     <i class="bi bi-tag me-1"></i> Giá Tốt Nhất
                 </a>
             </div>
@@ -203,7 +203,7 @@ require __DIR__ . '/../layouts/header.php';
                             </div>
 
                             <h6 class="fw-bold mb-2">
-                                <a href="/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
                                     <?= htmlspecialchars($product['name']) ?>
                                 </a>
                             </h6>
@@ -254,7 +254,7 @@ require __DIR__ . '/../layouts/header.php';
                     <h3 class="fw-bold text-dark mb-1">Gợi Ý Sản Phẩm Phù Hợp Nhu Cầu</h3>
                     <p class="text-muted small mb-0">Tuyển chọn các thiết bị công nghệ đỉnh cao được yêu thích và tương thích nhất với sở thích của bạn.</p>
                 </div>
-                <a href="/products" class="btn btn-outline-rose btn-sm">Khám phá tất cả <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="<?= BASE_URL ?>/products" class="btn btn-outline-rose btn-sm">Khám phá tất cả <i class="bi bi-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-3">
@@ -272,13 +272,13 @@ require __DIR__ . '/../layouts/header.php';
                                     <?= htmlspecialchars($recProd['brand_name'] ?? 'Chính Hãng') ?>
                                 </span>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="/product/<?= urlencode($recProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($recProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
                                         <?= htmlspecialchars($recProd['name']) ?>
                                     </a>
                                 </h6>
                                 <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                                     <div class="price-current fs-6"><?= $recProd['formatted_price'] ?></div>
-                                    <a href="/product/<?= urlencode($recProd['slug']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($recProd['slug']) ?>" class="btn btn-sm btn-outline-rose rounded-pill px-3">Xem</a>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +296,7 @@ require __DIR__ . '/../layouts/header.php';
                     <h3 class="fw-bold mb-1">Thiết Bị Mới Về</h3>
                     <p class="text-muted small mb-0">Cập nhật những đợt hàng công nghệ chính hãng mới nhất trong tuần</p>
                 </div>
-                <a href="/products?sort=newest" class="btn btn-soft-slate btn-sm">Xem tất cả <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="<?= BASE_URL ?>/products?sort=newest" class="btn btn-soft-slate btn-sm">Xem tất cả <i class="bi bi-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-4">
@@ -319,7 +319,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <div class="text-warning small"><i class="bi bi-star-fill"></i> <?= $product['rating'] ?></div>
                                 </div>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
                                         <?= htmlspecialchars($product['name']) ?>
                                     </a>
                                 </h6>

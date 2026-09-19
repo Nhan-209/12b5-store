@@ -7,8 +7,8 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="/orders" class="text-decoration-none">Đơn hàng</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/orders" class="text-decoration-none">Đơn hàng</a></li>
             <li class="breadcrumb-item active" aria-current="page"><?= htmlspecialchars($order['order_code']) ?></li>
         </ol>
     </nav>
@@ -149,7 +149,7 @@ require __DIR__ . '/../layouts/header.php';
                 </div>
             </div>
 
-            <a href="/orders" class="btn btn-soft-slate w-100 py-2 fw-semibold">
+            <a href="<?= BASE_URL ?>/orders" class="btn btn-soft-slate w-100 py-2 fw-semibold">
                 <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách đơn hàng
             </a>
         </div>

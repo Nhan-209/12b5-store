@@ -24,23 +24,23 @@
             <div class="col-lg-2 col-md-6">
                 <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Danh Mục Thiết Bị</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2">
-                    <li><a href="/products?category=dien-thoai-thong-minh">Điện Thoại Flagship</a></li>
-                    <li><a href="/products?category=laptop-may-tinh">Laptop & Ultrabook</a></li>
-                    <li><a href="/products?category=may-tinh-bang">Máy Tính Bảng (iPad)</a></li>
-                    <li><a href="/products?category=tai-nghe-am-thanh">Tai Nghe Không Dây</a></li>
-                    <li><a href="/products?category=dong-ho-thong-minh">Smartwatch Cao Cấp</a></li>
-                    <li><a href="/products?category=phu-kien-linh-kien">Phụ Kiện Chính Hãng</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=dien-thoai-thong-minh">Điện Thoại Flagship</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=laptop-may-tinh">Laptop & Ultrabook</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=may-tinh-bang">Máy Tính Bảng (iPad)</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=tai-nghe-am-thanh">Tai Nghe Không Dây</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=dong-ho-thong-minh">Smartwatch Cao Cấp</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=phu-kien-linh-kien">Phụ Kiện Chính Hãng</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-3 col-md-6">
                 <h6 class="text-white fw-bold mb-3 small text-uppercase tracking-wider">Hỗ Trợ Khách Hàng</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
-                    <li><a href="/products?category=laptop-may-tinh"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn mua hàng online</a></li>
-                    <li><a href="/products"><i class="bi bi-chevron-right text-rose small me-1"></i> Chính sách bảo hành VIP 24 tháng</a></li>
-                    <li><a href="/cart"><i class="bi bi-chevron-right text-rose small me-1"></i> Quy định đổi mới trong 30 ngày</a></li>
-                    <li><a href="/orders"><i class="bi bi-chevron-right text-rose small me-1"></i> Tra cứu trạng thái đơn hàng</a></li>
-                    <li><a href="/checkout"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn thanh toán VietQR & MoMo</a></li>
+                    <li><a href="<?= BASE_URL ?>/products?category=laptop-may-tinh"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn mua hàng online</a></li>
+                    <li><a href="<?= BASE_URL ?>/products"><i class="bi bi-chevron-right text-rose small me-1"></i> Chính sách bảo hành VIP 24 tháng</a></li>
+                    <li><a href="<?= BASE_URL ?>/cart"><i class="bi bi-chevron-right text-rose small me-1"></i> Quy định đổi mới trong 30 ngày</a></li>
+                    <li><a href="<?= BASE_URL ?>/orders"><i class="bi bi-chevron-right text-rose small me-1"></i> Tra cứu trạng thái đơn hàng</a></li>
+                    <li><a href="<?= BASE_URL ?>/checkout"><i class="bi bi-chevron-right text-rose small me-1"></i> Hướng dẫn thanh toán VietQR & MoMo</a></li>
                 </ul>
             </div>
 

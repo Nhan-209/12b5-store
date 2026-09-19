@@ -7,7 +7,7 @@ require __DIR__ . '/../layouts/header.php';
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?= BASE_URL ?>/" class="text-decoration-none">Trang chủ</a></li>
             <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
         </ol>
     </nav>
@@ -26,7 +26,7 @@ require __DIR__ . '/../layouts/header.php';
                     </div>
                 </div>
 
-                <form action="/profile" method="POST">
+                <form action="<?= BASE_URL ?>/profile" method="POST">
                     <?= \App\Core\Csrf::field() ?>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted text-uppercase tracking-wider">Email đăng nhập (Cố định)</label>
@@ -52,7 +52,7 @@ require __DIR__ . '/../layouts/header.php';
                         <button type="submit" class="btn btn-rose px-4 py-2 fw-semibold shadow-sm">
                             <i class="bi bi-floppy me-1"></i> Lưu Thông Tin
                         </button>
-                        <a href="/orders" class="btn btn-soft-slate px-4 py-2">
+                        <a href="<?= BASE_URL ?>/orders" class="btn btn-soft-slate px-4 py-2">
                             <i class="bi bi-box-seam me-1"></i> Xem Đơn Hàng Đã Mua
                         </a>
                     </div>

@@ -65,7 +65,7 @@
             <?= htmlspecialchars($errorMessage ?? 'Hệ thống đang gặp sự cố kết nối tạm thời. Đội ngũ kỹ thuật 12B5 Store đã được thông báo để xử lý.') ?>
         </p>
         <div>
-            <a href="/" class="btn-rose shadow-sm">
+            <a href="<?= BASE_URL ?>/" class="btn-rose shadow-sm">
                 <i class="bi bi-house-door"></i> Về Trang Chủ
             </a>
         </div>
