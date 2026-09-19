@@ -15,7 +15,7 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
     <!-- CSRF Token Meta for AJAX Requests -->
     <meta name="csrf-token" content="<?= \App\Core\Csrf::token() ?>">
     <!-- BASE_URL for JavaScript -->
