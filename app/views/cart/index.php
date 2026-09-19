@@ -180,7 +180,7 @@ require __DIR__ . '/../layouts/header.php';
 
                     <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-baseline">
                         <span class="fw-bold text-dark fs-6">Tổng thanh toán:</span>
-                        <span class="fs-4 fw-extrabold text-danger"><?= $cart['formatted_final_total'] ?></span>
+                        <span class="fs-4 fw-extrabold text-danger"><?= $cart['formatted_final_amount'] ?></span>
                     </div>
 
                     <a href="/checkout" class="btn btn-rose w-100 py-2 fw-bold shadow-sm mb-2">
