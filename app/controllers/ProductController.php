@@ -90,26 +90,26 @@ class ProductController {
 
     public function addReview(): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
         $productId = (int)($_POST['product_id'] ?? 0);
         $product = Product::findById($productId);
         if (!$product) {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
         if (!Csrf::validate()) {
             $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
-            header('Location: /product/' . $product['slug'] . '#reviews');
+            header('Location: ' . BASE_URL . '/product/' . $product['slug'] . '#reviews');
             exit;
         }
 
         if (empty($_SESSION['user']['id'])) {
             $_SESSION['flash_error'] = 'Quý khách vui lòng đăng nhập tài khoản đã mua hàng để gửi đánh giá.';
-            header('Location: /login');
+            header('Location: ' . BASE_URL . '/login');
             exit;
         }
 
@@ -118,7 +118,7 @@ class ProductController {
         // Strict verification: user must have bought this product in a completed order
         if (!Product::hasPurchased($userId, $productId)) {
             $_SESSION['flash_error'] = 'Chỉ những khách hàng đã mua và nhận hàng thành công đối với sản phẩm này mới có thể viết đánh giá.';
-            header('Location: /product/' . $product['slug'] . '#reviews');
+            header('Location: ' . BASE_URL . '/product/' . $product['slug'] . '#reviews');
             exit;
         }
 

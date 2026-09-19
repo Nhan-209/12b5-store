@@ -19,7 +19,7 @@ class CartController {
                 exit;
             }
             $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -53,7 +53,7 @@ class CartController {
                 exit;
             }
             $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -81,7 +81,7 @@ class CartController {
                 exit;
             }
             $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -107,7 +107,7 @@ class CartController {
                 exit;
             }
             $_SESSION['flash_error'] = 'Phiên làm việc không hợp lệ (CSRF). Vui lòng thử lại.';
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 

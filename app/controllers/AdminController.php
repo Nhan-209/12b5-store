@@ -18,7 +18,7 @@ class AdminController {
         $user = $_SESSION['user'] ?? null;
         if (!$user || ($user['role'] ?? '') !== 'admin') {
             $_SESSION['flash_error'] = 'Bạn không có quyền truy cập khu vực Quản trị.';
-            header('Location: /login');
+            header('Location: ' . BASE_URL . '/login');
             exit;
         }
     }
@@ -95,7 +95,7 @@ class AdminController {
             ]);
 
             $_SESSION['flash_success'] = 'Đã thêm sản phẩm thiết bị điện tử mới thành công!';
-            header('Location: /admin/products');
+            header('Location: ' . BASE_URL . '/admin/products');
             exit;
         }
 
@@ -107,7 +107,7 @@ class AdminController {
     public function editProduct(int $id): void {
         $product = Product::findById($id);
         if (!$product) {
-            header('Location: /admin/products');
+            header('Location: ' . BASE_URL . '/admin/products');
             exit;
         }
 
@@ -154,7 +154,7 @@ class AdminController {
             ]);
 
             $_SESSION['flash_success'] = 'Đã cập nhật thông tin sản phẩm!';
-            header('Location: /admin/products');
+            header('Location: ' . BASE_URL . '/admin/products');
             exit;
         }
 
@@ -165,7 +165,7 @@ class AdminController {
 
     public function deleteProduct(int $id = 0): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /admin/products');
+            header('Location: ' . BASE_URL . '/admin/products');
             exit;
         }
         Csrf::check();
@@ -200,13 +200,13 @@ class AdminController {
 
             if (!in_array($status, $allowedStatuses, true)) {
                 $_SESSION['flash_error'] = 'Trạng thái đơn hàng không hợp lệ.';
-                header('Location: /admin/orders');
+                header('Location: ' . BASE_URL . '/admin/orders');
                 exit;
             }
 
             if ($paymentStatus !== null && $paymentStatus !== '' && !in_array($paymentStatus, $allowedPaymentStatuses, true)) {
                 $_SESSION['flash_error'] = 'Trạng thái thanh toán không hợp lệ.';
-                header('Location: /admin/orders');
+                header('Location: ' . BASE_URL . '/admin/orders');
                 exit;
             }
             if ($paymentStatus === '') {

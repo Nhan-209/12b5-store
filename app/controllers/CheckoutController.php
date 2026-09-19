@@ -9,7 +9,7 @@ class CheckoutController {
     public function index(): void {
         $cart = Cart::getCart();
         if (empty($cart['items'])) {
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -19,20 +19,20 @@ class CheckoutController {
 
     public function process(): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
         if (!Csrf::validate()) {
             $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn. Vui lòng thử lại.';
-            header('Location: /checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
         $cart = Cart::getCart();
         if (empty($cart['items'])) {
             $_SESSION['flash_error'] = 'Giỏ hàng của bạn đang trống.';
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -46,13 +46,13 @@ class CheckoutController {
         $allowedPaymentMethods = ['cod', 'bank_transfer'];
         if (!in_array($paymentMethod, $allowedPaymentMethods, true)) {
             $_SESSION['flash_error'] = 'Phương thức thanh toán không hợp lệ.';
-            header('Location: /checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
         if (empty($name) || empty($email) || empty($phone) || empty($address)) {
             $_SESSION['flash_error'] = 'Vui lòng điền đầy đủ các thông tin bắt buộc.';
-            header('Location: /checkout');
+            header('Location: ' . BASE_URL . '/checkout');
             exit;
         }
 
@@ -74,7 +74,7 @@ class CheckoutController {
 
         if (!$res['success']) {
             $_SESSION['flash_error'] = $res['message'];
-            header('Location: /cart');
+            header('Location: ' . BASE_URL . '/cart');
             exit;
         }
 
@@ -85,20 +85,20 @@ class CheckoutController {
         $_SESSION['last_order_code'] = $res['order_code'];
         $_SESSION['last_order_id'] = $res['order_id'] ?? null;
 
-        header('Location: /checkout/success?code=' . urlencode($res['order_code']));
+        header('Location: ' . BASE_URL . '/checkout/success?code=' . urlencode($res['order_code']));
         exit;
     }
 
     public function success(): void {
         $code = trim($_GET['code'] ?? '');
         if (empty($code)) {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
         $order = Order::findByCode($code);
         if (!$order) {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
@@ -118,7 +118,7 @@ class CheckoutController {
 
         if (!$isAuthorized) {
             $_SESSION['flash_error'] = 'Bạn không có quyền truy cập hoặc xem chi tiết đơn hàng này.';
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 

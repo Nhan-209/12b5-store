@@ -6,7 +6,7 @@ use App\Models\Order;
 class OrderController {
     public function index(): void {
         if (empty($_SESSION['user'])) {
-            header('Location: /login');
+            header('Location: ' . BASE_URL . '/login');
             exit;
         }
 
@@ -19,7 +19,7 @@ class OrderController {
     public function detail(string $orderCode): void {
         $order = Order::findByCode($orderCode);
         if (!$order) {
-            header('Location: /orders');
+            header('Location: ' . BASE_URL . '/orders');
             exit;
         }
 
@@ -36,7 +36,7 @@ class OrderController {
 
         if (!$isAuthorized) {
             $_SESSION['flash_error'] = 'Bạn không có quyền truy cập hoặc xem chi tiết đơn hàng này.';
-            header('Location: ' . (!empty($currentUser) ? '/orders' : '/'));
+            header('Location: ' . (!empty($currentUser) ? BASE_URL . '/orders' : BASE_URL . '/'));
             exit;
         }
 

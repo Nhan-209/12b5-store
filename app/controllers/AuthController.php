@@ -7,7 +7,7 @@ use App\Core\Csrf;
 class AuthController {
     public function login(): void {
         if (!empty($_SESSION['user'])) {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
@@ -35,9 +35,9 @@ class AuthController {
                 $_SESSION['flash_success'] = 'Đăng nhập thành công! Chào mừng ' . htmlspecialchars($user['name']);
 
                 if ($user['role'] === 'admin') {
-                    header('Location: /admin');
+                    header('Location: ' . BASE_URL . '/admin');
                 } else {
-                    header('Location: /');
+                    header('Location: ' . BASE_URL . '/');
                 }
                 exit;
             } else {
@@ -52,7 +52,7 @@ class AuthController {
 
     public function register(): void {
         if (!empty($_SESSION['user'])) {
-            header('Location: /');
+            header('Location: ' . BASE_URL . '/');
             exit;
         }
 
@@ -104,7 +104,7 @@ class AuthController {
             ]);
 
             $_SESSION['flash_success'] = 'Đăng ký thành công! Quý khách vui lòng đăng nhập.';
-            header('Location: /login');
+            header('Location: ' . BASE_URL . '/login');
             exit;
         }
 
@@ -121,7 +121,7 @@ class AuthController {
 
     public function profile(): void {
         if (empty($_SESSION['user'])) {
-            header('Location: /login');
+            header('Location: ' . BASE_URL . '/login');
             exit;
         }
 
@@ -131,7 +131,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!Csrf::validate()) {
                 $_SESSION['flash_error'] = 'Mã bảo mật CSRF không hợp lệ hoặc phiên đã hết hạn.';
-                header('Location: /profile');
+                header('Location: ' . BASE_URL . '/profile');
                 exit;
             }
 
@@ -147,7 +147,7 @@ class AuthController {
                 ]);
                 $_SESSION['user']['name'] = $name;
                 $_SESSION['flash_success'] = 'Cập nhật thông tin cá nhân thành công.';
-                header('Location: /profile');
+                header('Location: ' . BASE_URL . '/profile');
                 exit;
             }
         }
