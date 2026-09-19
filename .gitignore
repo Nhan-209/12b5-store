@@ -3,3 +3,4 @@ rust-engine/target/
 *.log
 .DS_Store
 Thumbs.db
+config.php

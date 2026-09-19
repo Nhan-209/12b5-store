@@ -8,17 +8,35 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Set BASE_URL for XAMPP compatibility
-$scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '');
-$basePath = ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : rtrim($scriptDir, '/');
-// Ensure BASE_URL always starts with / if not empty
-if ($basePath && !str_starts_with($basePath, '/')) {
-    $basePath = '/' . $basePath;
+// Load config file if exists
+if (file_exists(__DIR__ . '/../config.php')) {
+    require_once __DIR__ . '/../config.php';
 }
-define('BASE_URL', $basePath);
 
-// Debug: Uncomment to see BASE_URL value
-// error_log('BASE_URL: ' . BASE_URL);
+// Set BASE_URL for XAMPP compatibility (only if not already defined in config.php)
+if (!defined('BASE_URL')) {
+    // Simple and reliable method using the actual script path
+    $scriptPath = $_SERVER['SCRIPT_NAME'] ?? $_SERVER['PHP_SELF'] ?? '';
+    $basePath = dirname($scriptPath);
+
+    // Normalize the base path
+    if ($basePath === '.' || $basePath === '') {
+        $basePath = '';
+    } elseif ($basePath !== '/') {
+        $basePath = rtrim($basePath, '/');
+    }
+
+    // Ensure BASE_URL always starts with / if not empty
+    if ($basePath && !str_starts_with($basePath, '/')) {
+        $basePath = '/' . $basePath;
+    }
+
+    define('BASE_URL', $basePath);
+
+    // Debug: Uncomment to see BASE_URL value
+    error_log('SCRIPT_NAME: ' . ($scriptPath ?? 'null'));
+    error_log('BASE_URL: ' . BASE_URL);
+}
 
 // Simple PSR-4 style autoloader with Linux case-insensitivity tolerance
 spl_autoload_register(function ($class) {
