@@ -106,16 +106,16 @@ $cartSummary = \App\Models\Cart::getCart();
 </nav>
 
 <!-- Category Quick Navigation Strip -->
-<div class="category-quick-strip d-none d-md-block">
-    <div class="container d-flex align-items-center justify-content-between overflow-x-auto gap-2">
+<div class="category-quick-strip">
+    <div class="container d-flex align-items-center gap-2" style="white-space: nowrap; overflow-x: auto; padding-bottom: 4px;">
         <a href="<?= BASE_URL ?>/products?category=dien-thoai-thong-minh" class="category-quick-link"><i class="bi bi-phone text-rose"></i> Điện Thoại</a>
-        <a href="<?= BASE_URL ?>/products?category=laptop-may-tinh" class="category-quick-link"><i class="bi bi-laptop text-rose"></i> Laptop & PC</a>
+        <a href="<?= BASE_URL ?>/products?category=laptop-may-tinh" class="category-quick-link"><i class="bi bi-laptop text-rose"></i> Laptop &amp; PC</a>
         <a href="<?= BASE_URL ?>/products?category=may-tinh-bang" class="category-quick-link"><i class="bi bi-tablet text-rose"></i> Máy Tính Bảng</a>
-        <a href="<?= BASE_URL ?>/products?category=tai-nghe-am-thanh" class="category-quick-link"><i class="bi bi-headphones text-rose"></i> Tai Nghe & Âm Thanh</a>
+        <a href="<?= BASE_URL ?>/products?category=tai-nghe-am-thanh" class="category-quick-link"><i class="bi bi-headphones text-rose"></i> Tai Nghe &amp; Âm Thanh</a>
         <a href="<?= BASE_URL ?>/products?category=dong-ho-thong-minh" class="category-quick-link"><i class="bi bi-smartwatch text-rose"></i> Smartwatch</a>
         <a href="<?= BASE_URL ?>/products?category=phu-kien-linh-kien" class="category-quick-link"><i class="bi bi-cpu text-rose"></i> Phụ Kiện</a>
-        <span class="text-muted opacity-50">|</span>
-        <a href="<?= BASE_URL ?>/products?sort=best_seller" class="category-quick-link text-danger fw-bold"><i class="bi bi-fire text-danger"></i> Bán Chạy Nhất</a>
+        <span class="text-muted opacity-50 d-none d-md-inline">|</span>
+        <a href="<?= BASE_URL ?>/products?sort=best_seller" class="category-quick-link text-danger fw-bold"><i class="bi bi-fire text-danger"></i> Bán Chạy</a>
         <a href="<?= BASE_URL ?>/products?category=laptop-may-tinh" class="category-quick-link text-primary fw-bold"><i class="bi bi-tag-fill text-primary"></i> Trả Góp 0%</a>
     </div>
 </div>

@@ -5,6 +5,28 @@ use PDO;
 use Exception;
 
 class Order {
+    public static function createFromCart(array $orderData, ?array $cart = null): array {
+        if ($cart === null) {
+            $cart = Cart::getCart();
+        }
+
+        $orderData['total_amount'] = (float)($cart['subtotal'] ?? 0.0);
+        $orderData['discount_amount'] = (float)($cart['discount_amount'] ?? 0.0);
+        $shippingFee = isset($orderData['shipping_fee'])
+            ? (float)$orderData['shipping_fee']
+            : (isset($cart['shipping_fee']) ? (float)$cart['shipping_fee'] : (($orderData['total_amount'] > 0 && $orderData['total_amount'] < 5000000) ? 30000.0 : 0.0));
+        $orderData['shipping_fee'] = $shippingFee;
+        $orderData['final_amount'] = isset($orderData['final_amount'])
+            ? (float)$orderData['final_amount']
+            : (float)($cart['final_amount'] ?? max(0.0, $orderData['total_amount'] - $orderData['discount_amount'] + $shippingFee));
+
+        if (!empty($cart['coupon']['code']) && empty($orderData['coupon_code'])) {
+            $orderData['coupon_code'] = $cart['coupon']['code'];
+        }
+
+        return self::createOrder($orderData, $cart['items'] ?? []);
+    }
+
     public static function createOrder(array $orderData, array $cartItems): array {
         $pdo = Database::getConnection();
 
@@ -44,28 +66,59 @@ class Order {
 
             // 2. Insert Order record
             $orderCode = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4));
-            $stmt = $pdo->prepare("
-                INSERT INTO orders (
-                    user_id, order_code, customer_name, customer_email, customer_phone,
-                    shipping_address, payment_method, payment_status, order_status,
-                    total_amount, discount_amount, final_amount, notes
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([
-                $orderData['user_id'] ?? null,
-                $orderCode,
-                $orderData['customer_name'],
-                $orderData['customer_email'],
-                $orderData['customer_phone'],
-                $orderData['shipping_address'],
-                $orderData['payment_method'] ?? 'cod',
-                $orderData['payment_method'] === 'bank_transfer' ? 'pending' : 'pending',
-                'pending',
-                $orderData['total_amount'],
-                $orderData['discount_amount'] ?? 0.0,
-                $orderData['final_amount'],
-                $orderData['notes'] ?? null
-            ]);
+            $shippingFee = (float)($orderData['shipping_fee'] ?? 0.0);
+            $totalAmount = (float)$orderData['total_amount'];
+            $discountAmount = (float)($orderData['discount_amount'] ?? 0.0);
+            $finalAmount = isset($orderData['final_amount']) ? (float)$orderData['final_amount'] : max(0.0, $totalAmount - $discountAmount + $shippingFee);
+
+            if (self::hasShippingFeeColumn($pdo)) {
+                $stmt = $pdo->prepare("
+                    INSERT INTO orders (
+                        user_id, order_code, customer_name, customer_email, customer_phone,
+                        shipping_address, payment_method, payment_status, order_status,
+                        total_amount, discount_amount, shipping_fee, final_amount, notes
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $orderData['user_id'] ?? null,
+                    $orderCode,
+                    $orderData['customer_name'],
+                    $orderData['customer_email'],
+                    $orderData['customer_phone'],
+                    $orderData['shipping_address'],
+                    $orderData['payment_method'] ?? 'cod',
+                    $orderData['payment_method'] === 'bank_transfer' ? 'pending' : 'pending',
+                    'pending',
+                    $totalAmount,
+                    $discountAmount,
+                    $shippingFee,
+                    $finalAmount,
+                    $orderData['notes'] ?? null
+                ]);
+            } else {
+                $stmt = $pdo->prepare("
+                    INSERT INTO orders (
+                        user_id, order_code, customer_name, customer_email, customer_phone,
+                        shipping_address, payment_method, payment_status, order_status,
+                        total_amount, discount_amount, final_amount, notes
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $orderData['user_id'] ?? null,
+                    $orderCode,
+                    $orderData['customer_name'],
+                    $orderData['customer_email'],
+                    $orderData['customer_phone'],
+                    $orderData['shipping_address'],
+                    $orderData['payment_method'] ?? 'cod',
+                    $orderData['payment_method'] === 'bank_transfer' ? 'pending' : 'pending',
+                    'pending',
+                    $totalAmount,
+                    $discountAmount,
+                    $finalAmount,
+                    $orderData['notes'] ?? null
+                ]);
+            }
             $orderId = (int)$pdo->lastInsertId();
 
             // 3. Insert Order items & decrease stock atomically
@@ -119,7 +172,8 @@ class Order {
                 'success' => true,
                 'order_id' => $orderId,
                 'order_code' => $orderCode,
-                'final_amount' => $orderData['final_amount'],
+                'shipping_fee' => $shippingFee,
+                'final_amount' => $finalAmount,
                 'message' => 'Đặt hàng thành công!'
             ];
         } catch (\Throwable $e) {
@@ -143,6 +197,9 @@ class Order {
         $itemsStmt = $pdo->prepare("SELECT oi.*, p.thumbnail FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
         $itemsStmt->execute([$id]);
         $order['items'] = $itemsStmt->fetchAll();
+        $shippingFee = (float)($order['shipping_fee'] ?? (($order['total_amount'] > 0 && $order['total_amount'] < 5000000) ? 30000.0 : 0.0));
+        $order['shipping_fee'] = $shippingFee;
+        $order['formatted_shipping_fee'] = number_format($shippingFee, 0, ',', '.') . ' ₫';
         $order['formatted_total'] = number_format((float)$order['total_amount'], 0, ',', '.') . ' ₫';
         $order['formatted_discount'] = number_format((float)$order['discount_amount'], 0, ',', '.') . ' ₫';
         $order['formatted_final'] = number_format((float)$order['final_amount'], 0, ',', '.') . ' ₫';
@@ -163,6 +220,9 @@ class Order {
         $stmt->execute([$userId]);
         $orders = $stmt->fetchAll();
         foreach ($orders as &$ord) {
+            $shippingFee = (float)($ord['shipping_fee'] ?? (($ord['total_amount'] > 0 && $ord['total_amount'] < 5000000) ? 30000.0 : 0.0));
+            $ord['shipping_fee'] = $shippingFee;
+            $ord['formatted_shipping_fee'] = number_format($shippingFee, 0, ',', '.') . ' ₫';
             $ord['formatted_final'] = number_format((float)$ord['final_amount'], 0, ',', '.') . ' ₫';
         }
         return $orders;
@@ -186,6 +246,9 @@ class Order {
         $stmt->execute();
         $orders = $stmt->fetchAll();
         foreach ($orders as &$ord) {
+            $shippingFee = (float)($ord['shipping_fee'] ?? (($ord['total_amount'] > 0 && $ord['total_amount'] < 5000000) ? 30000.0 : 0.0));
+            $ord['shipping_fee'] = $shippingFee;
+            $ord['formatted_shipping_fee'] = number_format($shippingFee, 0, ',', '.') . ' ₫';
             $ord['formatted_final'] = number_format((float)$ord['final_amount'], 0, ',', '.') . ' ₫';
         }
         return $orders;
@@ -199,5 +262,27 @@ class Order {
         }
         $stmt = $pdo->prepare("UPDATE orders SET order_status = ? WHERE id = ?");
         return $stmt->execute([$status, $id]);
+    }
+
+    private static function hasShippingFeeColumn(PDO $pdo): bool {
+        static $hasColumn = null;
+        if ($hasColumn !== null) {
+            return $hasColumn;
+        }
+
+        try {
+            $pdo->query("SELECT shipping_fee FROM orders LIMIT 1");
+            $hasColumn = true;
+            return true;
+        } catch (\Throwable $e) {
+            try {
+                $pdo->exec("ALTER TABLE orders ADD COLUMN shipping_fee REAL DEFAULT 0.0");
+                $hasColumn = true;
+                return true;
+            } catch (\Throwable $ex) {
+                $hasColumn = false;
+                return false;
+            }
+        }
     }
 }

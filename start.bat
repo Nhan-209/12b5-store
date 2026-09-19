@@ -12,6 +12,8 @@ where php >nul 2>nul
 if %errorlevel% neq 0 (
     if exist "C:\xampp\php\php.exe" (
         set PHP_BIN="C:\xampp\php\php.exe"
+    ) else if exist "C:\xamppnp\php\php.exe" (
+        set PHP_BIN="C:\xamppnp\php\php.exe"
     ) else if exist "D:\xampp\php\php.exe" (
         set PHP_BIN="D:\xampp\php\php.exe"
     ) else if exist "E:\xampp\php\php.exe" (

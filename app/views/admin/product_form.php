@@ -20,7 +20,7 @@ $specs = $isEdit ? ($product['specs_array'] ?? []) : [];
     </div>
 
     <div class="card card-glass border-0 shadow-card rounded-4 p-4 p-md-5 mb-5">
-        <form action="<?= $isEdit ? '/admin/products/edit/' . $product['id'] : '/admin/products/create' ?>" method="POST">
+        <form action="<?= BASE_URL . ($isEdit ? '/admin/products/edit/' . $product['id'] : '/admin/products/create') ?>" method="POST">
             <?= \App\Core\Csrf::field() ?>
             <div class="row g-3 mb-4">
                 <div class="col-md-8">

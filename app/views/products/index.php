@@ -21,8 +21,8 @@ require __DIR__ . '/../layouts/header.php';
 
     <div class="row g-4">
         <!-- Sidebar Filters with Frosted Glass -->
-        <div class="col-lg-3">
-            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); border: 1px solid var(--border-color) !important;">
+    <div class="col-lg-3">
+            <div class="products-sidebar-card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                     <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel-fill me-2 text-danger"></i>Bộ Lọc Tìm Kiếm</h5>
                     <a href="<?= BASE_URL ?>/products" class="text-danger small fw-semibold text-decoration-none">Xóa tất cả</a>
@@ -170,7 +170,7 @@ require __DIR__ . '/../layouts/header.php';
                                     </div>
 
                                     <h6 class="fw-bold mb-2">
-                                        <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                        <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none product-name-clamp" title="<?= htmlspecialchars($product['name']) ?>">
                                             <?= htmlspecialchars($product['name']) ?>
                                         </a>
                                     </h6>

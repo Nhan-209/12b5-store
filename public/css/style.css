@@ -111,12 +111,31 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 main {
     flex: 1 0 auto;
+    min-height: 0;
+}
+
+/* Missing utility classes */
+.text-rose {
+    color: var(--accent-rose) !important;
+}
+
+.fw-extrabold {
+    font-weight: 800 !important;
+}
+
+.tracking-wider {
+    letter-spacing: 0.08em;
+}
+
+.shadow-xs {
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
 }
 
 h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4, .display-5 {
@@ -387,6 +406,32 @@ a:hover {
     position: relative;
     max-width: 540px;
     width: 100%;
+    flex: 1 1 300px;
+}
+
+/* Navbar collapse: stack properly on mobile */
+.navbar-collapse .navbar-nav {
+    flex-wrap: wrap;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-glass .collapse.navbar-collapse.show,
+    .navbar-glass .collapsing {
+        border-top: 1px solid var(--border-subtle);
+        margin-top: 0.5rem;
+        padding-top: 0.75rem;
+    }
+    .search-box-group {
+        max-width: 100%;
+        width: 100%;
+    }
+    .search-box-group .input-group {
+        border-radius: var(--radius-lg);
+    }
+    .navbar-glass .navbar-nav.ms-auto {
+        margin-top: 0.5rem;
+        justify-content: flex-start;
+    }
 }
 
 .search-box-group .input-group {
@@ -533,6 +578,9 @@ a:hover {
     -webkit-backdrop-filter: var(--backdrop-blur);
     border-bottom: 1px solid var(--border-subtle);
     padding: 9px 0 6px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Modern Pastel & Glassmorphism Scrollbar for Category Strip */
@@ -855,19 +903,22 @@ a:hover {
 
 .card-img-wrap {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    padding: 1.75rem 1.5rem;
+    padding: 1.5rem;
     text-align: center;
     position: relative;
-    min-height: 210px;
+    aspect-ratio: 4 / 3;
     display: flex;
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid var(--border-subtle);
+    overflow: hidden;
 }
 
 .card-img-wrap img {
-    max-height: 165px;
+    max-height: 100%;
     max-width: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1369,13 +1420,13 @@ footer a,
     color: #e2e8f0;
     text-decoration: none;
     transition: all 0.2s ease;
+    display: inline-block;
 }
 
 footer a:hover,
 .footer-tech a:hover {
     color: #ffffff;
-    transform: translateX(3px);
-    display: inline-block;
+    padding-left: 4px;
 }
 
 .social-icon-btn {
@@ -1453,14 +1504,67 @@ footer a:hover,
     .hero-title {
         font-size: 2.1rem;
     }
+    /* Navbar search takes full width when collapsed */
+    .navbar-glass .search-box-group {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-banner {
+        padding: 2rem 1.25rem;
+    }
+    .hero-title {
+        font-size: 1.85rem;
+    }
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+    /* Trust ribbon: 2 columns on small screens */
+    .trust-ribbon {
+        margin-bottom: 2rem;
+    }
+    /* Products sidebar: reset sticky on mobile */
+    .products-sidebar-card {
+        position: static !important;
+    }
+    /* Detail gallery: reduce padding */
+    .detail-gallery-card,
+    .detail-info-card {
+        padding: 1.5rem 1rem;
+    }
+    /* Announcement bar compact on mobile */
+    .announcement-bar .container {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 575.98px) {
     .hero-title {
-        font-size: 1.75rem;
+        font-size: 1.65rem;
+        line-height: 1.2;
     }
     .hero-subtitle {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+    }
+    /* Card image aspect ratio on very small screens */
+    .card-img-wrap {
+        aspect-ratio: 3 / 2;
+    }
+    /* Cart button: hide text on xs */
+    .cart-pill-btn .d-none {
+        display: none !important;
+    }
+    /* Category quick strip compact */
+    .category-quick-link {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+    /* Main content more breathing room */
+    main > .container,
+    main > .container-fluid {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 }
 
@@ -1492,4 +1596,41 @@ footer a:hover,
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(251, 113, 133, 0.5) rgba(241, 245, 249, 0.5);
+}
+
+/* ==========================================================================
+   Product Card Name – uniform 2-line clamp with CSS
+   ========================================================================== */
+.product-name-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.45;
+    min-height: 2.9em;
+}
+
+/* ==========================================================================
+   Sidebar – Products filter sidebar
+   ========================================================================== */
+.products-sidebar-card {
+    position: sticky;
+    top: 110px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    max-height: calc(100vh - 130px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Main content padding helper
+   ========================================================================== */
+.main-content {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }

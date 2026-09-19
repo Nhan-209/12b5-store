@@ -203,7 +203,7 @@ require __DIR__ . '/../layouts/header.php';
                             </div>
 
                             <h6 class="fw-bold mb-2">
-                                <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" title="<?= htmlspecialchars($product['name']) ?>" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none product-name-clamp" title="<?= htmlspecialchars($product['name']) ?>">
                                     <?= htmlspecialchars($product['name']) ?>
                                 </a>
                             </h6>
@@ -272,7 +272,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <?= htmlspecialchars($recProd['brand_name'] ?? 'Chính Hãng') ?>
                                 </span>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($recProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($recProd['slug']) ?>" class="text-dark text-decoration-none product-name-clamp">
                                         <?= htmlspecialchars($recProd['name']) ?>
                                     </a>
                                 </h6>
@@ -319,7 +319,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <div class="text-warning small"><i class="bi bi-star-fill"></i> <?= $product['rating'] ?></div>
                                 </div>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($product['slug']) ?>" class="text-dark text-decoration-none product-name-clamp">
                                         <?= htmlspecialchars($product['name']) ?>
                                     </a>
                                 </h6>

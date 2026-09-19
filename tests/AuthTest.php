@@ -8,21 +8,10 @@ class AuthTest {
         $results = [];
 
         $pdo = \App\Models\Database::getConnection();
-        $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE email = ?");
-        $stmt->execute(['admin@electro.vn']);
-        $origAdminHash = $stmt->fetchColumn();
-
         $userId = 0;
         try {
-            // TC 1: Verify admin credentials (test existing seed without mutating unless needed)
+            // TC 1: Verify admin credentials directly against seeded bcrypt hash
             $admin = User::verifyCredentials('admin@electro.vn', 'admin123');
-            if (!$admin) {
-                $pdo->prepare("UPDATE users SET password_hash = ? WHERE email = ?")->execute([
-                    password_hash('admin123', PASSWORD_BCRYPT),
-                    'admin@electro.vn'
-                ]);
-                $admin = User::verifyCredentials('admin@electro.vn', 'admin123');
-            }
 
             $results[] = [
                 'name' => 'AuthTest: Authenticate admin with bcrypt password hash',
@@ -52,13 +41,6 @@ class AuthTest {
                 'passed' => $userId > 0 && $verifiedUser !== null && $verifiedUser['name'] === 'Automated Test User'
             ];
         } finally {
-            // Restore demo admin password hash if mutated
-            if (!empty($origAdminHash)) {
-                $pdo->prepare("UPDATE users SET password_hash = ? WHERE email = ?")->execute([
-                    $origAdminHash,
-                    'admin@electro.vn'
-                ]);
-            }
             // Clean up temporary test user to keep database pristine
             if ($userId > 0) {
                 $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$userId]);

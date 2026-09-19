@@ -40,7 +40,7 @@ class CartController {
             $_SESSION['flash_success'] = $res['message'];
         }
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
@@ -68,7 +68,7 @@ class CartController {
             exit;
         }
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
@@ -94,7 +94,7 @@ class CartController {
             exit;
         }
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 
@@ -126,7 +126,7 @@ class CartController {
             $_SESSION['flash_success'] = $res['message'];
         }
 
-        header('Location: /cart');
+        header('Location: ' . BASE_URL . '/cart');
         exit;
     }
 

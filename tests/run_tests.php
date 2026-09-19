@@ -4,6 +4,16 @@
  * Usage: php tests/run_tests.php
  */
 
+// Fix session warnings: Ensure session is initialized before any text is output or flushed to stdout
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Load project configuration if available
+if (file_exists(__DIR__ . '/../config.php')) {
+    require_once __DIR__ . '/../config.php';
+}
+
 echo "=========================================================\n";
 echo "  ElectroStore - Automated PHP Test Suite Runner\n";
 echo "=========================================================\n\n";
@@ -38,12 +48,26 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Resolve and display active database driver
+$configuredDriver = getenv('DB_DRIVER') ?: (defined('DB_DRIVER') ? DB_DRIVER : 'auto');
+$activeEngine = \App\Models\Database::getDriverUsed();
+if (empty($activeEngine)) {
+    try {
+        \App\Models\Database::getConnection();
+        $activeEngine = \App\Models\Database::getDriverUsed();
+    } catch (\Throwable $e) {
+        $activeEngine = 'unknown (' . $e->getMessage() . ')';
+    }
+}
+echo "[CONFIG] DB_DRIVER setting: {$configuredDriver} | Active Engine: {$activeEngine}\n\n";
+
 $testSuites = [
     \Tests\CartTest::class,
     \Tests\OrderTest::class,
     \Tests\ProductTest::class,
     \Tests\AuthTest::class,
     \Tests\RustEngineClientTest::class,
+    \Tests\HttpFlowTest::class,
 ];
 
 $totalTests = 0;
@@ -52,16 +76,24 @@ $failedTests = 0;
 
 foreach ($testSuites as $suiteClass) {
     echo "[SUITE] " . $suiteClass . "\n";
-    $results = $suiteClass::run();
+    try {
+        $results = $suiteClass::run();
+    } catch (\Throwable $suiteEx) {
+        echo "  [FAIL] Suite fatal error: " . $suiteEx->getMessage() . "\n\n";
+        $failedTests++;
+        $totalTests++;
+        continue;
+    }
 
     foreach ($results as $test) {
         $totalTests++;
-        if ($test['passed']) {
+        if (!empty($test['passed'])) {
             $passedTests++;
             echo "  [PASS] " . $test['name'] . "\n";
         } else {
             $failedTests++;
-            echo "  [FAIL] " . $test['name'] . "\n";
+            $errorInfo = !empty($test['error']) ? " (Error: {$test['error']})" : "";
+            echo "  [FAIL] " . $test['name'] . $errorInfo . "\n";
         }
     }
     echo "\n";

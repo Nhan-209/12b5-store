@@ -138,7 +138,7 @@ class ProductController {
             $_SESSION['flash_success'] = 'Cảm ơn quý khách đã gửi nhận xét đánh giá sản phẩm!';
         }
 
-        header('Location: /product/' . $product['slug'] . '#reviews');
+        header('Location: ' . BASE_URL . '/product/' . $product['slug'] . '#reviews');
         exit;
     }
 }

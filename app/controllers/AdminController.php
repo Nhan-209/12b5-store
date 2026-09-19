@@ -178,7 +178,7 @@ class AdminController {
             Product::delete($id);
             $_SESSION['flash_success'] = 'Đã chuyển trạng thái sản phẩm sang Ngừng kinh doanh (Soft Delete an toàn).';
         }
-        header('Location: /admin/products');
+        header('Location: ' . BASE_URL . '/admin/products');
         exit;
     }
 
@@ -219,7 +219,7 @@ class AdminController {
             }
         }
 
-        header('Location: /admin/orders');
+        header('Location: ' . BASE_URL . '/admin/orders');
         exit;
     }
 

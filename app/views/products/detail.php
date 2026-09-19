@@ -152,9 +152,9 @@ require __DIR__ . '/../layouts/header.php';
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <label class="fw-bold small text-muted text-uppercase mb-0 tracking-wider">Số Lượng:</label>
                         <div class="input-group" style="max-width: 140px;">
-                            <button class="btn btn-outline-secondary rounded-start-pill" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value > 1) input.value--;">-</button>
-                            <input type="number" id="qtyInput" name="quantity" class="form-control text-center font-monospace fw-bold" value="1" min="1" max="<?= $product['stock'] ?>">
-                            <button class="btn btn-outline-secondary rounded-end-pill" type="button" onclick="let input = document.getElementById('qtyInput'); if(input.value < <?= $product['stock'] ?>) input.value++;">+</button>
+                            <button class="btn btn-outline-secondary rounded-start-pill" type="button" onclick="let input = document.getElementById('qty_<?= $product['id'] ?>') || document.getElementById('qtyInput'); if(input.value > 1) input.value--;">-</button>
+                            <input type="number" id="qty_<?= $product['id'] ?>" name="quantity" class="form-control text-center font-monospace fw-bold" value="1" min="1" max="<?= $product['stock'] ?>">
+                            <button class="btn btn-outline-secondary rounded-end-pill" type="button" onclick="let input = document.getElementById('qty_<?= $product['id'] ?>') || document.getElementById('qtyInput'); if(input.value < <?= $product['stock'] ?>) input.value++;">+</button>
                         </div>
                         <?php if (isset($product['status']) && (int)$product['status'] === 0): ?>
                             <span class="badge bg-secondary px-3 py-2 rounded-pill small">
@@ -256,7 +256,7 @@ require __DIR__ . '/../layouts/header.php';
                                     <?= htmlspecialchars($relProd['brand_name'] ?? 'Chính Hãng') ?>
                                 </span>
                                 <h6 class="fw-bold mb-2">
-                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($relProd['slug']) ?>" class="text-dark text-decoration-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; line-height: 1.4;">
+                                    <a href="<?= BASE_URL ?>/product/<?= urlencode($relProd['slug']) ?>" class="text-dark text-decoration-none product-name-clamp">
                                         <?= htmlspecialchars($relProd['name']) ?>
                                     </a>
                                 </h6>

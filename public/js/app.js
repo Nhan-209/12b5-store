@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const productId = btn.getAttribute('data-product-id');
-            const qtyInput = document.getElementById(`qty_${productId}`);
-            const quantity = qtyInput ? qtyInput.value : 1;
+            const qtyInput = document.getElementById('qty_' + productId) || document.getElementById('qtyInput');
+            const quantity = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
 
             const originalHtml = btn.innerHTML;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Đang thêm...';

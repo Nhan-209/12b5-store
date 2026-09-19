@@ -48,4 +48,4 @@
     <?php unset($_SESSION['flash_error']); ?>
 <?php endif; ?>
 
-<main class="py-4">
+<main class="main-content">

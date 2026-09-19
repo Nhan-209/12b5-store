@@ -16,26 +16,26 @@ if (file_exists(__DIR__ . '/../config.php')) {
 // Set BASE_URL for XAMPP compatibility (only if not already defined in config.php)
 if (!defined('BASE_URL')) {
     // Simple and reliable method using the actual script path
-    $scriptPath = $_SERVER['SCRIPT_NAME'] ?? $_SERVER['PHP_SELF'] ?? '';
-    $basePath = dirname($scriptPath);
+    $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? $_SERVER['PHP_SELF'] ?? '');
+    $basePath = str_replace('\\', '/', dirname($scriptPath));
 
     // Normalize the base path
-    if ($basePath === '.' || $basePath === '') {
+    if ($basePath === '.' || $basePath === '/' || $basePath === '') {
         $basePath = '';
-    } elseif ($basePath !== '/') {
+    } else {
         $basePath = rtrim($basePath, '/');
     }
 
     // Ensure BASE_URL always starts with / if not empty
-    if ($basePath && !str_starts_with($basePath, '/')) {
+    if ($basePath !== '' && !str_starts_with($basePath, '/')) {
         $basePath = '/' . $basePath;
     }
 
     define('BASE_URL', $basePath);
 
     // Debug: Uncomment to see BASE_URL value
-    error_log('SCRIPT_NAME: ' . ($scriptPath ?? 'null'));
-    error_log('BASE_URL: ' . BASE_URL);
+    // error_log('SCRIPT_NAME: ' . ($scriptPath ?? 'null'));
+    // error_log('BASE_URL: ' . BASE_URL);
 }
 
 // Simple PSR-4 style autoloader with Linux case-insensitivity tolerance
@@ -73,9 +73,17 @@ $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'] ?? '/';
 
-$scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '');
-if ($scriptDir !== '/' && $scriptDir !== '\\' && !empty($scriptDir) && str_starts_with($path, $scriptDir)) {
+$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+if ($scriptDir === '/' || $scriptDir === '.') {
+    $scriptDir = '';
+}
+if (!empty($scriptDir) && str_starts_with($path, $scriptDir)) {
     $path = substr($path, strlen($scriptDir));
+} elseif (!empty($scriptDir) && str_ends_with($scriptDir, '/public')) {
+    $parentDir = substr($scriptDir, 0, -strlen('/public'));
+    if (!empty($parentDir) && str_starts_with($path, $parentDir)) {
+        $path = substr($path, strlen($parentDir));
+    }
 }
 $path = '/' . trim($path, '/');
 if ($path === '//') {
@@ -150,7 +158,7 @@ try {
         if (file_exists(__DIR__ . '/../app/views/errors/404.php')) {
             require __DIR__ . '/../app/views/errors/404.php';
         } else {
-            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>404 Not Found - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm'><h1>404</h1><p class='lead'>Không tìm thấy trang yêu cầu.</p><a href='/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
+            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>404 Not Found - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm'><h1>404</h1><p class='lead'>Không tìm thấy trang yêu cầu.</p><a href='" . BASE_URL . "/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
         }
     }
 } catch (\Throwable $e) {
@@ -161,10 +169,10 @@ try {
         if (file_exists(__DIR__ . '/../app/views/errors/500.php')) {
             require __DIR__ . '/../app/views/errors/500.php';
         } else {
-            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm' style='max-width: 500px;'><h1 class='display-4 text-danger fw-bold'>500</h1><p class='lead'>Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.</p><a href='/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
+            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm' style='max-width: 500px;'><h1 class='display-4 text-danger fw-bold'>500</h1><p class='lead'>Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.</p><a href='" . (defined('BASE_URL') ? BASE_URL : '') . "/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
         }
     } catch (\Throwable $renderEx) {
         error_log($renderEx->getMessage());
-        echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm' style='max-width: 500px;'><h1 class='display-4 text-danger fw-bold'>500</h1><p class='lead'>Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.</p><a href='/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
+        echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>500 Error - ElectroStore</title><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'></head><body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'><div class='text-center p-5 bg-white rounded-4 shadow-sm' style='max-width: 500px;'><h1 class='display-4 text-danger fw-bold'>500</h1><p class='lead'>Đã xảy ra sự cố hệ thống. Vui lòng thử lại sau.</p><a href='" . (defined('BASE_URL') ? BASE_URL : '') . "/' class='btn btn-primary'>Về trang chủ</a></div></body></html>";
     }
 }

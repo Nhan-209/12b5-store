@@ -5,7 +5,7 @@
 // Uncomment and set this if BASE_URL detection fails
 // For XAMPP, if your project is at http://localhost/12b5-store/public/
 // Uncomment the line below:
-define('BASE_URL', '/12b5-store/public');
+// define('BASE_URL', '/12b5-store/public');
 
 // Database configuration
 define('DB_HOST', 'localhost');

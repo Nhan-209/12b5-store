@@ -60,7 +60,10 @@ class Cart {
             $coupon = null;
         }
 
-        $finalAmount = max(0.0, $total - $discountAmount);
+        // Shipping fee calculation:
+        // Free shipping for orders >= 5,000,000₫; 30,000₫ for orders under 5,000,000₫ (if cart has items)
+        $shippingFee = ($total > 0 && $total < 5000000) ? 30000.0 : 0.0;
+        $finalAmount = max(0.0, $total - $discountAmount + $shippingFee);
 
         return [
             'items' => $items,
@@ -69,6 +72,8 @@ class Cart {
             'formatted_subtotal' => number_format($total, 0, ',', '.') . ' ₫',
             'discount_amount' => $discountAmount,
             'formatted_discount' => number_format($discountAmount, 0, ',', '.') . ' ₫',
+            'shipping_fee' => $shippingFee,
+            'formatted_shipping_fee' => number_format($shippingFee, 0, ',', '.') . ' ₫',
             'final_amount' => $finalAmount,
             'formatted_final_amount' => number_format($finalAmount, 0, ',', '.') . ' ₫',
             'coupon' => $coupon
@@ -165,6 +170,15 @@ class Cart {
     public static function applyCoupon(string $code): array {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+
+        if (trim($code) === '') {
+            unset($_SESSION['coupon']);
+            return [
+                'success' => true,
+                'message' => 'Đã bỏ áp dụng mã giảm giá.',
+                'cart' => self::getCart()
+            ];
         }
 
         $pdo = Database::getConnection();

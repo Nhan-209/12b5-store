@@ -175,7 +175,7 @@ require __DIR__ . '/../layouts/header.php';
 
                     <div class="d-flex justify-content-between small mb-3">
                         <span class="text-muted">Phí vận chuyển:</span>
-                        <span class="text-success fw-semibold"><?= ($cart['subtotal'] >= 5000000) ? 'Miễn phí (Freeship)' : '30.000₫' ?></span>
+                        <span class="text-success fw-semibold"><?= ((float)($cart['shipping_fee'] ?? 0) === 0.0) ? 'Miễn phí (Freeship)' : ($cart['formatted_shipping_fee'] ?? '30.000 ₫') ?></span>
                     </div>
 
                     <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-baseline">

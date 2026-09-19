@@ -168,7 +168,7 @@ require __DIR__ . '/../layouts/header.php';
 
             <!-- Right Sidebar: Order Summary -->
             <div class="col-lg-5">
-                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 100px; border: 1px solid var(--border-color) !important;">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="position: sticky; top: 110px; border: 1px solid var(--border-color) !important; max-height: calc(100vh - 130px); overflow-y: auto;">
                     <h5 class="fw-bold mb-3 text-dark">Đơn Hàng Của Bạn (<?= $cart['total_items'] ?> thiết bị)</h5>
 
                     <div class="d-flex flex-column gap-3 mb-4" style="max-height: 280px; overflow-y: auto;">
@@ -199,7 +199,7 @@ require __DIR__ . '/../layouts/header.php';
 
                     <div class="d-flex justify-content-between small mb-3">
                         <span class="text-muted">Phí giao hàng hỏa tốc:</span>
-                        <span class="text-success fw-bold"><?= ($cart['subtotal'] >= 5000000) ? '0 ₫ (Miễn phí)' : '30.000 ₫' ?></span>
+                        <span class="text-success fw-bold"><?= ((float)($cart['shipping_fee'] ?? 0) === 0.0) ? '0 ₫ (Miễn phí)' : ($cart['formatted_shipping_fee'] ?? '30.000 ₫') ?></span>
                     </div>
 
                     <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-baseline">

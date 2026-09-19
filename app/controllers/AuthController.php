@@ -115,7 +115,7 @@ class AuthController {
         unset($_SESSION['user']);
         session_regenerate_id(true);
         $_SESSION['flash_success'] = 'Đã đăng xuất tài khoản.';
-        header('Location: /');
+        header('Location: ' . BASE_URL . '/');
         exit;
     }
 

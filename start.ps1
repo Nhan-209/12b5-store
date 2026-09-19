@@ -12,6 +12,8 @@ $phpCmd = "php"
 if (-not (Get-Command php -ErrorAction SilentlyContinue)) {
     if (Test-Path "C:\xampp\php\php.exe") {
         $phpCmd = "C:\xampp\php\php.exe"
+    } elseif (Test-Path "C:\xamppnp\php\php.exe") {
+        $phpCmd = "C:\xamppnp\php\php.exe"
     } elseif (Test-Path "D:\xampp\php\php.exe") {
         $phpCmd = "D:\xampp\php\php.exe"
     } elseif (Test-Path "E:\xampp\php\php.exe") {

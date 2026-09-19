@@ -65,12 +65,13 @@ class CheckoutController {
             'payment_method' => $paymentMethod,
             'total_amount' => $cart['subtotal'],
             'discount_amount' => $cart['discount_amount'],
+            'shipping_fee' => $cart['shipping_fee'] ?? (($cart['subtotal'] > 0 && $cart['subtotal'] < 5000000) ? 30000.0 : 0.0),
             'final_amount' => $cart['final_amount'],
             'notes' => $notes,
             'coupon_code' => $cart['coupon']['code'] ?? null
         ];
 
-        $res = Order::createOrder($orderData, $cart['items']);
+        $res = Order::createFromCart($orderData, $cart);
 
         if (!$res['success']) {
             $_SESSION['flash_error'] = $res['message'];
