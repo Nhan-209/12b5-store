@@ -227,23 +227,21 @@ Người tiêu dùng khi tìm kiếm thiết bị điện tử thường gõ sai
 3. **Kiểm tra chuỗi con (Substring Containment):** Xác định sự xuất hiện của các token truy vấn trong tên hoặc mô tả ngắn của thiết bị.
 4. **Khoảng cách chỉnh sửa Levenshtein (Levenshtein Distance):** Đối với các từ khóa bị gõ sai ký tự, hệ thống tính toán số phép biến đổi tối thiểu (thêm, xóa, thay thế một ký tự) để biến chuỗi $s_1$ thành chuỗi $s_2$:
 
-$$
-\mathrm{lev}(s_1, s_2) =
-\begin{cases}
-|s_1| & \text{nếu } |s_2| = 0, \[4pt]
-|s_2| & \text{nếu } |s_1| = 0, \[4pt]
-\mathrm{lev}(\mathrm{tail}(s_1), \mathrm{tail}(s_2))
-& \text{nếu } s_1[0] = s_2[0], \[4pt]
-1 + \min
-\begin{cases}
-\mathrm{lev}(\mathrm{tail}(s_1), s_2), \\
-\mathrm{lev}(s_1, \mathrm{tail}(s_2)), \\
-\mathrm{lev}(\mathrm{tail}(s_1), \mathrm{tail}(s_2))
-\end{cases}
-& \text{trường hợp khác.}
-\end{cases}
-$$
-
+```math
+\mathrm{lev}(s_1,s_2)=
+\begin{aligned}
+&|s_1| &&\text{nếu } |s_2|=0,\\
+&|s_2| &&\text{nếu } |s_1|=0,\\
+&\mathrm{lev}(\mathrm{tail}(s_1),\mathrm{tail}(s_2))
+&&\text{nếu } s_1[0]=s_2[0],\\
+&1+\min\bigl(
+\mathrm{lev}(\mathrm{tail}(s_1),s_2),
+\mathrm{lev}(s_1,\mathrm{tail}(s_2)),
+\mathrm{lev}(\mathrm{tail}(s_1),\mathrm{tail}(s_2))
+\bigr)
+&&\text{trường hợp khác.}
+\end{aligned}
+```
 
 Điểm tương thích tổng hợp (`match_score`) được tính toán dựa trên trọng số tích hợp giữa độ trùng khớp token và khoảng cách Levenshtein, cho phép sắp xếp danh sách kết quả trả về với độ chính xác cao và độ trễ phản hồi thấp.
 
